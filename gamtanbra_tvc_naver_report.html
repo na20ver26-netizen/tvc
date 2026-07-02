@@ -1,0 +1,1226 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>감탄브라 TVC x NAVER 성과 리포트 v4.1</title>
+  <style>
+    :root {
+      --navy:#0b2447;
+      --navy2:#183b65;
+      --green:#03C75A;
+      --ink:#202633;
+      --muted:#697386;
+      --line:#e4e8ef;
+      --soft:#f5f7fb;
+      --card:#ffffff;
+      --blue:#1b84e7;
+      --violet:#715cff;
+      --orange:#e0802b;
+      --shadow:0 16px 42px rgba(12,36,71,.10);
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--soft); color:var(--ink); font-family:"NanumSquareNEO","NanumSquareNeo","NanumSquare Neo",sans-serif; line-height:1.58; letter-spacing:0; word-break:keep-all; overflow-wrap:break-word; }
+    body.locked { overflow:hidden; background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 58%, #0f6c73 100%); }
+    body.locked .page, body.locked > svg { display:none; }
+    a { color:inherit; text-decoration:none; }
+    .password-gate { position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:24px; background:#12345a; }
+    body:not(.locked) .password-gate { display:none; }
+    .password-card { width:min(380px, 100%); min-height:372px; border-radius:18px; padding:38px 30px 30px; background:#fff; box-shadow:0 28px 80px rgba(3,18,38,.28); text-align:center; }
+    .gate-lock { display:block; margin-bottom:12px; font-size:34px; line-height:1; }
+    .password-card h2 { margin:0; color:var(--navy); font-size:20px; line-height:1.35; font-weight:900; }
+    .gate-report-title { display:block; margin-top:8px; color:#2f3a4b; font-size:14px; font-weight:900; }
+    .password-card p { margin:10px 0 22px; color:#647085; font-size:14px; line-height:1.55; }
+    .gate-input-row { display:grid; gap:12px; }
+    .gate-input-row input { width:100%; height:44px; border:1.5px solid var(--green); border-radius:9px; padding:0 14px; font:inherit; color:var(--ink); outline:none; text-align:center; }
+    .gate-input-row input:focus { box-shadow:0 0 0 3px rgba(3,199,90,.13); }
+    .gate-input-row button { width:100%; height:46px; border:0; border-radius:9px; background:#08c95a; color:#fff; font:inherit; font-weight:900; cursor:pointer; }
+    .gate-input-row button:hover { background:#02b653; }
+    .gate-error { min-height:18px; margin:9px 0 0 !important; color:#d53f3f !important; font-size:12px !important; font-weight:800; }
+    .gate-footer { display:block; margin-top:28px; color:#9aa5b8; font-size:11px; line-height:1.5; }
+    .page { display:grid; grid-template-columns:236px minmax(0,1fr); min-height:100vh; }
+    .side-nav { position:sticky; top:0; height:100vh; padding:26px 18px; background:#fff; border-right:1px solid var(--line); box-shadow:8px 0 26px rgba(20,37,61,.04); z-index:5; }
+    .brandmark { display:flex; flex-direction:column; gap:4px; margin-bottom:24px; }
+    .brandmark b { font-size:18px; color:var(--navy); }
+    .brandmark span { font-size:12px; color:var(--muted); font-weight:800; }
+    .nav-links { display:flex; flex-direction:column; gap:7px; }
+    .nav-links a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:900; color:#475164; border:1px solid transparent; transition:background .18s ease, color .18s ease, border-color .18s ease; }
+    .nav-links a:hover { color:var(--navy); background:#edf7f2; }
+    .nav-links a.summary-link { font-size:14px; }
+    .nav-links a.active { background:#e8f7ee; color:#078f45; border-color:#bfe8cf; }
+    .nav-index { width:22px; color:#8b96a7; font-size:11px; font-weight:900; }
+    .nav-links a.active .nav-index { color:#078f45; }
+    .nav-note { position:absolute; left:18px; right:18px; bottom:22px; padding:12px; border-radius:8px; background:#f4f8fb; color:#6b7380; font-size:11px; }
+    main { min-width:0; }
+    .hero { color:#fff; background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 58%, #0f6c73 100%); padding:46px 44px 40px; }
+    .wrap { width:min(1180px, calc(100% - 36px)); margin:0 auto; }
+    .eyebrow { color:#8af0b5; font-size:12px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; margin-bottom:12px; }
+    h1 { margin:0; font-size:38px; line-height:1.15; font-weight:900; }
+    .hero-lead { max-width:none; margin:18px 0 0; color:#edf7ff; font-size:14px; line-height:1.7; white-space:nowrap; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; }
+    .chip { display:inline-flex; align-items:center; border:1px solid rgba(255,255,255,.26); background:rgba(255,255,255,.10); border-radius:999px; padding:7px 12px; color:#fff; font-size:12px; font-weight:900; }
+    .one-message { margin-top:28px; display:grid; grid-template-columns:1fr 380px; gap:18px; align-items:stretch; }
+    .message-box { border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.10); border-radius:12px; padding:20px; }
+    .message-box b { display:block; font-size:15px; color:#a9f4c6; margin-bottom:8px; }
+    .message-box p { margin:0; font-size:20px; line-height:1.5; font-weight:900; }
+    .scope-note { display:block; margin-top:14px; padding:10px 12px; border-radius:8px; background:rgba(255,255,255,.12); color:#eef8ff; font-size:13px; line-height:1.6; font-weight:700; }
+    .scope-note b { font-weight:900; }
+    .scope-note span { font-weight:400; opacity:.92; }
+    .hero-kpis { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .hero-kpis div { border:1px solid rgba(255,255,255,.18); border-radius:10px; padding:13px; background:rgba(255,255,255,.08); min-width:0; }
+    .hero-kpis span { display:block; font-size:11px; color:#c7dded; font-weight:800; }
+    .hero-kpis strong { display:block; margin-top:4px; color:#fff; font-size:16px; line-height:1.35; font-weight:900; }
+    .hero-kpis em { display:block; margin-top:4px; color:#fff; font-size:16px; line-height:1.35; font-style:normal; font-weight:900; }
+    section { padding:42px 0; }
+    .sec-head { display:flex; align-items:center; gap:13px; margin-bottom:12px; }
+    .sec-no { display:inline-flex; align-items:center; height:28px; padding:0 10px; border-radius:999px; background:#e9f7ef; color:#078f45; font-size:12px; font-weight:900; }
+    h2 { margin:0; font-size:27px; line-height:1.3; color:#152033; }
+    h3 { margin:0 0 12px; font-size:19px; color:#202633; }
+    .lead { margin:0 0 20px; color:#536071; font-size:15px; }
+    .part-headline { margin:0 0 18px; padding:12px 16px; border:1px solid #cfead9; border-left:4px solid var(--green); border-radius:9px; background:#f1fbf5; color:#143624; font-size:16px; line-height:1.55; font-weight:500; }
+    .part-headline strong { color:#078f45; font-weight:800; }
+    .part-headline.subtle { border-color:#d9e2ec; border-left-color:var(--green); background:#f8fafc; }
+    .definition-copy { margin:8px 0 16px; color:#7c8796; font-size:12px; line-height:1.6; font-weight:500; }
+    .topic-card { background:#fff; border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:22px; }
+    .topic-head { margin-bottom:16px; }
+    .topic-head h3 { margin-bottom:6px; }
+    .insight-panel { border:1px solid #dbe4ee; background:#f8fafc; border-radius:10px; padding:18px; height:100%; }
+    .insight-panel h3 { color:#152033; }
+    .insight-panel p { margin:0 0 12px; color:#3d4c5d; font-size:14px; line-height:1.65; }
+    .insight-highlight { margin-top:12px; padding:13px 14px; border-radius:9px; background:#fff; border:1px solid #dbe4ee; color:#213347; font-weight:700; line-height:1.6; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:22px; }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .kpi { min-height:132px; }
+    .kpi .lab { color:#697386; font-size:12px; font-weight:900; }
+    .kpi .val { margin-top:7px; font-size:31px; line-height:1.05; font-weight:900; color:var(--navy); }
+    .kpi .val.compact { font-size:25px; line-height:1.12; }
+    .kpi .val .prev { color:#98a2af; }
+    .kpi .val .arrow { color:#aab3bf; font-size:.82em; padding:0 5px; }
+    .kpi .val .current { color:#03a64f; }
+    .kpi .desc { margin-top:8px; color:#5f6b7b; font-size:13px; }
+    .kpi .delta { display:inline-flex; margin-top:10px; padding:6px 9px; border-radius:999px; background:#e9f8ef; color:#078f45; font-size:12px; font-weight:900; }
+    .kpi.green .val { color:#03a64f; } .kpi.blue .val { color:var(--blue); } .kpi.violet .val { color:var(--violet); } .kpi.orange .val { color:var(--orange); }
+    .summary-copy { font-size:16px; color:#344052; line-height:1.8; }
+    .summary-copy p { margin:0 0 12px; }
+    .summary-list { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px; }
+    .summary-item { border:1px solid var(--line); background:#fff; border-radius:9px; padding:16px; }
+    .summary-item b { display:block; margin-bottom:5px; color:#078f45; }
+    .summary-item span { color:#5b6573; font-size:14px; line-height:1.65; }
+    .summary-item ul { margin:8px 0; padding-left:18px; color:#3e4a59; font-size:14px; line-height:1.55; }
+    .summary-item .arrow-copy { display:block; margin-top:6px; color:#445163; }
+    .small-note { display:block; margin-top:8px; color:#7a8595; font-size:11px; line-height:1.55; }
+    .chart-box { padding:18px; }
+    .chart-head { display:flex; justify-content:space-between; gap:16px; align-items:flex-end; margin-bottom:10px; }
+    .chart-head p { margin:0; color:#6d7787; font-size:12px; }
+    canvas { width:100%; max-width:100%; height:330px; display:block; }
+    .svg-chart { width:100%; height:430px; display:block; }
+    .svg-chart svg { width:100%; height:100%; display:block; overflow:visible; font-family:"NanumSquareNEO","NanumSquareNeo","NanumSquare Neo",Arial,sans-serif; }
+    .svg-chart text { font-family:inherit; }
+    .search-row { display:grid; grid-template-columns:minmax(0,2fr) minmax(280px,.82fr); gap:18px; align-items:stretch; }
+    .legend { display:flex; flex-wrap:wrap; gap:10px; align-items:center; font-size:12px; color:#5b6472; font-weight:800; }
+    .dot { width:9px; height:9px; border-radius:50%; display:inline-block; margin-right:4px; }
+    .hbar-wrap { display:grid; gap:10px; }
+    .hbar-row { display:grid; grid-template-columns:130px 1fr 52px; gap:10px; align-items:center; font-size:13px; }
+    .hbar { height:13px; background:#edf1f6; border-radius:999px; overflow:hidden; }
+    .hbar i { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,#2c88ff,#7762ff); }
+    .hbar-row b { color:#078f45; font-size:13px; text-align:right; }
+    .lift-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+    .lift-card { background:#fff; border:1px solid var(--line); border-radius:9px; padding:14px 12px 12px; min-height:284px; }
+    .lift-card h4 { margin:0 0 10px; text-align:center; color:#fff; background:#1685e8; border-radius:7px; padding:7px; font-size:14px; }
+    .lift-card h4.internal { background:#526b89; }
+    .lift-card h4.search { background:#1685e8; }
+    .lift-bars { position:relative; height:222px; display:flex; align-items:end; justify-content:center; gap:28px; border-bottom:1px solid #dde2ea; padding-top:58px; }
+    .lift-bars::before, .lift-bars::after { display:none; }
+    .bar-col { display:flex; flex-direction:column; align-items:center; justify-content:flex-end; min-width:48px; height:178px; position:relative; }
+    .lift-bars i { display:block; width:42px; border-radius:4px 4px 0 0; }
+    .lift-bars .base { background:#b9b9b9; }
+    .lift-bars .after { background:linear-gradient(180deg,#715cff,#1599e8); }
+    .lift-bars .after.internal { background:linear-gradient(180deg,#6d7f99,#2a9bb6); }
+    .lift-bars .downbar { background:#9198a2; }
+    .lift-label { position:absolute; top:auto; bottom:var(--label-bottom, 118px); color:#6554ff; font-size:19px; font-weight:900; white-space:nowrap; }
+    .lift-label.down { color:#66717f; }
+    .lift-card p { margin:10px 0 0; text-align:center; color:#687386; font-size:12px; }
+    .mini-lift { border:1px solid var(--line); background:#fff; border-radius:9px; padding:14px; }
+    .mini-top { display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom:10px; }
+    .mini-top span { color:#6554ff; font-weight:900; }
+    .scale { position:relative; height:20px; background:#eef2f7; border-radius:999px; overflow:hidden; }
+    .scale i { position:absolute; left:0; top:0; bottom:0; border-radius:999px; }
+    .scale .before { background:#b8bdc5; z-index:1; }
+    .scale .during { background:linear-gradient(90deg,#188ee8,#6e60ff); z-index:2; opacity:.88; }
+    .mini-lift small { display:block; margin-top:8px; color:#778292; font-size:11px; }
+    .definition-note { margin-top:14px; color:#8a95a6; font-size:11px; line-height:1.6; text-align:right; }
+    .flow { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; align-items:stretch; }
+    .flow-step { position:relative; background:#fff; border:1px solid var(--line); border-radius:10px; padding:18px; min-height:118px; }
+    .flow-step:not(:last-child)::after { content:""; position:absolute; right:-16px; top:50%; width:22px; height:2px; background:#9fb2c7; }
+    .flow-step b { display:block; color:#0f2240; margin-bottom:8px; }
+    .flow-step span { color:#5f6b7a; font-size:13px; }
+    .journey-visual { margin-top:18px; padding:26px 20px; border:1px solid var(--line); border-radius:10px; background:#fff; box-shadow:var(--shadow); }
+    .journey-visual h3 { text-align:center; margin-bottom:22px; }
+    .journey-map { position:relative; display:grid; grid-template-columns:1.25fr .95fr .7fr; gap:26px; align-items:center; min-height:370px; overflow:hidden; }
+    .route-line { position:absolute; inset:42px 80px 44px 80px; width:calc(100% - 160px); height:240px; pointer-events:none; z-index:0; }
+    .people-mark { display:block; width:220px; height:220px; margin:auto; overflow:visible; }
+    .pool-bg { fill:#fff; stroke:#e3e8ef; stroke-width:1.2; filter:drop-shadow(0 12px 22px rgba(53,80,120,.12)); }
+    .pool-people use { color:#9eb9e8; fill:currentColor; stroke:#fff; stroke-width:2; stroke-linejoin:round; paint-order:stroke fill; }
+    .journey-stage { position:relative; min-height:310px; z-index:1; }
+    .journey-stage-title { position:absolute; top:0; left:0; color:#56657a; font-size:13px; font-weight:900; }
+    .purchase-stage { display:grid; place-items:center; min-height:310px; position:relative; z-index:1; }
+    .purchase-stage .people-mark { width:220px; height:220px; }
+    .purchase-stage b { display:block; text-align:center; margin-top:12px; font-size:18px; color:#24364a; }
+    .journey-bubbles { position:relative; min-height:310px; }
+    .bubble { display:grid; place-items:center; border-radius:50%; color:#fff; text-align:center; font-weight:900; line-height:1.25; box-shadow:0 12px 26px rgba(38,74,120,.12); position:relative; flex:0 0 auto; }
+    .bubble small { position:absolute; bottom:-24px; color:#4e5b69; font-size:12px; font-weight:800; white-space:nowrap; }
+    .bubble.sa { background:linear-gradient(180deg,#ffbd78,#f27a8c); width:82px; height:82px; font-size:13px; position:absolute; }
+    .bubble.da { background:linear-gradient(180deg,#795cff,#6ac5ff); width:122px; height:122px; font-size:18px; position:absolute; }
+    .bubble.mid { width:88px; height:88px; font-size:14px; }
+    .bubble.large { width:154px; height:154px; font-size:21px; }
+    table { width:100%; border-collapse:collapse; background:#fff; overflow:hidden; border-radius:9px; }
+    th, td { padding:13px 14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; font-size:13px; }
+    th { background:#0d2a55; color:#fff; font-weight:900; }
+    tr:last-child td { border-bottom:0; }
+    td strong { color:#006fe6; font-weight:900; }
+    .plain-strong { color:inherit; font-weight:900; }
+    .overlap-grid { display:grid; grid-template-columns:1.05fr .95fr; gap:18px; }
+    .metric-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px; }
+    .metric-strip.four { grid-template-columns:repeat(4,1fr); }
+    .strip-card { background:#fff; border:1px solid var(--line); border-radius:9px; padding:15px; }
+    .strip-card span { display:block; color:#667181; font-size:12px; font-weight:900; }
+    .strip-card b { display:block; margin-top:6px; font-size:24px; color:#0b2447; }
+    .strip-card small { color:#748094; }
+    .callout { border-left:4px solid var(--green); background:#eefaf3; padding:15px 16px; border-radius:9px; color:#304151; }
+    .purchase-visual { display:grid; grid-template-columns:.9fr .58fr 1fr; gap:18px; align-items:stretch; position:relative; overflow:hidden; }
+    .buyer-chart { min-height:300px; display:flex; flex-direction:column; justify-content:space-between; }
+    .buyer-bars { height:205px; display:flex; align-items:end; justify-content:center; gap:52px; border-bottom:1px solid #dfe4ec; position:relative; }
+    .buyer-bars::before, .buyer-bars::after { display:none; }
+    .buyer-bar { width:64px; background:#bcbcbc; border-radius:4px 4px 0 0; position:relative; }
+    .buyer-bar.after { background:linear-gradient(180deg,#7754ff,#2678f0); }
+    .buyer-bar em { position:absolute; left:50%; transform:translateX(-50%); top:-34px; color:#6554ff; font-style:normal; font-weight:900; font-size:24px; white-space:nowrap; }
+    .bar-caption { display:flex; justify-content:center; gap:82px; color:#808a98; font-weight:900; margin-top:10px; }
+    .purchase-pool { position:relative; display:grid; place-items:center; align-content:center; min-height:300px; }
+    .purchase-pool::before { content:""; position:absolute; left:-44px; top:118px; width:82px; border-top:2px dashed #aab8c8; transform:rotate(-12deg); }
+    .purchase-pool .people-mark { width:220px; height:220px; }
+    .purchase-pool span { margin-top:12px; color:#4d5d70; font-size:13px; font-weight:800; text-align:center; }
+    .increment-visual { margin-top:14px; border:1px solid #d8e2ee; background:#f7faff; border-radius:10px; padding:15px; }
+    .increment-visual h4 { margin:0 0 10px; color:#24364a; font-size:15px; }
+    .increment-bar { display:flex; height:34px; overflow:hidden; border-radius:7px; border:1px solid #c5d2e2; background:#fff; }
+    .increment-bar span { display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; }
+    .increment-bar .new { background:linear-gradient(90deg,#1f86e8,#7162ff); color:#fff; }
+    .increment-bar .repeat { background:#dbe4ef; color:#536274; }
+    .buyer-share { display:grid; align-content:center; gap:16px; }
+    .new-buyer-number { border:1px solid #d8e2ee; background:#f5f8fc; border-radius:9px; padding:18px 20px; }
+    .new-buyer-number span { display:block; color:#607086; font-size:12px; font-weight:900; }
+    .new-buyer-number b { display:block; margin-top:5px; color:#0b2447; font-size:42px; line-height:1; }
+    .share-row { display:grid; grid-template-columns:122px 1fr; gap:12px; align-items:center; color:#7b8492; font-weight:900; }
+    .share-track { height:32px; background:#f4f6f9; border:1px solid #b8c0ca; }
+    .share-track i { display:block; height:100%; background:#73a1e8; color:#fff; font-style:normal; padding-left:12px; line-height:30px; font-weight:800; }
+    .new-user-visual { display:grid; grid-template-columns:1fr .9fr; gap:18px; align-items:stretch; }
+    .reach-expansion { position:relative; min-height:190px; display:grid; place-items:center; overflow:hidden; }
+    .reach-circle { position:absolute; border-radius:50%; border:1px solid #bdd5ef; background:rgba(115,161,232,.10); }
+    .reach-circle.c1 { width:96px; height:96px; }
+    .reach-circle.c2 { width:148px; height:148px; opacity:.75; }
+    .reach-circle.c3 { width:206px; height:206px; opacity:.45; }
+    .reach-core { position:relative; z-index:1; width:82px; height:82px; border-radius:50%; display:grid; place-items:center; background:#3b73b3; color:#fff; font-size:14px; font-weight:900; text-align:center; }
+    .overlap-summary { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
+    .overlap-card { background:#fff; border:1px solid var(--line); border-radius:10px; padding:16px; }
+    .overlap-card h3 { margin-bottom:14px; }
+    .overlap-metrics { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .overlap-metrics div { background:#f6f8fb; border:1px solid #e2e8f0; border-radius:8px; padding:12px; }
+    .overlap-metrics span { display:block; color:#687386; font-size:11px; font-weight:900; }
+    .overlap-metrics b { display:block; margin-top:6px; color:#0b2447; font-size:23px; }
+    .overlap-metrics small { color:#748094; }
+    .segbar { display:flex; height:50px; border-radius:2px; overflow:hidden; color:#fff; font-weight:900; text-align:center; }
+    .segbar span { display:flex; align-items:center; justify-content:center; }
+    .segbar .new { background:#3b73b3; }
+    .segbar .old { background:#dce7f6; color:#405168; }
+    .blue-band { margin-top:14px; background:#3b73b3; color:#fff; text-align:center; padding:14px; font-weight:900; border-radius:2px; }
+    .split-cards { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .metric-mini { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:14px 0; }
+    .metric-mini div { background:#f5f7fb; border:1px solid var(--line); border-radius:8px; padding:12px; }
+    .metric-mini span { display:block; color:#748094; font-size:11px; font-weight:900; }
+    .metric-mini b { display:block; margin-top:5px; color:#0b2447; font-size:20px; }
+    .gam-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .perf-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:14px 0; }
+    .perf-card { border:1px solid var(--line); border-radius:9px; padding:14px; background:#fff; }
+    .perf-card b { display:block; color:#0b2447; }
+    .perf-card strong { display:block; margin-top:7px; font-size:25px; color:#1b84e7; }
+    .perf-card small { color:#728095; }
+    .common-profile { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:0 0 16px; }
+    .common-profile div { border:1px solid var(--line); background:#f7f9fc; border-radius:9px; padding:13px; }
+    .common-profile b { display:block; color:#0b2447; margin-bottom:6px; font-size:13px; }
+    .common-profile span { color:#5e6a7a; font-size:12px; line-height:1.55; }
+    .recommendation-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:18px; }
+    .recommendation-card { border:1px solid #cfe9da; background:#f7fcf9; border-radius:10px; padding:18px; min-height:170px; }
+    .recommendation-card .num { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:#03C75A; color:#fff; font-size:13px; font-weight:900; margin-bottom:12px; }
+    .recommendation-card b { display:block; color:#025c2b; font-size:17px; margin-bottom:8px; }
+    .recommendation-card p { margin:0; color:#526071; font-size:14px; line-height:1.65; word-break:keep-all; }
+    .report-endcap { min-height:220px; }
+    .muted { color:#728095; }
+    .footer { padding:28px 44px 44px; color:#7a8492; font-size:12px; }
+    @media (max-width: 1060px) {
+      .page { display:block; }
+      .side-nav { position:relative; height:auto; padding:14px 18px; }
+      .nav-links { flex-direction:row; overflow:auto; }
+      .nav-note { display:none; }
+      .one-message, .grid-2, .overlap-grid, .search-row, .journey-map, .purchase-visual, .overlap-summary, .recommendation-grid { grid-template-columns:1fr; }
+      .route-line { display:none; }
+      .journey-stage, .journey-bubbles { min-height:280px; }
+      .purchase-pool::before { display:none; }
+      .grid-3, .grid-4, .lift-grid { grid-template-columns:1fr 1fr; }
+      .flow { grid-template-columns:1fr 1fr; }
+      .flow-step::after { display:none; }
+    }
+    @media (max-width: 640px) {
+      .hero { padding:34px 20px; }
+      .wrap { width:calc(100% - 28px); }
+      h1 { font-size:31px; }
+      .hero-lead { white-space:normal; }
+      .svg-chart { height:360px; }
+      .report-endcap { min-height:180px; }
+      .grid-3, .grid-4, .lift-grid, .summary-list, .flow, .metric-strip, .metric-strip.four, .purchase-visual, .new-user-visual, .split-cards, .gam-grid, .perf-cards, .common-profile, .overlap-summary, .recommendation-grid { grid-template-columns:1fr; }
+      .hbar-row { grid-template-columns:110px 1fr 46px; }
+    }
+  </style>
+</head>
+<body class="locked">
+  <div class="password-gate" id="passwordGate" role="dialog" aria-modal="true" aria-labelledby="passwordGateTitle">
+    <form class="password-card" id="passwordForm">
+      <span class="gate-lock" aria-hidden="true">🔐</span>
+      <h2 id="passwordGateTitle">보호된 리포트</h2>
+      <strong class="gate-report-title">감탄브라</strong>
+      <p>이 문서는 비밀번호로 보호되어 있습니다.<br>전달받은 비밀번호를 입력해 주세요.</p>
+      <div class="gate-input-row">
+        <input id="reportPassword" name="reportPassword" type="password" autocomplete="current-password" placeholder="비밀번호" required>
+        <button type="submit">열기</button>
+      </div>
+      <p class="gate-error" id="passwordError" aria-live="polite"></p>
+      <small class="gate-footer">NAVER X TVC 대외비</small>
+    </form>
+  </div>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden">
+    <symbol id="user-pool-person" viewBox="0 0 22 24">
+      <circle cx="11" cy="5" r="3.8"></circle>
+      <path d="M3.2 22.5v-2.8c0-4.8 3.4-8.3 7.8-8.3s7.8 3.5 7.8 8.3v2.8H3.2Z"></path>
+    </symbol>
+  </svg>
+  <div class="page">
+    <aside class="side-nav">
+      <div class="brandmark"><b>감탄브라 TVC</b><span>NAVER 성과 리포트</span></div>
+      <nav class="nav-links">
+        <a class="summary-link" href="#summary"><span class="nav-index">★</span>핵심요약</a>
+        <a href="#search"><span class="nav-index">01</span>검색 관심도</a>
+        <a href="#ad"><span class="nav-index">02</span>광고 반응</a>
+        <a href="#purchase"><span class="nav-index">03</span>구매 성장</a>
+        <a href="#journey"><span class="nav-index">04</span>구매여정</a>
+        <a href="#overlap"><span class="nav-index">05</span>업종 고려 고객</a>
+        <a href="#gam"><span class="nav-index">06</span>커스텀 타겟팅</a>
+        <a href="#recommendation"><span class="nav-index">R</span>운영 전략</a>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">TVC x NAVER Cross Campaign Report</div>
+          <h1>그리티 감탄브라 TVC X NAVER 크로스캠페인 분석 리포트</h1>
+          <p class="hero-lead">TVC 기간 네이버 내 검색 관심도, 광고 반응률, 구매 여정, 신규 고객 유입과 업종 고려 고객 접점의 통합 분석</p>
+          <div class="chips">
+            <span class="chip">TVC 2026.05.01-05.31</span>
+          </div>
+          <div class="one-message">
+            <div class="message-box">
+              <b>One Message</b>
+              <p>TVC 기간 동안 네이버에서는 검색 관심 확대 → 광고 반응 증가 → 신규 구매 확대까지 이어지는 고객 행동 변화가 확인됨</p>
+              <span class="scope-note"><b>분석 범위</b><span> 네이버 통합검색 쿼리 추이, 광고상품 성과, 네이버쇼핑스토어 구매자, NPay 구매여정, 신규 유저 및 업종 고려 고객, 커스텀 타겟팅</span></span>
+            </div>
+            <div class="hero-kpis">
+              <div><span>검색 관심</span><strong>인견소재 +740%</strong><em>모델 키워드 +281%</em></div>
+              <div><span>광고상품 성과</span><strong>CTR·CVR 증가</strong><em>주요 상품 반응 개선</em></div>
+              <div><span>NPay 구매자</span><strong>+80%</strong><em>구매 여정 확대</em></div>
+              <div><span>경쟁 관심군 접점</span><strong>노출 +89%</strong><em>클릭 +78%</em></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section id="summary">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">SUMMARY</span><h2>핵심요약</h2></div>
+          <div class="card summary-copy">
+            <p>단순 광고 성과 개선을 넘어, TVC 집행 이후 <strong>브랜드·소재·모델 관련 검색 수요</strong>가 크게 증가하고, <strong>광고 반응률 및 구매 전환율</strong>이 함께 상승하면서 신규 고객 유입과 구매자 규모 확대까지 이어지는 선순환 구조가 확인됨.</p>
+            <p>특히 TVC는 브랜드명뿐 아니라 <strong>손예진(모델), 인견쿨(소재), 자세브라(기능)</strong> 등 제품 연상 키워드까지 관심 범위를 확장시켰으며, 이는 광고 반응률과 구매 전환율 개선으로 연결됨. 또한 구매자 증가분의 대부분이 신규 고객에서 발생했고, <strong>업종 내 경쟁 관심 고객과의 접점도 확대</strong>되어 네이버 내 고려군 확장 흐름 확인됨.</p>
+            <p>TVC 중 캡쳐한 고객은 TVC 이후로도 잔존하고 있으며, 이를 <strong>리타겟팅 혹은 리인게이지먼트 자산으로 활용해 고객 확장 기대 가능함</strong>.</p>
+          </div>
+          <div class="summary-list">
+            <div class="summary-item">
+              <b>검색 관심도 확대</b>
+              <span>브랜드 키워드뿐 아니라 소재·기능·모델 관련 검색 수요까지 크게 증가하며, TVC의 핵심 메시지가 네이버 내 직접 탐색 행동으로 이어짐.</span>
+              <ul><li>브랜드 키워드 +238%</li><li>소재 키워드 +740%</li><li>모델 키워드 +281%</li></ul>
+              <span class="arrow-copy">→ 브랜드 인지뿐 아니라 제품 특성과 모델까지 함께 연상되는 검색 구조가 형성됨.</span>
+            </div>
+            <div class="summary-item">
+              <b>광고 반응 및 전환 개선</b>
+              <span>검색 수요 확대 이후 주요 광고상품의 CTR과 CVR이 함께 개선되며, 네이버 광고상품이 증가한 관심 수요를 반응과 전환으로 흡수한 흐름 확인됨.</span>
+              <span class="arrow-copy">→ 브랜드 관심 증대가 실제 광고 반응과 구매 행동으로 이어지는 구조 확인됨.</span>
+            </div>
+            <div class="summary-item">
+              <b>신규 고객 중심의 구매자 확대</b>
+              <span>구매자 증가는 기존 고객보다 신규 고객 유입이 주도한 것으로 나타남.</span>
+              <ul><li>네이버쇼핑 구매자 +55%</li><li>외부몰 포함 NPay 구매자 +80%</li><li>증가분의 약 92%가 신규 구매자</li></ul>
+              <span class="arrow-copy">→ 네이버 안에서의 구매 성장은 기존 고객 재구매보다 신규 고객 유입 중심으로 확인됨.</span>
+            </div>
+            <div class="summary-item">
+              <b>업종 고려군 내 브랜드 존재감 확대</b>
+              <span>TVC 기간 광고주와 업종 비교·탐색 고객군의 공통 접점은 노출 기준 +89%, 클릭 기준 +78% 증가하며, 업종 고려 고객 안에서 브랜드 접점이 확대됨.</span>
+              <span class="arrow-copy">또한 네이버에서 포착한 반응 고객은 이후 리타겟팅·리인게이지먼트 자산으로 활용 가능해, 지속적인 고객 확장과 성과 창출 기반으로 해석됨.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="search">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 1</span><h2>검색 관심도 확대</h2></div>
+          <div class="part-headline">TVC 기간 네이버 내 감탄브라 브랜드뿐 아니라 <strong>인견 소재와 손예진 모델</strong>까지 함께 탐색하는 검색 행동이 확대되며, 브랜드 관심의 축이 제품 속성과 모델 연상까지 확장됨.</div>
+          <div class="topic-card">
+            <div class="topic-head">
+              <h3>통합검색 키워드 변화</h3>
+              <p class="definition-copy">네이버 통합검색창 기준 일별 쿼리 추이이며, 본 리포트는 TVC 전 평균을 100으로 둔 검색지수의 완화 추세선만 표기함.</p>
+            </div>
+            <div class="search-row">
+              <div class="card chart-box query-main" style="box-shadow:none">
+              <div class="chart-head">
+                <div><h3>키워드군별 일별 검색 추이</h3><p>TVC 전 평균=100, 일별 검색지수 기반 완화 추세선</p></div>
+                <div class="legend"><span><i class="dot" style="background:#03C75A"></i>브랜드</span><span><i class="dot" style="background:#1b84e7"></i>모델</span><span><i class="dot" style="background:#715cff"></i>소재</span><span><i class="dot" style="background:#e0802b"></i>기능</span></div>
+              </div>
+              <div id="searchTrend" class="svg-chart" role="img" aria-label="검색 추이 차트"></div>
+            </div>
+            <div class="insight-panel">
+              <h3>키워드군 인사이트 요약</h3>
+              <p>브랜드, 소재, 모델, 기능 키워드가 모두 TVC 기간 상승하며, 네이버 검색 안에서 관심의 폭이 넓어지는 흐름을 보임.</p>
+              <div class="insight-highlight">브랜드 키워드 +238%, 인견소재 키워드 +740%, 모델 키워드 +281% 증가하며, TVC 메시지가 네이버 내 브랜드·소재·모델 탐색 행동으로 연결되는 흐름 확인됨.</div>
+            </div>
+          </div>
+            <div class="search-row" style="margin-top:18px">
+              <div class="card chart-box query-main" style="box-shadow:none">
+              <div class="chart-head">
+                <div><h3>대표 키워드 3종 추이</h3><p>브랜드 볼륨 대표와 소재/모델 증가폭 대표 키워드의 완화 추세선 비교</p></div>
+                <div class="legend"><span><i class="dot" style="background:#03C75A"></i>감탄브라</span><span><i class="dot" style="background:#715cff"></i>감탄브라인견쿨</span><span><i class="dot" style="background:#1b84e7"></i>손예진브라</span></div>
+              </div>
+              <div id="keywordTrend" class="svg-chart" role="img" aria-label="대표 키워드 검색 추이 차트"></div>
+            </div>
+            <div class="insight-panel">
+              <h3>대표 키워드 인사이트 요약</h3>
+              <p>감탄브라 키워드가 전체 볼륨은 가장 크지만, 증가폭은 TVC 메시지와 직접 연결되는 소재·모델 키워드에서 더 두드러진 양상을 보임.</p>
+              <div class="insight-highlight">키워드 증가폭의 핵심 축은 <b>“감탄브라인견쿨”</b>, <b>“손예진브라”</b>였으며, 네이버 검색 안에서 인견 소재와 손예진 모델을 함께 탐색하는 행동이 확대됨.</div>
+            </div>
+            </div>
+          </div>
+          <div class="topic-card" style="margin-top:18px">
+              <div class="topic-head">
+              <h3>구매 영향 키워드의 변화</h3>
+              <p class="definition-copy">NPay 구매자 기준 구매 전 검색 키워드이며, 구매 직전에 영향을 끼친 키워드의 TVC 전 대비 배수로 표기함.</p>
+              </div>
+              <div class="hbar-wrap">
+                <div class="hbar-row"><span>감탄브라인견쿨</span><div class="hbar"><i style="width:100%"></i></div><b>4.2배</b></div>
+                <div class="hbar-row"><span>여름브라</span><div class="hbar"><i style="width:73.8%"></i></div><b>3.1배</b></div>
+                <div class="hbar-row"><span>브라</span><div class="hbar"><i style="width:52.4%"></i></div><b>2.2배</b></div>
+                <div class="hbar-row"><span>손예진브라</span><div class="hbar"><i style="width:50%"></i></div><b>2.1배</b></div>
+                <div class="hbar-row"><span>인견브라</span><div class="hbar"><i style="width:47.6%"></i></div><b>2.0배</b></div>
+                <div class="hbar-row"><span>손예진감탄브라</span><div class="hbar"><i style="width:45.2%"></i></div><b>1.9배</b></div>
+                <div class="hbar-row"><span>감탄</span><div class="hbar"><i style="width:42.9%"></i></div><b>1.8배</b></div>
+                <div class="hbar-row"><span>자세브라</span><div class="hbar"><i style="width:42.9%"></i></div><b>1.8배</b></div>
+                <div class="hbar-row"><span>손예진속옷</span><div class="hbar"><i style="width:42.9%"></i></div><b>1.8배</b></div>
+                <div class="hbar-row"><span>감탄브라</span><div class="hbar"><i style="width:38.1%"></i></div><b>1.6배</b></div>
+                <div class="hbar-row"><span>심리스브라</span><div class="hbar"><i style="width:33.3%"></i></div><b>1.4배</b></div>
+                <div class="hbar-row"><span>감탄브라자세브라</span><div class="hbar"><i style="width:28.6%"></i></div><b>1.2배</b></div>
+              </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="ad">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 2</span><h2>광고 반응률 및 구매 전환율 상승</h2></div>
+          <div class="part-headline">TVC 기간 중 커진 검색 관심은 네이버 광고상품의 <strong>클릭 반응과 구매여정 내 전환 품질 개선</strong>으로 이어지는 흐름을 보임.</div>
+          <div class="card">
+            <h3>CTR 개선</h3>
+            <p class="lead">TVC 기간 네이버 광고상품이 증가한 검색 수요를 흡수하면서, 파워링크 +11%, 쇼핑검색 +52%, 성과형DA(GFA) +9%, 보장형DA +13% 수준의 반응률 개선이 확인됨.</p>
+            <div class="lift-grid">
+              <div class="lift-card"><h4>파워링크</h4><div class="lift-bars"><div class="bar-col"><i class="base" style="height:112px"></i></div><div class="bar-col" style="--label-bottom:130px"><em class="lift-label">+11%</em><i class="after" style="height:124px"></i></div></div></div>
+              <div class="lift-card"><h4>쇼핑검색</h4><div class="lift-bars"><div class="bar-col"><i class="base" style="height:112px"></i></div><div class="bar-col" style="--label-bottom:176px"><em class="lift-label">+52%</em><i class="after" style="height:170px"></i></div></div></div>
+              <div class="lift-card"><h4>브랜드검색</h4><div class="lift-bars"><div class="bar-col"><i class="base" style="height:112px"></i></div><div class="bar-col" style="--label-bottom:117px"><em class="lift-label down">-1%</em><i class="after downbar" style="height:111px"></i></div></div></div>
+              <div class="lift-card"><h4>성과형DA(GFA)</h4><div class="lift-bars"><div class="bar-col"><i class="base" style="height:112px"></i></div><div class="bar-col" style="--label-bottom:128px"><em class="lift-label">+9%</em><i class="after" style="height:122px"></i></div></div></div>
+              <div class="lift-card"><h4>보장형DA</h4><div class="lift-bars"><div class="bar-col"><i class="base" style="height:112px"></i></div><div class="bar-col" style="--label-bottom:133px"><em class="lift-label">+13%</em><i class="after" style="height:127px"></i></div></div></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:18px">
+            <h3>CVR 개선</h3>
+            <p class="lead">또한 NPay 구매여정 기준으로도 모든 주요 광고상품의 구매전환율 개선이 확인됨.</p>
+            <p class="definition-copy">기존 CMS에서 제공하지 않는 일부 전환 성과는 별도 트래킹 기준으로 확인했으며, 아래 수치는 일반 전환 CVR이 아니라 NPay 구매자 기준 유저저니에서 확인 가능한 채널 도달 모수 대비 구매자 비율임.</p>
+            <div class="lift-grid" style="margin-top:18px">
+              <div class="lift-card"><h4>파워링크</h4><div class="lift-bars"><div class="bar-col"><i class="base" style="height:112px"></i></div><div class="bar-col" style="--label-bottom:143px"><em class="lift-label">+22%</em><i class="after" style="height:137px"></i></div></div></div>
+              <div class="lift-card"><h4>쇼핑검색</h4><div class="lift-bars"><div class="bar-col"><i class="base" style="height:112px"></i></div><div class="bar-col" style="--label-bottom:136px"><em class="lift-label">+16%</em><i class="after" style="height:130px"></i></div></div></div>
+              <div class="lift-card"><h4 class="internal">브랜드검색</h4><div class="lift-bars"><div class="bar-col"><i class="base" style="height:112px"></i></div><div class="bar-col" style="--label-bottom:129px"><em class="lift-label">+10%</em><i class="after internal" style="height:123px"></i></div></div></div>
+              <div class="lift-card"><h4>성과형DA(GFA)</h4><div class="lift-bars"><div class="bar-col"><i class="base" style="height:112px"></i></div><div class="bar-col" style="--label-bottom:128px"><em class="lift-label">+9%</em><i class="after" style="height:122px"></i></div></div></div>
+              <div class="lift-card"><h4 class="internal">보장형DA</h4><div class="lift-bars"><div class="bar-col"><i class="base" style="height:112px"></i></div><div class="bar-col" style="--label-bottom:136px"><em class="lift-label">+16%</em><i class="after internal" style="height:130px"></i></div></div></div>
+            </div>
+            <div class="definition-note">정의: 접점 도달·반응 유저 중 구매 연결 비율을 채널 단위로 집계한 접점도달 중 전환율</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="purchase">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 3</span><h2>네이버쇼핑스토어 구매자 성장</h2></div>
+          <div class="part-headline">TVC 기간에는 전월 대비 네이버쇼핑스토어 구매자가 <strong>약 55% 증가</strong>했으며, 증가분의 대부분이 <strong>신규 구매자</strong>에서 발생함.<br>기구매 고객도 증가했지만 증가율은 신규보다 낮아, 이번 캠페인은 리텐션보다 신규 고객 확보에 더 크게 작동한 것으로 볼 수 있음.</div>
+          <p class="lead">이번 감탄브라 TVC 패키지의 주요 랜딩인 외부몰 직접 운영 데이터는 본 분석 범위에서 제외함.</p>
+          <div class="card purchase-visual">
+            <div class="buyer-chart">
+              <h3>구매자 규모 변화</h3>
+              <div class="buyer-bars">
+                <div class="buyer-bar" style="height:112px"></div>
+                <div class="buyer-bar after" style="height:173px"><em>+54.7%</em></div>
+              </div>
+              <div class="bar-caption"><span>TVC 전</span><span>TVC 중</span></div>
+            </div>
+            <div class="purchase-pool">
+              <svg class="people-mark" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+                <circle class="pool-bg" cx="120" cy="120" r="112"></circle>
+                <g class="pool-people">
+                  <use href="#user-pool-person" x="75" y="54" width="30" height="32"></use>
+                  <use href="#user-pool-person" x="105" y="54" width="30" height="32"></use>
+                  <use href="#user-pool-person" x="135" y="54" width="30" height="32"></use>
+                  <use href="#user-pool-person" x="56" y="82" width="32" height="34"></use>
+                  <use href="#user-pool-person" x="88" y="82" width="32" height="34"></use>
+                  <use href="#user-pool-person" x="120" y="82" width="32" height="34"></use>
+                  <use href="#user-pool-person" x="152" y="82" width="32" height="34"></use>
+                  <use href="#user-pool-person" x="39" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="71" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="103" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="135" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="167" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="47" y="146" width="38" height="40"></use>
+                  <use href="#user-pool-person" x="83" y="146" width="38" height="40"></use>
+                  <use href="#user-pool-person" x="119" y="146" width="38" height="40"></use>
+                  <use href="#user-pool-person" x="155" y="146" width="38" height="40"></use>
+                </g>
+              </svg>
+              <span>구매자 증가분이<br>신규 유저 풀 확대로 연결됨</span>
+            </div>
+            <div class="buyer-share">
+              <div class="increment-visual">
+                <h4>증가분 중 신규 구매자</h4>
+                <div class="increment-bar">
+                  <span class="new" style="width:92%">92%</span>
+                  <span class="repeat" style="width:8%"></span>
+                </div>
+                 <p class="definition-copy" style="margin-bottom:0">구매자 수 증가는 단순 재구매 확대보다 신규 구매자 유입에서 더 크게 발생한 것으로 확인됨.</p>
+              </div>
+              <p class="lead">네이버 내 검색 관심 증가와 광고 반응 개선이 신규 구매자 유입으로 연결되는 흐름으로 해석됨.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="journey">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 4</span><h2>NPay 구매여정에서 본 DA와 SA 역할</h2></div>
+          <div class="part-headline">DA는 더 큰 볼륨으로 <strong>신규 잠재 고객을 넓히는 마중물 역할</strong>을, SA는 이미 형성된 관심을 <strong>구매 직전 단계</strong>에서 효율적으로 흡수하는 역할을 수행한 것으로 확인됨.</div>
+          <div class="flow">
+            <div class="flow-step"><b>TVC 기간</b><span>브랜드·모델·소재 관심이 함께 확대됨</span></div>
+            <div class="flow-step"><b>DA 접점</b><span>성과형/보장형 노출을 기반으로 여정 초반 도달이 확대됨</span></div>
+            <div class="flow-step"><b>검색 광고</b><span>확대된 브랜드·소재·모델 검색 수요를 흡수함</span></div>
+            <div class="flow-step"><b>NPay 구매</b><span>구매자 +80%와 도달당 전환율 전 채널 상승이 함께 확인됨</span></div>
+          </div>
+          <div class="journey-visual">
+            <h3>네이버 내 대표적인 져니 패턴</h3>
+            <div class="journey-map">
+              <svg class="route-line" viewBox="0 0 900 240" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M20,150 C170,40 290,210 430,122 S650,58 860,126" fill="none" stroke="#b8c4d3" stroke-width="2" stroke-dasharray="7 7"/>
+              </svg>
+              <div class="journey-stage">
+                <div class="journey-stage-title">디스플레이 광고 접점</div>
+                <div class="journey-bubbles">
+                  <div class="bubble da large" style="left:0;top:92px"><span>보장형DA<br>노출</span><small>7.27일</small></div>
+                  <div class="bubble da" style="left:172px;top:18px"><span>성과형DA<br>노출</span><small>6.69일</small></div>
+                  <div class="bubble da mid" style="left:162px;top:206px"><span>보장형DA<br>클릭</span><small>5.13일</small></div>
+                  <div class="bubble da mid" style="left:292px;top:126px"><span>성과형DA<br>클릭</span><small>3.86일</small></div>
+                </div>
+              </div>
+              <div class="journey-stage">
+                <div class="journey-stage-title">검색/탐색 접점</div>
+                <div class="journey-bubbles">
+                  <div class="bubble sa mid" style="left:18px;top:44px"><span>브랜드검색<br>클릭</span><small>1.94일</small></div>
+                  <div class="bubble sa" style="left:112px;top:142px"><span>파워링크<br>클릭</span><small>1.92일</small></div>
+                  <div class="bubble sa" style="left:170px;top:48px"><span>쇼핑검색<br>광고클릭</span><small>1.92일</small></div>
+                </div>
+              </div>
+              <div class="purchase-stage">
+                <div>
+                  <svg class="people-mark" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+                    <circle class="pool-bg" cx="120" cy="120" r="112"></circle>
+                    <g class="pool-people">
+                      <use href="#user-pool-person" x="75" y="54" width="30" height="32"></use>
+                      <use href="#user-pool-person" x="105" y="54" width="30" height="32"></use>
+                      <use href="#user-pool-person" x="135" y="54" width="30" height="32"></use>
+                      <use href="#user-pool-person" x="56" y="82" width="32" height="34"></use>
+                      <use href="#user-pool-person" x="88" y="82" width="32" height="34"></use>
+                      <use href="#user-pool-person" x="120" y="82" width="32" height="34"></use>
+                      <use href="#user-pool-person" x="152" y="82" width="32" height="34"></use>
+                      <use href="#user-pool-person" x="39" y="112" width="34" height="36"></use>
+                      <use href="#user-pool-person" x="71" y="112" width="34" height="36"></use>
+                      <use href="#user-pool-person" x="103" y="112" width="34" height="36"></use>
+                      <use href="#user-pool-person" x="135" y="112" width="34" height="36"></use>
+                      <use href="#user-pool-person" x="167" y="112" width="34" height="36"></use>
+                      <use href="#user-pool-person" x="47" y="146" width="38" height="40"></use>
+                      <use href="#user-pool-person" x="83" y="146" width="38" height="40"></use>
+                      <use href="#user-pool-person" x="119" y="146" width="38" height="40"></use>
+                      <use href="#user-pool-person" x="155" y="146" width="38" height="40"></use>
+                    </g>
+                  </svg>
+                  <b>구매 전환<br>리드타임</b>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grid-2" style="margin-top:18px">
+            <div class="card">
+              <h3>디스플레이 광고(DA)</h3>
+              <p class="lead">DA는 여정 초반의 인지·도달을 만들고, 이후 검색·구매로 이어질 신규 잠재 고객 모수를 확대하는 역할을 수행함. 따라서 직접 클릭 전환뿐 아니라 검색 전환으로 연결되는 흐름까지 함께 확인할 필요가 있음.</p>
+              <div class="metric-strip">
+                <div class="strip-card"><span>리드타임</span><b>-3.9%</b><small>DA 평균</small></div>
+                <div class="strip-card"><span>프리퀀시</span><b>+5.9%</b><small>DA 평균</small></div>
+                <div class="strip-card"><span>역할</span><b>Upper</b><small>신규모수 확대 마중물</small></div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>검색 광고(SA)</h3>
+              <p class="lead">SA는 구매 직전의 의도 확정 접점으로 작동함. 평균 리드타임이 소폭 감소하고 프리퀀시도 줄어, 이미 형성된 관심을 구매 직전 단계에서 효율적으로 흡수한 것으로 볼 수 있음.</p>
+              <div class="metric-strip">
+                <div class="strip-card"><span>리드타임</span><b>-1.5%</b><small>SA 평균</small></div>
+                <div class="strip-card"><span>프리퀀시</span><b>-4.9%</b><small>SA 평균</small></div>
+                <div class="strip-card"><span>역할</span><b>Lower</b><small>구매 의도 확정</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="overlap">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 5</span><h2>업종 고려 고객 내 브랜드 접점 확대</h2></div>
+          <div class="part-headline">광고 노출 유저 중 신규 유저 비중이 확대되며, TVC 기간 중 네이버 내 기존 관심층 외 <strong>신규 잠재 고객 도달</strong>도 함께 증가함. 동시에 감탄브라는 업종 내 비교·탐색 고객군과의 <strong>공통 접점</strong>이 노출과 클릭 양쪽에서 늘어나, 업종 고려군 안에서 함께 검토되는 기회가 확대됨.</div>
+          <div class="card new-user-visual" style="margin-top:18px">
+            <div>
+              <h3>TVC 중 신규 노출 유저 비중</h3>
+              <p class="lead">광고주 노출 유저 중 신규 유저 비중은 TVC 전 22.74%에서 TVC 중 27.85%로 확대됨.</p>
+              <div class="reach-expansion">
+                <div class="reach-circle c3"></div>
+                <div class="reach-circle c2"></div>
+                <div class="reach-circle c1"></div>
+                <div class="reach-core">신규<br>도달</div>
+              </div>
+            </div>
+            <div class="card kpi green" style="box-shadow:none">
+              <div class="lab">광고주 신규 노출 유저 비중</div>
+              <div class="val compact"><span class="prev">22.74%</span><span class="arrow">→</span><span class="current">27.85%</span></div>
+              <div class="delta">+5.11%p / +22.5%</div>
+              <div class="desc">TVC 전 대비 TVC 중 신규 노출 유저 비중 변화</div>
+               <p class="lead" style="margin-top:14px">TVC 기간에는 기존 관심층 외 신규 잠재 고객 도달이 확대되었고, 이 모수는 이후 리타겟팅·리인게이지먼트 기반으로 활용 가능함.</p>
+            </div>
+          </div>
+          <div class="overlap-summary" style="margin-top:18px">
+            <div class="overlap-card">
+              <h3>노출 기준 업종 고려 고객 접점</h3>
+              <div class="overlap-metrics">
+                <div><span>노출 교집합</span><b>+89%</b><small>TVC 전 대비 증가</small></div>
+                <div><span>업종 관심 고객군과의 접점 유사도</span><b>+66%</b><small>0.205 → 0.340</small></div>
+              </div>
+            </div>
+            <div class="overlap-card">
+              <h3>클릭 기준 업종 고려 고객 접점</h3>
+              <div class="overlap-metrics">
+                <div><span>클릭 교집합</span><b>+78%</b><small>TVC 전 대비 증가</small></div>
+                <div><span>업종 관심 고객군과의 접점 유사도</span><b>+23%</b><small>0.049 → 0.060</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:18px">
+            <h3>경쟁 관심군 접점 및 통계적 유사도 변화</h3>
+            <table>
+              <thead><tr><th>기준</th><th>지표</th><th>TVC 전</th><th>TVC 중</th><th>변화</th><th>광고주 관점 해석</th></tr></thead>
+              <tbody>
+                <tr><td>노출</td><td>교집합</td><td>Base</td><td><strong>+89%</strong></td><td>증가</td><td>경쟁사 관심 고객군과 감탄브라가 함께 노출되는 접점이 확대되며, 업종 내 고객의 고려 단계에서 브랜드가 더 자주 등장할 수 있는 기반이 커짐.</td></tr>
+                <tr><td>노출</td><td>경쟁사와의 통계적 유사도</td><td>0.205</td><td><strong>0.340</strong></td><td><strong class="plain-strong">+66%</strong></td><td>단순히 노출 규모만 커진 것이 아니라 경쟁사 관심군과 공유하는 접점 비중도 높아져, TVC 이후 브랜드가 업종 고려군 안에서 더 선명하게 포착됨.</td></tr>
+                <tr><td>클릭</td><td>교집합</td><td>Base</td><td><strong>+78%</strong></td><td>증가</td><td>실제 광고에 반응한 고객 기준에서도 경쟁 관심군과의 접점이 늘어남. 감탄브라 반응 고객과 경쟁사 반응 고객의 연결 지점이 함께 확대되며, 비교·탐색 맥락에서 브랜드 검토 기회가 증가함.</td></tr>
+                <tr><td>클릭</td><td>경쟁사와의 통계적 유사도</td><td>0.049</td><td><strong>0.060</strong></td><td><strong class="plain-strong">+23%</strong></td><td>클릭 반응 고객 안에서도 공유 비중이 상승해, TVC 이후 감탄브라가 업종 내 관심 행동과 더 가까운 위치에서 함께 검토되는 흐름 확인됨.</td></tr>
+              </tbody>
+            </table>
+            <small class="small-note">Jaccard 유사도: 두 집합 간 공통 요소 비율을 전체 요소 대비 얼마나 공유하는지 측정하는 유사도 지표임.</small>
+          </div>
+        </div>
+      </section>
+
+      <section id="gam">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 6</span><h2>커스텀 타겟팅 시사점</h2></div>
+          <div class="part-headline">네이버에서 확보한 TVC 반응·탐색 고객 기반 커스텀 세그먼트는 기존 핵심 고객군보다 <strong>넓은 신규 확장 모수</strong>에 가까운 성격을 보임. 단기 효율은 기존 대조군이 우세했지만, 커스텀 타겟팅은 TVC 기간 네이버에서 포착된 신규 잠재 고객을 발굴하고 향후 브랜드 성장을 위한 <strong>확장 가능성</strong>을 확인한 실험으로 볼 수 있음.</div>
+          <p class="lead">기존 대조군은 감탄브라 핵심 고객에 더 가까운 모수로 해석되며, 커스텀 타겟팅은 관심은 있으나 상품 관련성이 상대적으로 넓게 퍼진 모수로 확인됨. 확장 투자 수준은 광고주 성장 목표에 맞춰 조정하되, 향후 네이버에서 포착한 반응 고객에 속옷·체형·패션 등 상품 인접 관심사를 더 강하게 반영하는 실험 고도화가 권장됨.</p>
+          <div class="gam-grid">
+            <div class="card chart-box">
+              <div class="chart-head">
+                <div><h3>일별 CTR/CPC 추이</h3></div>
+                <div class="legend"><span><i class="dot" style="background:#6f9cc9"></i>문화예술</span><span><i class="dot" style="background:#ffb36b"></i>운동</span><span><i class="dot" style="background:#f47f86"></i>커스텀</span></div>
+              </div>
+              <canvas id="gamCtrTrend" width="560" height="380" aria-label="커스텀 타겟팅 CTR CPC 추이 차트"></canvas>
+            </div>
+            <div class="card">
+              <h3>타겟팅 성과 요약</h3>
+              <p class="lead">문화예술·운동 타겟은 기존 운영을 통해 검증된 핵심 고객군에 가까워 CTR이 안정적으로 나타남. 반면 커스텀 세그먼트는 단기 효율은 낮았지만, TVC 기간 중 새롭게 형성된 관심 고객을 더 넓게 포착하는 확장 모수로 해석 가능함.</p>
+              <div class="perf-cards">
+                <div class="perf-card"><b>문화예술_4059</b><strong>0.992%</strong><small>CTR / CPC 1,238원</small></div>
+                <div class="perf-card"><b>운동_2560</b><strong>0.974%</strong><small>CTR / CPC 1,150원</small></div>
+                <div class="perf-card"><b>커스텀_3059</b><strong>0.700%</strong><small>CTR / CPC 1,210원</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:18px">
+            <h3>프로파일링 해석</h3>
+            <p class="lead">세 집단 모두 40대 전후 기혼 여성 중심이라는 기본 고객상은 유사했지만, 실험군은 자녀·양육 관심이 강했고 대조군은 속옷·체형·패션 등 상품 인접 신호가 더 뚜렷한 양상을 보임.</p>
+            <div class="common-profile">
+              <div><b>기본 고객상</b><span>세 집단 모두 100% 여성, 40대 전후 기혼 여성 중심으로 나타남.</span></div>
+              <div><b>노출 모수 품질</b><span>노출 단계는 모두 HighClicker + LightConverter 성향. 클릭은 잘하지만 전환은 약한 유사한 출발선을 보임.</span></div>
+              <div><b>클릭 모수 전환력</b><span>클릭 모수는 모두 HeavyConverter STRONG. 클릭 이후 전환력 자체는 문제로 보기 어려운 구조임.</span></div>
+              <div><b>운영 환경</b><span>모바일 중심. 시간대보다 콘텍스트·관심사 타겟팅 영향이 더 큰 환경으로 해석됨.</span></div>
+            </div>
+            <table>
+              <thead><tr><th>구분</th><th>노출 단계 신호</th><th>클릭 단계 신호</th><th>해석</th></tr></thead>
+              <tbody>
+                <tr><td><b>실험군</b><br><span class="muted">커스텀 세그먼트</span></td><td>자녀·양육 관심사가 강하게 포착됨</td><td>워킹맘/양육 맥락 유지됨</td><td>TVC 기간 네이버에서 포착한 신규 관심 고객을 넓게 담은 확장 모수로 해석됨. 다음 실험에서는 상품 인접 신호 조합 강화 시 효율 개선 여지 있음.</td></tr>
+                <tr><td><b>대조군 A</b><br><span class="muted">문화예술</span></td><td>40대 여성, 속옷 검색 신호 확인됨</td><td>자녀 결혼·건강·쇼핑 맥락 확인됨</td><td>상단 모수에서 이미 상품 인접 관심사가 일부 포착됨.</td></tr>
+                <tr><td><b>대조군 B</b><br><span class="muted">운동</span></td><td>초등 자녀 엄마·클릭 성향 확인됨</td><td>요가·비치웨어·빅사이즈·산후조리 맥락 확인됨</td><td>클릭자에서 본인 체형·패션·속옷 인접 신호 강세를 보임.</td></tr>
+              </tbody>
+            </table>
+            <p class="lead" style="margin:16px 0 0">커스텀 타겟팅은 단기 효율만으로 판단하기보다, TVC 기간 네이버에서 포착된 신규 잠재 고객을 이후 리타겟팅·리인게이지먼트 자산으로 확장하는 장치로 활용 가능함. 향후에는 브랜드 키워드 검색자뿐 아니라 속옷·체형·패션·소재·시즌성 키워드처럼 상품 인접 관심사를 더 강하게 반영하는 모수 설계가 권장됨.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="recommendation">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">RECOMMENDATION</span><h2>TVC 기간 네이버 운영 전략</h2></div>
+          <div class="card">
+            <p class="lead">브랜드 인지 확산이 발생하는 TVC 기간에는 증가하는 관심 수요를 흡수하는 전략이 필요함. TVC 기간 동안 네이버에서는 검색 관심 확대, 광고 반응 증가, 신규 구매자 유입, 업종 고려 고객 접점 확대가 함께 확인됨. 따라서 TVC와 네이버 광고상품을 병행 운영하고, 확보된 고객을 리타겟팅·커스텀 타겟팅으로 연결하는 구조를 통해 브랜드 고객을 확장해 나가는 것을 권장함.</p>
+            <div class="recommendation-grid">
+              <div class="recommendation-card">
+                <span class="num">1</span>
+                <b>검색 수요 흡수</b>
+                <p>TVC 기간 증가하는 브랜드·소재·모델 검색 수요를 파워링크, 쇼핑검색, 브랜드검색으로 즉시 흡수하는 운영이 필요함.</p>
+              </div>
+              <div class="recommendation-card">
+                <span class="num">2</span>
+                <b>DA로 신규 잠재 고객 확보</b>
+                <p>성과형DA와 보장형DA를 통해 여정 초반 신규 고객 도달과 브랜드 접점을 함께 확대하는 운영이 필요함.</p>
+              </div>
+              <div class="recommendation-card">
+                <span class="num">3</span>
+                <b>구매 직전 SA 강화</b>
+                <p>검색광고를 통해 형성된 관심을 구매 직전 단계의 전환으로 연결하는 운영이 필요함.</p>
+              </div>
+              <div class="recommendation-card">
+                <span class="num">4</span>
+                <b>리타겟팅·커스텀 타겟팅 확장</b>
+                <p>TVC 기간 네이버에서 포착한 반응 고객은 이후 리타겟팅, 리인게이지먼트, 커스텀 세그먼트로 재활용 가능함.</p>
+              </div>
+            </div>
+          </div>
+          <div class="report-endcap" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        TVC x NAVER Cross Campaign Report
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const REPORT_YEAR = '2026';
+    const REPORT_ACCOUNT_KEY = 'gamtan';
+    const REPORT_PASSWORD_CHECKSUM = 3447145593;
+    const REPORT_ACCESS_STORAGE_KEY = `tvc-report-access-${REPORT_YEAR}-${REPORT_ACCOUNT_KEY}`;
+    function passwordChecksum(value) {
+      let hash = 2166136261;
+      const bytes = new TextEncoder().encode(value);
+      bytes.forEach(byte => {
+        hash ^= byte;
+        hash = Math.imul(hash, 16777619) >>> 0;
+      });
+      return hash >>> 0;
+    }
+    function unlockReport() {
+      document.body.classList.remove('locked');
+      document.body.classList.add('unlocked');
+      document.getElementById('passwordGate')?.setAttribute('hidden', '');
+      window.setTimeout(() => {
+        if (typeof updateActiveNav === 'function') updateActiveNav();
+      }, 0);
+    }
+    function setupPasswordGate() {
+      const form = document.getElementById('passwordForm');
+      const input = document.getElementById('reportPassword');
+      const error = document.getElementById('passwordError');
+      if (sessionStorage.getItem(REPORT_ACCESS_STORAGE_KEY) === 'unlocked') {
+        unlockReport();
+        return;
+      }
+      input?.focus();
+      form?.addEventListener('submit', event => {
+        event.preventDefault();
+        const value = input.value.trim();
+        if (passwordChecksum(value) === REPORT_PASSWORD_CHECKSUM) {
+          sessionStorage.setItem(REPORT_ACCESS_STORAGE_KEY, 'unlocked');
+          input.value = '';
+          if (error) error.textContent = '';
+          unlockReport();
+        } else {
+          if (error) error.textContent = '비밀번호가 일치하지 않음.';
+          input.select();
+        }
+      });
+    }
+    setupPasswordGate();
+    const trendData = {"dates":["2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-20","2026-04-21","2026-04-22","2026-04-23","2026-04-24","2026-04-25","2026-04-26","2026-04-27","2026-04-28","2026-04-29","2026-04-30","2026-05-01","2026-05-02","2026-05-03","2026-05-04","2026-05-05","2026-05-06","2026-05-07","2026-05-08","2026-05-09","2026-05-10","2026-05-11","2026-05-12","2026-05-13","2026-05-14","2026-05-15","2026-05-16","2026-05-17","2026-05-18","2026-05-19","2026-05-20","2026-05-21","2026-05-22","2026-05-23","2026-05-24","2026-05-25","2026-05-26","2026-05-27","2026-05-28","2026-05-29","2026-05-30","2026-05-31","2026-06-01","2026-06-02","2026-06-03","2026-06-04","2026-06-05","2026-06-06","2026-06-07","2026-06-08","2026-06-09","2026-06-10"],"brand":[90.8,106.5,103.4,80.2,95.8,121.4,85.8,93.0,87.0,80.8,71.9,77.8,118.0,96.1,98.5,116.6,111.9,101.3,107.7,162.6,114.8,104.6,99.1,100.9,92.3,95.3,135.3,95.8,88.3,90.7,75.5,108.0,110.8,135.7,93.6,136.2,112.4,104.4,92.2,119.9,147.6,109.1,132.6,148.3,160.9,161.8,173.8,222.2,189.6,177.0,155.0,134.6,133.2,195.6,167.0,218.2,235.3,180.5,181.7,164.5,176.3,203.8,203.4,162.5,219.7,187.8,148.2,176.0,207.2,155.1,153.6,164.6],"model":[97.7,92.7,95.4,98.6,133.2,113.6,75.9,82.7,97.7,96.3,75.4,74.5,113.2,89.5,95.4,101.8,110.9,93.2,112.3,129.5,113.2,97.3,105.9,84.1,75.4,120.0,139.1,100.4,105.0,105.4,74.5,204.1,216.8,283.1,174.5,225.9,170.4,190.9,178.2,316.3,333.6,206.8,185.0,228.1,267.2,219.5,292.2,333.6,318.1,275.4,280.0,219.5,221.3,634.9,311.3,367.2,350.9,244.5,263.6,279.0,259.1,344.0,297.7,283.1,362.2,300.9,267.7,326.8,513.1,319.0,257.7,297.7],"material":[38.0,38.9,38.0,56.6,56.6,84.9,48.6,45.1,58.4,46.0,38.9,51.3,103.5,88.4,103.5,108.8,113.2,87.6,122.1,225.5,126.5,90.2,97.3,128.2,107.9,158.3,259.1,154.8,146.8,167.2,109.7,208.7,238.8,280.4,171.6,258.3,191.9,208.7,147.7,226.4,275.9,173.4,219.3,236.1,321.1,408.6,479.4,558.1,454.6,383.9,362.6,275.9,254.7,439.6,405.1,619.1,928.7,445.8,450.2,417.5,390.0,558.1,462.6,399.8,614.7,395.3,300.7,347.6,435.1,327.2,311.3,334.3],"function":[139.3,130.5,112.2,96.5,135.0,141.0,90.1,96.8,114.0,101.0,89.1,92.6,117.2,94.4,99.3,95.4,110.5,106.6,102.8,150.8,98.9,93.7,83.8,82.8,69.5,75.8,94.7,72.3,71.2,75.1,67.3,88.0,89.8,113.3,60.0,96.8,95.1,96.5,90.5,130.8,149.1,99.3,97.9,110.5,119.3,113.6,159.2,350.1,176.1,141.7,158.2,110.1,114.0,179.9,161.0,196.1,142.4,133.3,108.4,114.3,144.2,173.3,137.8,136.1,221.3,170.1,228.3,229.0,302.7,206.9,140.7,167.0]};
+    const chartFontFamily = '"NanumSquareNEO","NanumSquareNeo","NanumSquare Neo",Arial,sans-serif';
+    function chartFont(size, weight = 500) {
+      return `${weight} ${size}px ${chartFontFamily}`;
+    }
+    function smoothSeries(values, radius = 1) {
+      return values.map((value, index) => {
+        const slice = values.slice(Math.max(0, index - radius), Math.min(values.length, index + radius + 1)).filter(v => v !== null && v !== undefined);
+        if (!slice.length) return value;
+        return slice.reduce((sum, v) => sum + v, 0) / slice.length;
+      });
+    }
+    function medianSeries(values, radius = 1) {
+      return values.map((value, index) => {
+        const slice = values
+          .slice(Math.max(0, index - radius), Math.min(values.length, index + radius + 1))
+          .filter(v => v !== null && v !== undefined)
+          .sort((a, b) => a - b);
+        if (!slice.length) return value;
+        return slice[Math.floor(slice.length / 2)];
+      });
+    }
+    function trendSmoothSeries(values) {
+      const median = medianSeries(values, 1);
+      const weights = [1, 2, 3, 2, 1];
+      const center = Math.floor(weights.length / 2);
+      return median.map((value, index) => {
+        let total = 0;
+        let weightTotal = 0;
+        weights.forEach((weight, offset) => {
+          const sourceIndex = index + offset - center;
+          const sourceValue = median[sourceIndex];
+          if (sourceIndex >= 0 && sourceIndex < median.length && sourceValue !== null && sourceValue !== undefined) {
+            total += sourceValue * weight;
+            weightTotal += weight;
+          }
+        });
+        return weightTotal ? total / weightTotal : value;
+      });
+    }
+    function drawSmoothPath(ctx, values, x, y) {
+      const pts = values.map((v, i) => ({x: x(i), y: y(v)}));
+      if (!pts.length) return;
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = pts[Math.max(0, i - 1)];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = pts[Math.min(pts.length - 1, i + 2)];
+        const cp1x = p1.x + (p2.x - p0.x) / 6;
+        const cp1y = p1.y + (p2.y - p0.y) / 6;
+        const cp2x = p2.x - (p3.x - p1.x) / 6;
+        const cp2y = p2.y - (p3.y - p1.y) / 6;
+        ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
+      }
+    }
+    function drawSearchTrendCanvasLegacy() {
+      const canvas = document.getElementById('searchTrend');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      const pad = {l:54, r:18, t:22, b:42};
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      const keys = [
+        ['brand', '#03C75A', '브랜드'],
+        ['model', '#1b84e7', '모델'],
+        ['material', '#715cff', '소재'],
+        ['function', '#e0802b', '기능']
+      ];
+      const all = keys.flatMap(([k]) => trendData[k]);
+      const maxY = 1200;
+      const x = i => pad.l + (i / (trendData.dates.length - 1)) * (w - pad.l - pad.r);
+      const y = v => h - pad.b - (v / maxY) * (h - pad.t - pad.b);
+      const tvcStart = trendData.dates.indexOf('2026-05-01');
+      const tvcEnd = trendData.dates.indexOf('2026-05-31');
+      if (tvcStart >= 0 && tvcEnd >= 0) {
+        ctx.fillStyle = 'rgba(3,199,90,.10)';
+        ctx.fillRect(x(tvcStart), pad.t, x(tvcEnd) - x(tvcStart), h - pad.t - pad.b);
+        ctx.fillStyle = '#078f45';
+        ctx.font = chartFont(12, 800);
+        ctx.fillText('TVC 집행 구간', x(tvcStart) + 8, pad.t + 16);
+      }
+      ctx.strokeStyle = '#dfe5ee';
+      ctx.lineWidth = 1;
+      ctx.fillStyle = '#728095';
+      ctx.font = chartFont(11, 500);
+      const step = 200;
+      for (let tick = 0; tick <= maxY; tick += step) {
+        const yy = y(tick);
+        ctx.beginPath(); ctx.moveTo(pad.l, yy); ctx.lineTo(w - pad.r, yy); ctx.stroke();
+        ctx.fillText(String(Math.round(tick)), 8, yy + 4);
+      }
+      ctx.strokeStyle = '#9aa5b3';
+      ctx.beginPath(); ctx.moveTo(pad.l, h - pad.b); ctx.lineTo(w - pad.r, h - pad.b); ctx.stroke();
+      const labelDates = ['2026-03-31','2026-05-01','2026-05-31','2026-06-10'];
+      ctx.fillStyle = '#687386';
+      ctx.font = chartFont(11, 500);
+      labelDates.forEach(d => {
+        const i = trendData.dates.indexOf(d);
+        if (i >= 0) ctx.fillText(d.slice(5), x(i) - 14, h - 16);
+      });
+      keys.forEach(([k, color]) => {
+        const values = smoothSeries(trendData[k], 1);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = k === 'material' ? 3 : 2.4;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        drawSmoothPath(ctx, values, x, y);
+        ctx.stroke();
+      });
+      ctx.fillStyle = '#596578';
+      ctx.font = chartFont(12, 800);
+      ctx.fillText('검색지수', pad.l, 14);
+    }
+    const keywordTrendData = {
+      dates: trendData.dates,
+      gamtan: [89.6,105.4,103.2,79.7,96.0,119.9,85.4,93.3,86.5,80.3,71.7,77.4,117.9,95.8,98.2,117.1,111.9,101.5,107.4,162.7,115.3,105.2,99.4,101.8,93.1,95.7,136.5,96.2,88.6,91.4,76.1,109.1,112.0,136.2,94.5,136.1,112.9,104.6,92.7,120.3,148.9,109.5,133.7,149.7,161.7,163.2,174.6,224.2,191.6,179.1,156.3,136.1,134.7,196.5,167.8,219.6,234.7,182.2,183.5,166.2,177.5,205.2,205.9,164.4,220.8,189.6,149.2,176.5,208.2,156.7,154.9,166.3],
+      ingeon: [38.8,35.6,32.5,50.3,54.5,68.1,45.1,36.7,49.3,38.8,36.7,44.0,102.7,89.1,95.4,113.2,116.3,82.8,118.4,206.5,120.5,95.4,99.6,133.1,116.3,165.6,280.9,168.7,166.6,179.2,119.5,223.2,257.8,293.4,190.7,279.8,210.6,224.3,160.3,236.8,296.6,193.9,241.0,256.8,341.6,453.8,510.4,601.6,496.8,424.4,403.5,312.3,291.3,489.4,444.4,679.1,1039.6,484.2,507.2,454.8,440.2,616.2,516.7,446.5,682.3,428.6,336.4,387.8,476.8,366.8,338.5,384.6],
+      son: [80.3,76.5,84.2,90.0,113.2,130.7,82.3,85.2,99.7,91.9,81.3,80.3,129.7,89.0,112.3,116.1,122.9,93.9,118.1,123.9,120.0,102.6,105.5,83.2,71.6,121.9,142.3,92.9,91.9,97.8,68.7,275.8,300.0,394.9,219.7,286.5,230.3,245.8,221.6,455.9,505.2,275.8,242.0,303.9,327.1,278.7,417.1,431.7,457.8,388.1,380.4,303.9,262.3,1024.9,423.9,500.4,374.6,286.5,351.3,371.7,349.4,479.1,387.1,374.6,440.4,427.8,347.5,417.1,728.8,422.0,326.2,375.5]
+    };
+    const gamCtrData = {"labels":["05/01","05/02","05/03","05/04","05/05","05/06","05/07","05/08","05/09","05/10","05/11","05/12","05/13","05/14","05/15","05/16","05/17","05/18","05/19","05/20","05/21","05/22","05/23","05/24","05/25","05/26","05/27","05/28","05/29","05/30","05/31","06/01","06/02","06/03","06/04","06/05","06/06","06/07","06/08","06/09"],"series":{"culture":{"ctr":[null,null,null,null,null,null,null,null,null,null,null,0.971,0.949,0.978,1.207,1.339,1.305,1.084,0.81,0.736,0.641,0.991,0.883,0.766,1.069,1.044,1.009,0.758,1.128,1.394,0.592,0.942,1.374,1.133,1.013,0.648,1.529,0.891,0.889,0.931],"cpc":[null,null,null,null,null,null,null,null,null,null,null,1238,1284,1265,1271,1195,1290,1151,1293,1182,1259,1303,1211,1388,1191,1201,1232,1301,1082,1192,1300,1174,1136,1298,1157,1024,1087,1210,1253,1158]},"sports":{"ctr":[1.247,0.797,0.863,0.865,0.649,0.855,0.967,1.049,0.85,0.865,0.947,0.695,0.903,0.951,0.862,0.971,1.426,1.365,0.819,0.779,0.81,1.006,0.718,0.904,1.151,1.046,0.674,0.715,1.21,1.28,1.349,1.097,1.196,1.21,0.955,0.703,0.955,0.903,0.786,0.726],"cpc":[1155,1146,1163,1120,1209,1192,1077,1193,978,1222,1013,960,1246,1123,954,1254,1069,1029,1236,1145,1153,1378,1241,1162,1074,1049,1179,1264,1225,1155,1051,1233,1038,1125,1060,1054,1098,1118,1195,1164]},"custom":{"ctr":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0.661,0.471,0.944,0.679,0.839,0.5,0.71,1.079,0.667,0.811,0.713,0.492,null,null,null,null,null,null,null,null,null,null],"cpc":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1350,818,1019,1298,1238,1208,1014,1198,1374,1125,964,944,null,null,null,null,null,null,null,null,null,null]}}};
+    function drawKeywordTrendCanvasLegacy() {
+      const canvas = document.getElementById('keywordTrend');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+      const pad = {l:54, r:18, t:20, b:38};
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, w, h);
+      const keys = [['gamtan','#03C75A'],['ingeon','#715cff'],['son','#1b84e7']];
+      const all = keys.flatMap(([k]) => keywordTrendData[k]);
+      const maxY = 1200;
+      const x = i => pad.l + (i / (keywordTrendData.dates.length - 1)) * (w - pad.l - pad.r);
+      const y = v => h - pad.b - (v / maxY) * (h - pad.t - pad.b);
+      const tvcStart = keywordTrendData.dates.indexOf('2026-05-01');
+      const tvcEnd = keywordTrendData.dates.indexOf('2026-05-31');
+      ctx.fillStyle = 'rgba(3,199,90,.10)';
+      ctx.fillRect(x(tvcStart), pad.t, x(tvcEnd) - x(tvcStart), h - pad.t - pad.b);
+      ctx.fillStyle = '#078f45';
+      ctx.font = chartFont(12, 800);
+      ctx.fillText('TVC 집행 구간', x(tvcStart) + 8, pad.t + 16);
+      ctx.strokeStyle = '#dfe5ee';
+      ctx.fillStyle = '#728095';
+      ctx.font = chartFont(11, 500);
+      for (let tick = 0; tick <= maxY; tick += 200) {
+        const yy = y(tick);
+        ctx.beginPath(); ctx.moveTo(pad.l, yy); ctx.lineTo(w - pad.r, yy); ctx.stroke();
+        ctx.fillText(String(tick), 8, yy + 4);
+      }
+      keys.forEach(([k, color]) => {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = k === 'ingeon' ? 3 : 2.4;
+        const values = smoothSeries(keywordTrendData[k], 1);
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        drawSmoothPath(ctx, values, x, y);
+        ctx.stroke();
+      });
+      ['2026-03-31','2026-05-01','2026-05-31','2026-06-10'].forEach(d => {
+        const i = keywordTrendData.dates.indexOf(d);
+        if (i >= 0) ctx.fillText(d.slice(5), x(i) - 14, h - 14);
+      });
+      ctx.fillStyle = '#596578';
+      ctx.font = chartFont(12, 800);
+      ctx.fillText('검색지수', pad.l, 14);
+    }
+    const SEARCH_TREND_SMOOTHING = true;
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    function svgEl(name, attrs = {}, text = null) {
+      const el = document.createElementNS(SVG_NS, name);
+      Object.entries(attrs).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) el.setAttribute(key, value);
+      });
+      if (text !== null) el.textContent = text;
+      return el;
+    }
+    function smoothPathD(values, x, y) {
+      const pts = values
+        .map((v, i) => (v === null || v === undefined ? null : {x: x(i), y: y(v)}))
+        .filter(Boolean);
+      if (!pts.length) return '';
+      let d = `M ${pts[0].x.toFixed(2)} ${pts[0].y.toFixed(2)}`;
+      for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = pts[Math.max(0, i - 1)];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = pts[Math.min(pts.length - 1, i + 2)];
+        const cp1x = p1.x + (p2.x - p0.x) / 6;
+        const cp1y = p1.y + (p2.y - p0.y) / 6;
+        const cp2x = p2.x - (p3.x - p1.x) / 6;
+        const cp2y = p2.y - (p3.y - p1.y) / 6;
+        d += ` C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}`;
+      }
+      return d;
+    }
+    function niceAxisMax(maxValue) {
+      const padded = Math.max(100, maxValue * 1.08);
+      const candidates = [200, 300, 400, 500, 600, 700, 800, 900, 1000, 1200];
+      return candidates.find(value => value >= padded) || Math.ceil(padded / 200) * 200;
+    }
+    function axisStep(axisMax) {
+      if (axisMax <= 500) return 100;
+      if (axisMax <= 900) return 100;
+      return 200;
+    }
+    function renderSearchSvgChart({targetId, dates, valuesByKey, series, maxY = null}) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      const w = 980;
+      const h = 430;
+      const pad = {l:58, r:24, t:28, b:44};
+      const plotW = w - pad.l - pad.r;
+      const plotH = h - pad.t - pad.b;
+      const chartSeries = series.map(item => ({
+        ...item,
+        values: SEARCH_TREND_SMOOTHING ? trendSmoothSeries(valuesByKey[item.key]) : valuesByKey[item.key]
+      }));
+      const observedMax = Math.max(...chartSeries.flatMap(item => item.values.filter(value => Number.isFinite(value))));
+      const axisMax = maxY || niceAxisMax(observedMax);
+      const tickStep = axisStep(axisMax);
+      const x = i => pad.l + (i / (dates.length - 1)) * plotW;
+      const y = v => pad.t + plotH - (Math.max(0, Math.min(axisMax, v)) / axisMax) * plotH;
+      const svg = svgEl('svg', {
+        viewBox: `0 0 ${w} ${h}`,
+        role: 'img',
+        'aria-label': target.getAttribute('aria-label') || ''
+      });
+
+      svg.appendChild(svgEl('rect', {x: 0, y: 0, width: w, height: h, fill: '#fff'}));
+
+      const tvcStart = dates.indexOf('2026-05-01');
+      const tvcEnd = dates.indexOf('2026-05-31');
+      if (tvcStart >= 0 && tvcEnd >= 0) {
+        svg.appendChild(svgEl('rect', {
+          x: x(tvcStart),
+          y: pad.t,
+          width: Math.max(1, x(tvcEnd) - x(tvcStart)),
+          height: plotH,
+          fill: '#03C75A',
+          opacity: .10
+        }));
+        svg.appendChild(svgEl('text', {
+          x: x(tvcStart) + 10,
+          y: pad.t + 17,
+          fill: '#078f45',
+          'font-size': 12,
+          'font-weight': 800
+        }, 'TVC 집행 구간'));
+      }
+
+      for (let tick = 0; tick <= axisMax; tick += tickStep) {
+        const yy = y(tick);
+        svg.appendChild(svgEl('line', {
+          x1: pad.l,
+          y1: yy,
+          x2: w - pad.r,
+          y2: yy,
+          stroke: '#dfe5ee',
+          'stroke-width': 1
+        }));
+        svg.appendChild(svgEl('text', {
+          x: pad.l - 12,
+          y: yy + 4,
+          fill: '#728095',
+          'font-size': 11,
+          'font-weight': 500,
+          'text-anchor': 'end'
+        }, String(tick)));
+      }
+
+      svg.appendChild(svgEl('line', {
+        x1: pad.l,
+        y1: h - pad.b,
+        x2: w - pad.r,
+        y2: h - pad.b,
+        stroke: '#9aa5b3',
+        'stroke-width': 1
+      }));
+
+      ['2026-03-31','2026-05-01','2026-05-31','2026-06-10'].forEach(date => {
+        const i = dates.indexOf(date);
+        if (i >= 0) {
+          svg.appendChild(svgEl('text', {
+            x: x(i),
+            y: h - 16,
+            fill: '#687386',
+            'font-size': 11,
+            'font-weight': 500,
+            'text-anchor': 'middle'
+          }, date.slice(5)));
+        }
+      });
+
+      chartSeries.forEach(({color, width = 2.4, values}) => {
+        svg.appendChild(svgEl('path', {
+          d: smoothPathD(values, x, y),
+          fill: 'none',
+          stroke: color,
+          'stroke-width': width,
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round'
+        }));
+      });
+
+      svg.appendChild(svgEl('text', {
+        x: pad.l,
+        y: 16,
+        fill: '#596578',
+        'font-size': 12,
+        'font-weight': 800
+      }, '검색지수'));
+
+      target.innerHTML = '';
+      target.appendChild(svg);
+    }
+    function drawSearchTrend() {
+      renderSearchSvgChart({
+        targetId: 'searchTrend',
+        dates: trendData.dates,
+        valuesByKey: trendData,
+        series: [
+          {key: 'brand', color: '#03C75A', width: 2.5},
+          {key: 'model', color: '#1b84e7', width: 2.5},
+          {key: 'material', color: '#715cff', width: 3},
+          {key: 'function', color: '#e0802b', width: 2.5}
+        ]
+      });
+    }
+    function drawKeywordTrend() {
+      renderSearchSvgChart({
+        targetId: 'keywordTrend',
+        dates: keywordTrendData.dates,
+        valuesByKey: keywordTrendData,
+        series: [
+          {key: 'gamtan', color: '#03C75A', width: 2.5},
+          {key: 'ingeon', color: '#715cff', width: 3},
+          {key: 'son', color: '#1b84e7', width: 2.5}
+        ]
+      });
+    }
+    function drawGamCtrTrend() {
+      const canvas = document.getElementById('gamCtrTrend');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+      const pad = {l:58, r:16, t:26, b:34};
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, w, h);
+      const keys = [['culture','#6f9cc9'],['sports','#ffb36b'],['custom','#f47f86']];
+      const x = i => pad.l + (i / (gamCtrData.labels.length - 1)) * (w - pad.l - pad.r);
+      const panels = [
+        {metric:'ctr', label:'CTR', top:pad.t, height:145, max:1.6, step:0.4, suffix:'%'},
+        {metric:'cpc', label:'CPC', top:218, height:120, max:1500, step:300, suffix:''}
+      ];
+      ctx.font = chartFont(11, 500);
+      panels.forEach(panel => {
+        const y = v => panel.top + panel.height - (v / panel.max) * panel.height;
+        ctx.fillStyle = '#596578';
+        ctx.font = chartFont(12, 800);
+        ctx.fillText(panel.label, pad.l, panel.top - 8);
+        ctx.strokeStyle = '#e3e8ef';
+        ctx.fillStyle = '#728095';
+        ctx.font = chartFont(11, 500);
+        for (let tick = 0; tick <= panel.max; tick += panel.step) {
+          const yy = y(tick);
+          ctx.beginPath(); ctx.moveTo(pad.l, yy); ctx.lineTo(w - pad.r, yy); ctx.stroke();
+          const label = panel.metric === 'ctr' ? tick.toFixed(1) + '%' : String(Math.round(tick));
+          ctx.fillText(label, 4, yy + 4);
+        }
+        keys.forEach(([k, color]) => {
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 2.4;
+          ctx.beginPath();
+          let started = false;
+          gamCtrData.series[k][panel.metric].forEach((v, i) => {
+            if (v === null) { started = false; return; }
+            if (!started) { ctx.moveTo(x(i), y(v)); started = true; }
+            else ctx.lineTo(x(i), y(v));
+          });
+          ctx.stroke();
+        });
+      });
+      ctx.fillStyle = '#687386';
+      ctx.font = chartFont(11, 500);
+      gamCtrData.labels.forEach((label, i) => {
+        if (i % 5 === 0 || i === gamCtrData.labels.length - 1) {
+          ctx.fillText(label, x(i) - 12, h - 12);
+        }
+      });
+    }
+    function updateActiveNav() {
+      const links = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+      const sections = links
+        .map(link => document.querySelector(link.getAttribute('href')))
+        .filter(Boolean);
+      const marker = window.scrollY + Math.max(140, window.innerHeight * 0.24);
+      let current = sections[0];
+      sections.forEach(section => {
+        if (section.offsetTop <= marker) current = section;
+      });
+      const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 12;
+      if (nearBottom) current = sections[sections.length - 1];
+      links.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${current.id}`);
+      });
+    }
+
+    function drawAllCharts() {
+      drawSearchTrend();
+      drawKeywordTrend();
+      drawGamCtrTrend();
+    }
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(drawAllCharts);
+    } else {
+      drawAllCharts();
+    }
+    updateActiveNav();
+    window.addEventListener('scroll', updateActiveNav, {passive:true});
+    window.addEventListener('resize', updateActiveNav);
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+      link.addEventListener('click', () => window.setTimeout(updateActiveNav, 120));
+    });
+  </script>
+</body>
+</html>
