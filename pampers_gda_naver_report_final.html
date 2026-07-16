@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>팸퍼스 보장형DA 집행 전·중 성과 비교 리포트</title>
+  <style>
+    /* NanumSquare Neo 웹폰트 로드 (네이버 공식 CDN, 미설치 환경에서도 지정 글씨체가 렌더되도록) */
+    @font-face {
+      font-family:"NanumSquareNEO";
+      font-style:normal;
+      font-weight:300;
+      font-display:swap;
+      src:local("NanumSquareNeoTTF-aLt"), local("NanumSquareNeo Light"), url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.woff") format("woff");
+    }
+    @font-face {
+      font-family:"NanumSquareNEO";
+      font-style:normal;
+      font-weight:400;
+      font-display:swap;
+      src:local("NanumSquareNeoTTF-bRg"), local("NanumSquareNeo Regular"), url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff") format("woff");
+    }
+    @font-face {
+      font-family:"NanumSquareNEO";
+      font-style:normal;
+      font-weight:700;
+      font-display:swap;
+      src:local("NanumSquareNeoTTF-cBd"), local("NanumSquareNeo Bold"), url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff") format("woff");
+    }
+    @font-face {
+      font-family:"NanumSquareNEO";
+      font-style:normal;
+      font-weight:800;
+      font-display:swap;
+      src:local("NanumSquareNeoTTF-dEb"), local("NanumSquareNeo ExtraBold"), url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff") format("woff");
+    }
+    @font-face {
+      font-family:"NanumSquareNEO";
+      font-style:normal;
+      font-weight:900;
+      font-display:swap;
+      src:local("NanumSquareNeoTTF-eHv"), local("NanumSquareNeo Heavy"), url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.woff") format("woff");
+    }
+    :root {
+      --navy:#0b2447;
+      --navy2:#183b65;
+      --green:#03C75A;
+      --ink:#202633;
+      --muted:#697386;
+      --line:#e4e8ef;
+      --soft:#f5f7fb;
+      --card:#ffffff;
+      --blue:#1b84e7;
+      --violet:#715cff;
+      --orange:#e0802b;
+      --shadow:0 16px 42px rgba(12,36,71,.10);
+      --report-font:"NanumSquareNEO","NanumSquareNeo","NanumSquare Neo","Malgun Gothic",sans-serif;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--soft); color:var(--ink); font-family:var(--report-font); line-height:1.58; letter-spacing:0; word-break:keep-all; overflow-wrap:break-word; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+    body.locked { overflow:hidden; background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 58%, #0f6c73 100%); }
+    body.locked .page, body.locked > svg { display:none; }
+    a { color:inherit; text-decoration:none; }
+
+    /* password gate */
+    .password-gate { position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:24px; background:#12345a; }
+    body:not(.locked) .password-gate { display:none; }
+    .password-card { width:min(380px, 100%); min-height:372px; border-radius:18px; padding:38px 30px 30px; background:#fff; box-shadow:0 28px 80px rgba(3,18,38,.28); text-align:center; }
+    .gate-lock { display:block; margin-bottom:12px; font-size:34px; line-height:1; }
+    .password-card h2 { margin:0; color:var(--navy); font-size:20px; line-height:1.35; font-weight:900; }
+    .gate-report-title { display:block; margin-top:8px; color:#2f3a4b; font-size:14px; font-weight:900; }
+    .password-card p { margin:10px 0 22px; color:#647085; font-size:14px; line-height:1.55; }
+    .gate-input-row { display:grid; gap:12px; }
+    .gate-input-row input { width:100%; height:44px; border:1.5px solid var(--green); border-radius:9px; padding:0 14px; font:inherit; color:var(--ink); outline:none; text-align:center; }
+    .gate-input-row input:focus { box-shadow:0 0 0 3px rgba(3,199,90,.13); }
+    .gate-input-row button { width:100%; height:46px; border:0; border-radius:9px; background:#08c95a; color:#fff; font:inherit; font-weight:900; cursor:pointer; }
+    .gate-input-row button:hover { background:#02b653; }
+    .gate-error { min-height:18px; margin:9px 0 0 !important; color:#d53f3f !important; font-size:12px !important; font-weight:800; }
+    .gate-footer { display:block; margin-top:28px; color:#9aa5b8; font-size:11px; line-height:1.5; }
+
+    .page { display:grid; grid-template-columns:236px minmax(0,1fr); min-height:100vh; }
+    .side-nav { position:sticky; top:0; height:100vh; padding:26px 18px; background:#fff; border-right:1px solid var(--line); box-shadow:8px 0 26px rgba(20,37,61,.04); z-index:5; }
+    .brandmark { display:flex; flex-direction:column; gap:4px; margin-bottom:24px; }
+    .brandmark b { font-size:18px; color:var(--navy); }
+    .brandmark span { font-size:12px; color:var(--muted); font-weight:800; }
+    .nav-links { display:flex; flex-direction:column; gap:7px; }
+    .nav-links a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:900; color:#475164; border:1px solid transparent; transition:background .18s ease, color .18s ease, border-color .18s ease; }
+    .nav-links a:hover { color:var(--navy); background:#edf7f2; }
+    .nav-links a.summary-link { font-size:14px; }
+    .nav-links a.active { background:#e8f7ee; color:#078f45; border-color:#bfe8cf; }
+    .nav-index { width:22px; color:#8b96a7; font-size:11px; font-weight:900; }
+    .nav-links a.active .nav-index { color:#078f45; }
+    .nav-note { position:absolute; left:18px; right:18px; bottom:22px; padding:12px; border-radius:8px; background:#f4f8fb; color:#6b7380; font-size:11px; }
+    main { min-width:0; }
+    .hero { color:#fff; background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 58%, #0f6c73 100%); padding:46px 44px 40px; }
+    .wrap { width:min(1180px, calc(100% - 36px)); margin:0 auto; }
+    .eyebrow { color:#8af0b5; font-size:12px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; margin-bottom:12px; }
+    h1 { margin:0; font-size:38px; line-height:1.15; font-weight:900; }
+    .hero-lead { max-width:none; margin:18px 0 0; color:#edf7ff; font-size:14px; line-height:1.7; }
+    .hero-note { margin:10px 0 0; max-width:900px; color:#a9c2dc; font-size:12px; line-height:1.65; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; }
+    .chip { display:inline-flex; align-items:center; border:1px solid rgba(255,255,255,.26); background:rgba(255,255,255,.10); border-radius:999px; padding:7px 12px; color:#fff; font-size:12px; font-weight:900; }
+    .one-message { margin-top:28px; display:grid; grid-template-columns:1fr 400px; gap:18px; align-items:stretch; }
+    .message-box { border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.10); border-radius:12px; padding:20px; }
+    .message-box b { display:block; font-size:15px; color:#a9f4c6; margin-bottom:8px; }
+    .message-box p { margin:0; font-size:20px; line-height:1.5; font-weight:900; }
+    .scope-note { display:block; margin-top:14px; padding:10px 12px; border-radius:8px; background:rgba(255,255,255,.12); color:#eef8ff; font-size:12.5px; line-height:1.6; font-weight:700; }
+    .hero-kpis { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .hero-kpis div { border:1px solid rgba(255,255,255,.18); border-radius:10px; padding:13px; background:rgba(255,255,255,.08); min-width:0; }
+    .hero-kpis span { display:block; font-size:11px; color:#c7dded; font-weight:800; }
+    .hero-kpis strong { display:block; margin-top:5px; color:#fff; font-size:26px; line-height:1.08; font-weight:900; }
+    .hero-kpis em { display:block; margin-top:6px; color:#cfeede; font-size:12.5px; line-height:1.35; font-style:normal; font-weight:800; }
+    section { padding:42px 0; }
+    .sec-head { display:flex; align-items:center; gap:13px; margin-bottom:12px; }
+    .sec-no { display:inline-flex; align-items:center; height:28px; padding:0 10px; border-radius:999px; background:#e9f7ef; color:#078f45; font-size:12px; font-weight:900; }
+    h2 { margin:0; font-size:27px; line-height:1.3; color:#152033; }
+    h3 { margin:0 0 12px; font-size:19px; color:#202633; }
+    .lead { margin:0 0 20px; color:#536071; font-size:15px; }
+    .part-headline { margin:0 0 18px; padding:12px 16px; border:1px solid #cfead9; border-left:4px solid var(--green); border-radius:9px; background:#f1fbf5; color:#143624; font-size:16px; line-height:1.55; font-weight:500; }
+    .part-headline strong { color:#078f45; font-weight:800; }
+    .part-headline.subtle { border:0; background:transparent; padding:0; margin:0 0 14px; color:#3d4c5d; font-weight:500; }
+    .definition-copy { margin:8px 0 16px; color:#7c8796; font-size:12px; line-height:1.6; font-weight:500; }
+    .definition-note { margin-top:14px; color:#8a95a6; font-size:11px; line-height:1.6; text-align:right; }
+    .insight-panel { border:1px solid #dbe4ee; background:#f8fafc; border-radius:10px; padding:18px; height:100%; }
+    .insight-panel h3 { color:#152033; }
+    .insight-panel p { margin:0 0 12px; color:#3d4c5d; font-size:14px; line-height:1.65; }
+    .insight-highlight { margin-top:12px; padding:0; background:transparent; border:0; color:#213347; font-weight:700; line-height:1.7; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:22px; }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .kpi { min-height:132px; }
+    .kpi .lab { color:#697386; font-size:12px; font-weight:900; }
+    .kpi .val { margin-top:7px; font-size:31px; line-height:1.05; font-weight:900; color:var(--navy); }
+    .kpi .desc { margin-top:8px; color:#5f6b7b; font-size:13px; }
+    .kpi.green .val { color:#03a64f; } .kpi.blue .val { color:var(--blue); } .kpi.violet .val { color:var(--violet); } .kpi.orange .val { color:var(--orange); }
+    .summary-copy { font-size:16px; color:#344052; line-height:1.8; }
+    .summary-copy p { margin:0 0 12px; }
+    .summary-copy strong { color:#078f45; font-weight:800; }
+    .summary-list { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px; }
+    .summary-item { border:1px solid var(--line); background:#fff; border-radius:9px; padding:16px; }
+    .summary-item b { display:block; margin-bottom:5px; color:#078f45; }
+    .summary-item span { color:#5b6573; font-size:14px; line-height:1.65; }
+    .small-note { display:block; margin-top:8px; color:#7a8595; font-size:11px; line-height:1.55; }
+    .chart-box { padding:18px; }
+    .chart-head { display:flex; justify-content:space-between; gap:16px; align-items:flex-end; margin-bottom:10px; }
+    .chart-head p { margin:0; color:#6d7787; font-size:12px; }
+    canvas { width:100%; max-width:100%; height:330px; display:block; }
+    .legend { display:flex; flex-wrap:wrap; gap:10px; align-items:center; font-size:12px; color:#5b6472; font-weight:800; }
+    .dot { width:9px; height:9px; border-radius:50%; display:inline-block; margin-right:4px; }
+    .dot.sq { border-radius:2px; }
+    .metric-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px; }
+    .metric-strip.four { grid-template-columns:repeat(4,1fr); }
+    .strip-card { background:#fff; border:1px solid var(--line); border-radius:9px; padding:15px; }
+    .strip-card span { display:block; color:#667181; font-size:12px; font-weight:900; }
+    .strip-card b { display:block; margin-top:6px; font-size:24px; color:#0b2447; }
+    .strip-card small { color:#748094; }
+    .strip-card.up b { color:#03a64f; }
+    .reach-flow { display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; margin-bottom:16px; }
+    .reach-arrow { color:#6a5cf0; font-size:26px; font-weight:900; text-align:center; }
+    .callout { border-left:0; background:transparent; padding:0; border-radius:0; color:#4a5666; line-height:1.7; }
+    .callout.blue { color:#4a5666; }
+    .callout.warn { color:#4a5666; }
+    .cell-note { display:block; margin-top:4px; font-weight:400; color:#8a95a6; font-size:11px; line-height:1.45; }
+    table { width:100%; border-collapse:collapse; background:#fff; overflow:hidden; border-radius:9px; }
+    th, td { padding:13px 14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; font-size:13px; }
+    th { background:#0d2a55; color:#fff; font-weight:900; }
+    tr:last-child td { border-bottom:0; }
+    td strong { color:#006fe6; font-weight:900; }
+    td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; }
+    .search-row { display:grid; grid-template-columns:minmax(0,2fr) minmax(280px,.82fr); gap:18px; align-items:stretch; }
+    .segbar { display:flex; height:50px; border-radius:4px; overflow:hidden; color:#fff; font-weight:900; text-align:center; }
+    .segbar span { display:flex; align-items:center; justify-content:center; font-size:13px; }
+    .segbar .new { background:linear-gradient(90deg,#1f86e8,#7162ff); }
+    .segbar .old { background:#dce7f6; color:#405168; }
+    .seg-label { display:flex; justify-content:space-between; margin:6px 2px 0; color:#6b7686; font-size:12px; font-weight:800; }
+    .newpool { display:grid; grid-template-columns:1fr 220px; gap:18px; align-items:center; }
+    .purchase-visual { display:grid; grid-template-columns:.9fr .58fr 1fr; gap:18px; align-items:stretch; position:relative; overflow:hidden; }
+    .buyer-chart { min-height:300px; display:flex; flex-direction:column; justify-content:space-between; }
+    .buyer-bars { height:205px; display:flex; align-items:end; justify-content:center; gap:52px; border-bottom:1px solid #dfe4ec; position:relative; }
+    .buyer-bar { width:64px; background:#bcbcbc; border-radius:4px 4px 0 0; position:relative; }
+    .buyer-bar.after { background:linear-gradient(180deg,#7754ff,#2678f0); }
+    .buyer-bar em { position:absolute; left:50%; transform:translateX(-50%); top:-34px; color:#6554ff; font-style:normal; font-weight:900; font-size:24px; white-space:nowrap; }
+    .bar-caption { display:flex; justify-content:center; gap:82px; color:#808a98; font-weight:900; margin-top:10px; }
+    .purchase-pool { position:relative; display:grid; place-items:center; align-content:center; min-height:300px; }
+    .purchase-pool::before { content:""; position:absolute; left:-30px; top:118px; width:66px; border-top:2px dashed #aab8c8; transform:rotate(-12deg); }
+    .purchase-pool .people-mark { width:200px; height:200px; }
+    .purchase-pool span { margin-top:12px; color:#4d5d70; font-size:13px; font-weight:800; text-align:center; }
+    .increment-visual { margin-top:14px; border:1px solid #d8e2ee; background:#f7faff; border-radius:10px; padding:15px; }
+    .increment-visual h4 { margin:0 0 10px; color:#24364a; font-size:15px; }
+    .increment-bar { display:flex; height:34px; overflow:hidden; border-radius:7px; border:1px solid #c5d2e2; background:#fff; }
+    .increment-bar span { display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; }
+    .increment-bar .new { background:linear-gradient(90deg,#1f86e8,#7162ff); color:#fff; }
+    .increment-bar .repeat { background:#dbe4ef; color:#536274; }
+    .buyer-share { display:grid; align-content:center; gap:16px; }
+    .new-buyer-number { border:1px solid #d8e2ee; background:#f5f8fc; border-radius:9px; padding:16px 20px; }
+    .new-buyer-number span { display:block; color:#607086; font-size:12px; font-weight:900; }
+    .new-buyer-number b { display:block; margin-top:5px; color:#0b2447; font-size:42px; line-height:1; }
+    .people-mark { display:block; width:200px; height:200px; margin:auto; overflow:visible; }
+    .pool-bg { fill:#fff; stroke:#e3e8ef; stroke-width:1.2; filter:drop-shadow(0 12px 22px rgba(53,80,120,.12)); }
+    .pool-people use { color:#9eb9e8; fill:currentColor; stroke:#fff; stroke-width:2; stroke-linejoin:round; paint-order:stroke fill; }
+    .pool-people use.hl { color:#5b8ff0; }
+    .pool-cap { text-align:center; margin-top:8px; color:#607086; font-size:12px; font-weight:900; }
+    .flow { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; align-items:stretch; }
+    .flow-step { position:relative; background:#fff; border:1px solid var(--line); border-radius:10px; padding:18px; min-height:120px; }
+    .flow-step:not(:last-child)::after { content:""; position:absolute; right:-16px; top:50%; width:22px; height:2px; background:#9fb2c7; }
+    .flow-step b { display:block; color:#0f2240; margin-bottom:8px; }
+    .flow-step span { color:#5f6b7a; font-size:13px; }
+    .journey-visual { margin-top:18px; padding:26px 20px; border:1px solid var(--line); border-radius:10px; background:#fff; box-shadow:var(--shadow); }
+    .journey-visual h3 { text-align:center; margin-bottom:22px; }
+    .journey-sub { text-align:center; color:#6d7787; font-size:12px; margin:-14px 0 22px; }
+    .journey-map { position:relative; display:grid; grid-template-columns:1.1fr .9fr .72fr; gap:20px; align-items:center; min-height:400px; overflow:visible; padding:0 10px; }
+    .route-line { position:absolute; inset:70px 60px 70px 60px; width:calc(100% - 120px); height:250px; pointer-events:none; z-index:0; }
+    .journey-stage { position:relative; min-height:372px; z-index:1; }
+    .journey-stage-title { position:absolute; top:0; left:0; color:#56657a; font-size:13px; font-weight:900; }
+    .purchase-stage { display:grid; place-items:center; min-height:372px; position:relative; z-index:1; }
+    .purchase-stage .people-mark { width:196px; height:196px; }
+    .purchase-stage b { display:block; text-align:center; margin-top:12px; font-size:18px; color:#24364a; }
+    .journey-bubbles { position:relative; min-height:372px; }
+    .bubble { display:grid; place-items:center; border-radius:50%; color:#fff; text-align:center; font-weight:900; line-height:1.25; box-shadow:0 12px 26px rgba(38,74,120,.12); position:relative; flex:0 0 auto; }
+    .bubble small { position:absolute; bottom:-24px; left:50%; transform:translateX(-50%); color:#4e5b69; font-size:12px; font-weight:800; white-space:nowrap; }
+    .bubble.sa { background:linear-gradient(180deg,#ffbd78,#f27a8c); width:96px; height:96px; font-size:13px; position:absolute; }
+    .bubble.da { background:linear-gradient(180deg,#795cff,#6ac5ff); width:120px; height:120px; font-size:16px; position:absolute; }
+    .bubble.mid { width:104px; height:104px; font-size:14px; }
+    .bubble.large { width:148px; height:148px; font-size:18px; }
+    .metric-mini { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:14px 0; }
+    .metric-mini div { background:#f5f7fb; border:1px solid var(--line); border-radius:8px; padding:12px; }
+    .metric-mini span { display:block; color:#748094; font-size:11px; font-weight:900; }
+    .metric-mini b { display:block; margin-top:5px; color:#0b2447; font-size:20px; }
+    .split-cards { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .gender-head { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+    .gender-tag { display:inline-flex; align-items:center; height:26px; padding:0 12px; border-radius:999px; font-size:13px; font-weight:900; color:#fff; }
+    .gender-tag.f { background:#e0568c; } .gender-tag.m { background:#2f7fd6; }
+    .gender-table th.num { text-align:center; }
+    .gender-table th .gender-tag { vertical-align:middle; margin-right:5px; }
+    .lift-table td strong { color:#6554ff; }
+    .lift-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .lift-grid.two { grid-template-columns:repeat(2,1fr); max-width:600px; }
+    .lift-card { background:#fff; border:1px solid var(--line); border-radius:9px; padding:14px 12px 12px; }
+    .lift-card h4 { margin:0 0 12px; text-align:center; color:#fff; background:#1685e8; border-radius:7px; padding:7px; font-size:14px; }
+    .lift-card h4.internal { background:#526b89; }
+    .lift-bars { position:relative; height:214px; display:flex; align-items:flex-end; justify-content:center; gap:16px; border-bottom:1px solid #dde2ea; padding-top:52px; }
+    .lift-bars .col { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; }
+    .lift-badge { position:absolute; top:6px; right:8px; text-align:right; color:#556070; font-size:11px; font-weight:800; line-height:1.3; }
+    .lift-badge b { display:block; color:#6554ff; font-size:16px; margin-top:1px; }
+    .bar-break { position:absolute; left:50%; bottom:52px; transform:translateX(-50%); width:52px; height:16px; pointer-events:none; }
+    .bar-break svg { display:block; width:100%; height:100%; }
+    .lift-metrics { margin-top:12px; text-align:right; color:#5b6673; font-size:12px; font-weight:700; line-height:1.5; }
+    .lift-metrics span { display:block; }
+    .lift-metrics .lm-h { color:#8a95a6; font-size:11px; font-weight:800; margin-bottom:3px; }
+    .lift-metrics b { color:#0b2447; }
+    .lift-bars i { display:block; width:38px; border-radius:4px 4px 0 0; background:#b9b9b9; }
+    .lift-bars i.mid { background:linear-gradient(180deg,#9db4e6,#6aa8e8); }
+    .lift-bars i.after { background:linear-gradient(180deg,#715cff,#1599e8); }
+    .lift-xlabels { display:flex; justify-content:center; gap:16px; margin-top:8px; }
+    .lift-xlabels span { width:38px; text-align:center; color:#748094; font-size:10.5px; font-weight:800; line-height:1.3; }
+    .lift-cap { margin:10px 0 0; text-align:center; color:#556070; font-size:12.5px; font-weight:800; }
+    .lift-cap b { color:#6554ff; }
+    .recommendation-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:18px; }
+    .recommendation-card { border:1px solid #cfe9da; background:#f7fcf9; border-radius:10px; padding:18px; min-height:170px; }
+    .recommendation-card .num { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:#03C75A; color:#fff; font-size:13px; font-weight:900; margin-bottom:12px; }
+    .recommendation-card b { display:block; color:#025c2b; font-size:17px; margin-bottom:8px; }
+    .recommendation-card p { margin:0; color:#526071; font-size:14px; line-height:1.65; word-break:keep-all; }
+    .report-endcap { min-height:120px; }
+    .muted { color:#728095; }
+    .footer { padding:28px 44px 44px; color:#7a8492; font-size:12px; }
+    @media (max-width: 1060px) {
+      .page { display:block; }
+      .side-nav { position:relative; height:auto; padding:14px 18px; }
+      .nav-links { flex-direction:row; overflow:auto; }
+      .nav-note { display:none; }
+      .one-message, .grid-2, .search-row, .purchase-visual, .split-cards, .newpool, .recommendation-grid, .journey-map { grid-template-columns:1fr; }
+      .grid-3, .grid-4, .lift-grid { grid-template-columns:1fr 1fr; }
+      .flow { grid-template-columns:1fr 1fr; }
+      .flow-step::after { display:none; }
+      .route-line { display:none; }
+      .journey-stage, .journey-bubbles { min-height:340px; }
+      .purchase-stage { min-height:240px; }
+      .purchase-pool::before { display:none; }
+    }
+    @media (max-width: 640px) {
+      .hero { padding:34px 20px; }
+      .wrap { width:calc(100% - 28px); }
+      h1 { font-size:29px; }
+      .grid-3, .grid-4, .summary-list, .flow, .metric-strip, .metric-strip.four, .purchase-visual, .split-cards, .metric-mini, .recommendation-grid, .lift-grid, .lift-grid.two { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body class="locked">
+  <!-- 광고주 공유용 비밀번호 게이트 -->
+  <div class="password-gate" id="passwordGate" role="dialog" aria-modal="true" aria-labelledby="passwordGateTitle">
+    <form class="password-card" id="passwordForm">
+      <span class="gate-lock" aria-hidden="true">🔐</span>
+      <h2 id="passwordGateTitle">보호된 리포트</h2>
+      <strong class="gate-report-title">팸퍼스 보장형DA</strong>
+      <p>이 문서는 비밀번호로 보호되어 있습니다.<br>전달받은 비밀번호를 입력해 주세요.</p>
+      <div class="gate-input-row">
+        <input id="reportPassword" name="reportPassword" type="password" autocomplete="current-password" placeholder="비밀번호" required>
+        <button type="submit">열기</button>
+      </div>
+      <p class="gate-error" id="passwordError" aria-live="polite"></p>
+      <small class="gate-footer">NAVER X 보장형DA 대외비</small>
+    </form>
+  </div>
+
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden">
+    <symbol id="user-pool-person" viewBox="0 0 22 24">
+      <circle cx="11" cy="5" r="3.8"></circle>
+      <path d="M3.2 22.5v-2.8c0-4.8 3.4-8.3 7.8-8.3s7.8 3.5 7.8 8.3v2.8H3.2Z"></path>
+    </symbol>
+  </svg>
+
+  <div class="page">
+    <aside class="side-nav">
+      <div class="brandmark"><b>팸퍼스 보장형DA</b><span>NAVER 성과 리포트</span></div>
+      <nav class="nav-links">
+        <a class="summary-link" href="#summary"><span class="nav-index">★</span>핵심요약</a>
+        <a href="#purchase"><span class="nav-index">01</span>스토어 구매 성과</a>
+        <a href="#buyers"><span class="nav-index">02</span>구매자·성별 성과</a>
+        <a href="#newuser"><span class="nav-index">03</span>신규 유저 확장</a>
+        <a href="#journey"><span class="nav-index">04</span>구매여정</a>
+        <a href="#synergy"><span class="nav-index">05</span>상품 시너지</a>
+        <a href="#proposal"><span class="nav-index">R</span>운영 전략</a>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">Guaranteed DA x NAVER Performance Report</div>
+          <h1>팸퍼스 보장형DA 집행 전·중 성과 비교 리포트</h1>
+          <p class="hero-lead">보장형DA 집행 전(6/15~6/22)과 집행 중(6/23~6/30)의 구매 성과, 신규 유저 확장, 광고 상품 시너지를 연결해 본 통합 리포트</p>
+          <p class="hero-note">본 리포트는 외부 마케팅 영향도 측정은 제외하고, 네이버 보장형DA 캠페인 집행 전·중 성과 변화에 초점을 맞춘 관측 데이터 비교 분석임.<br>따라서 분석 결과는 순수 인과 효과가 아닌 집행 기간 내 성과 방향성으로 해석해야 하며, 외부 프로모션·스토어 운영 변수 등이 함께 작용했을 수 있음.</p>
+          <div class="chips">
+            <span class="chip">집행 전 2026.06.15-06.22</span>
+            <span class="chip">집행 중 2026.06.23-06.30</span>
+            <span class="chip">여성 타겟 보장형DA</span>
+          </div>
+          <div class="one-message">
+            <div class="message-box">
+              <b>One Message</b>
+              <p>보장형DA는 단순 전환 매체가 아니라, 기존 광고가 닿지 않던 대규모 신규 유저를 열고 성과형DA·검색광고가 구매로 회수하는 상단 퍼널을 넓히는 역할을 함.</p>
+              <span class="scope-note">분석 범위: 네이버쇼핑스토어 구매 성과, 광고 접점 이후 NPay 구매여정, 보장형DA 접점 신규 유저, 광고 상품 조합 시너지, 성별 구매 성장. 관측 데이터 비교이므로 순수 인과 효과가 아닌 집행 기간의 방향성으로 해석함.</span>
+            </div>
+            <div class="hero-kpis">
+              <div><span>네이버쇼핑 구매자</span><strong>+19.4%</strong><em>약 9천 → 1.07만명</em></div>
+              <div><span>스토어 매출(GMV)</span><strong>+51.0%</strong><em>6.59억 → 9.95억원</em></div>
+              <div><span>신규구매 GMV</span><strong>+77.4%</strong><em>1.21억 → 2.15억원</em></div>
+              <div><span>광고 접점 구매자 비중</span><strong>+26.9%p</strong><em>45.4% → 72.3% (NPay)</em></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section id="summary">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">SUMMARY</span><h2>핵심요약</h2></div>
+          <div class="card summary-copy">
+            <p>보장형DA 집행 중에는 <strong>네이버쇼핑스토어의 매출·구매자·신규구매 GMV</strong>가 모두 성장했고, <strong>광고를 거쳐 구매한 유저</strong>와 그 GMV 비중도 함께 크게 확대됨. 이는 보장형DA가 구매 직전 효율만 보는 상품이 아니라, 기존 광고가 닿지 않던 <strong>대규모 신규 유저를 열고</strong> 성과형DA·검색광고가 구매로 회수하는 상단 퍼널을 넓히는 역할을 한 것으로 해석됨.</p>
+            <p>특히 보장형DA 접점자의 대부분은 최근 광고 미접점 신규 유저로, 보장형DA 클릭 유저의 <strong>87.4%</strong>, 노출 유저의 <strong>93.3%</strong>가 기존 광고 접점 밖에 있던 신규 도달이었음. 이와 함께 집행 중 광고를 거쳐 구매한 유저 비중도 45.4%에서 72.3%로 크게 확대됨.</p>
+            <p>또한 보장형DA는 단독으로 즉시 전환을 만들기보다 <strong>성과형DA·검색광고 접점과 결합될 때</strong> 구매로 이어지는 경향이 더 뚜렷하게 나타났으며, 넓게 도달한 신규 유저가 후속 광고 상품과 만날수록 구매 확률이 높아지는 흐름이 확인됨. 여성 타겟 집행답게 전체 구매자 증가분의 76.7%, 전체 GMV 증가분의 76.2%가 여성에서 발생함.</p>
+          </div>
+          <div class="summary-list">
+            <div class="summary-item"><b>스토어 구매 성장</b><span>집행 중 네이버쇼핑스토어 구매자는 +19.4%, 매출은 +51.0% 증가했고 스토어 평균 구매액도 73,202원에서 92,581원으로 +26.5% 상승함.</span></div>
+            <div class="summary-item"><b>신규 도달 중심 확장</b><span>보장형DA 접점자의 87~93%가 최근 광고 미접점 신규 유저로, 기존 반응 유저를 반복 타깃팅한 것이 아니라 신규 도달을 크게 늘린 매체로 설명됨.</span></div>
+            <div class="summary-item"><b>상품 결합 시 전환 강화</b><span>보장형DA 단독보다 성과형DA·검색광고와 결합될 때 구매로 이어지는 경향이 더 뚜렷하게 나타나, 신규 도달을 구매로 회수하는 전략의 근거가 됨.</span></div>
+            <div class="summary-item"><b>여성 타겟 성과 집중</b><span>전체 구매자 증가분의 76.7%, 전체 GMV 증가분의 76.2%가 여성에서 발생하며 여성 핵심 구매층의 구매 모수와 매출이 함께 확대됨.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="purchase">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 1</span><h2>네이버쇼핑스토어 구매 성과</h2></div>
+          <div class="part-headline">집행 중 네이버쇼핑스토어의 <strong>매출·구매자·평균 구매액</strong>이 집행 전 대비 성장함.</div>
+          <p class="definition-copy">본 리포트의 스토어 매출·구매자·평균 구매액·신규구매자·성별은 네이버쇼핑스토어 전체 구매 데이터를 기준으로 하며, 광고 접점·구매여정·상품 시너지처럼 유저 단위로 광고와 구매를 연결해야 하는 분석은 NPay 구매를 대상으로 함. 특히 광고를 거친 뒤 구매한 유저는 광고 접점 이후 NPay 구매자로 구분해 구매여정 파트에서 자세히 다룸.</p>
+          <div class="search-row">
+            <div class="card chart-box">
+              <div class="chart-head">
+                <div><h3>일별 스토어 구매자·매출 추이</h3><p>2026.06.15-06.30 · 6/23부터 보장형DA 집행 구간(음영)</p></div>
+                <div class="legend"><span><i class="dot sq" style="background:#7d8ff0"></i>일별 구매자</span><span><i class="dot" style="background:#03C75A"></i>일별 매출(백만원)</span></div>
+              </div>
+              <canvas id="dailyTrend" width="960" height="380" aria-label="일별 구매자 매출 추이 차트"></canvas>
+            </div>
+            <div class="insight-panel">
+              <h3>기간 요약</h3>
+              <p>집행 시작일(6/23)에 스토어 구매자와 매출이 크게 뛰어오른 뒤, 집행 기간 전반의 구매 수준이 집행 전 대비 높게 유지됨.</p>
+              <div class="insight-highlight">집행 중 네이버쇼핑스토어 구매자는 약 9천 명에서 약 1.07만 명으로 +19.4%, 스토어 매출은 약 6.6억원에서 약 9.95억원으로 +51.0% 증가함.</div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:18px">
+            <h3>네이버쇼핑스토어 전체 성장</h3>
+            <div class="callout" style="margin:0 0 14px">집행 중 네이버쇼핑스토어의 매출·구매자·평균 구매액·신규구매 GMV가 함께 성장함.</div>
+            <table>
+              <thead><tr><th>지표</th><th class="num">집행 전 (6/15~6/22)</th><th class="num">집행 중 (6/23~6/30)</th><th class="num">변화</th></tr></thead>
+              <tbody>
+                <tr><td>스토어 구매자</td><td class="num">약 9,000명</td><td class="num">약 10,700명</td><td class="num"><strong>+19.4%</strong></td></tr>
+                <tr><td>스토어 매출(GMV)</td><td class="num">약 6.6억원</td><td class="num">약 9.9억원</td><td class="num"><strong>+51.0%</strong></td></tr>
+                <tr><td>스토어 평균 구매액</td><td class="num">약 7.3만원</td><td class="num">약 9.3만원</td><td class="num"><strong>+26.5%</strong></td></tr>
+                <tr><td>신규구매자</td><td class="num">약 2,700명</td><td class="num">약 3,100명</td><td class="num"><strong>+14.3%</strong></td></tr>
+                <tr><td>재구매자</td><td class="num">약 6,300명</td><td class="num">약 7,600명</td><td class="num"><strong>+21.6%</strong></td></tr>
+                <tr><td>신규구매 GMV</td><td class="num">약 1.2억원</td><td class="num">약 2.2억원</td><td class="num"><strong>+77.4%</strong></td></tr>
+                <tr><td>신규구매 GMV 비중</td><td class="num">약 18%</td><td class="num">약 22%</td><td class="num"><strong>+3.2%p</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="buyers">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 2</span><h2>구매자와 성별 성과</h2></div>
+          <div class="part-headline">집행 중 구매자 증가는 재구매가 수적으로 더 컸지만 <strong>매출 증가는 신규 구매자가 이끌었으며</strong>, 여성 타겟 집행답게 성과는 여성 구매층에서 가장 뚜렷하게 나타남.</div>
+          <div class="metric-strip" style="margin-bottom:18px">
+            <div class="strip-card up"><span>스토어 신규구매자</span><b>+14.3%</b><small>약 2,700 → 3,100명</small></div>
+            <div class="strip-card up"><span>스토어 신규구매 GMV</span><b>+77.4%</b><small>1.21억 → 2.15억원</small></div>
+            <div class="strip-card up"><span>여성 GMV 증가 기여</span><b>76.2%</b><small>여성 GMV 증가분 약 2.56억원</small></div>
+          </div>
+          <div class="card purchase-visual" style="margin-top:0">
+            <div class="buyer-chart">
+              <h3>구매자 규모 변화</h3>
+              <div class="buyer-bars">
+                <div class="buyer-bar" style="height:118px"></div>
+                <div class="buyer-bar after" style="height:141px"><em>+19.4%</em></div>
+              </div>
+              <div class="bar-caption"><span>집행 전</span><span>집행 중</span></div>
+            </div>
+            <div class="purchase-pool">
+              <svg class="people-mark" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+                <circle class="pool-bg" cx="120" cy="120" r="112"></circle>
+                <g class="pool-people">
+                  <use href="#user-pool-person" x="75" y="54" width="30" height="32"></use>
+                  <use href="#user-pool-person" x="105" y="54" width="30" height="32"></use>
+                  <use class="hl" href="#user-pool-person" x="135" y="54" width="30" height="32"></use>
+                  <use href="#user-pool-person" x="56" y="82" width="32" height="34"></use>
+                  <use href="#user-pool-person" x="88" y="82" width="32" height="34"></use>
+                  <use class="hl" href="#user-pool-person" x="120" y="82" width="32" height="34"></use>
+                  <use class="hl" href="#user-pool-person" x="152" y="82" width="32" height="34"></use>
+                  <use href="#user-pool-person" x="39" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="71" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="103" y="112" width="34" height="36"></use>
+                  <use class="hl" href="#user-pool-person" x="135" y="112" width="34" height="36"></use>
+                  <use class="hl" href="#user-pool-person" x="167" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="47" y="146" width="38" height="40"></use>
+                  <use href="#user-pool-person" x="83" y="146" width="38" height="40"></use>
+                  <use class="hl" href="#user-pool-person" x="119" y="146" width="38" height="40"></use>
+                  <use class="hl" href="#user-pool-person" x="155" y="146" width="38" height="40"></use>
+                </g>
+              </svg>
+              <span>구매자 증가분이<br>신규 구매자 풀 확대로 연결됨</span>
+            </div>
+            <div class="buyer-share">
+              <div class="increment-visual" style="margin-top:0">
+                <h4>구매자 증가분 구성 (+약 1,700명)</h4>
+                <div class="increment-bar">
+                  <span class="new" style="width:22.5%">신규 22%</span>
+                  <span class="repeat" style="width:77.5%">재구매 78%</span>
+                </div>
+                <p class="small-note">구매자 수 증가분은 재구매가 더 많았지만, 매출 증가분 중 신규 구매자 기여는 약 28%로 구매자 수 기여보다 컸음.</p>
+              </div>
+              <p class="lead" style="margin:0">신규구매자는 약 400명 증가(+14.3%)했고 신규구매 GMV는 약 77% 늘며, 신규 매출 성장이 재구매를 앞선 것으로 확인됨.</p>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:26px">
+            <h3>여성 · 남성 구매 성과 비교</h3>
+            <p class="lead">여성 타겟 보장형DA였던 만큼 성과는 여성 구매 모수와 GMV 확대에서 가장 뚜렷했으며, <strong>전체 구매자 증가분의 76.7%, 전체 GMV 증가분의 76.2%가 여성에서 발생</strong>함.<br>여성 신규구매자 비율 자체는 소폭 하락했지만, '여성 신규 비율 상승'보다는 <strong>'여성 타겟 집행으로 여성 구매 모수와 신규구매 GMV를 확대'</strong>에서 의미가 있음.<br><strong>남성도 신규구매자 수와 신규구매 GMV가 함께 증가</strong>해, 여성 핵심 타겟을 키우면서 카테고리 관심층으로 일부 확장되는 효과가 확인됨.</p>
+            <table class="gender-table">
+              <thead><tr><th>지표</th><th class="num"><span class="gender-tag f">여성</span> 핵심 구매층</th><th class="num"><span class="gender-tag m">남성</span> 확장 구매층</th></tr></thead>
+              <tbody>
+                <tr><td>구매자</td><td class="num">약 6,700 → 8,100명 <strong>+19.9%</strong></td><td class="num">약 2,300 → 2,700명 <strong>+17.9%</strong></td></tr>
+                <tr><td>신규구매자</td><td class="num"><strong>+12.4%</strong></td><td class="num"><strong>+20.1%</strong></td></tr>
+                <tr><td>재구매자</td><td class="num"><strong>+23.2%</strong></td><td class="num"><strong>+17.0%</strong></td></tr>
+                <tr><td>전체 GMV</td><td class="num">약 4.7억 → 7.3억원 <strong>+53.9%</strong></td><td class="num">약 1.8억 → 2.7억원 <strong>+43.4%</strong></td></tr>
+                <tr><td>신규구매 GMV</td><td class="num"><strong>+76.8%</strong></td><td class="num"><strong>+78.6%</strong></td></tr>
+                <tr><td>신규구매자 비율</td><td class="num">30.4% → 28.5%</td><td class="num">30.5% → 31.0%</td></tr>
+                <tr><td>신규구매 GMV 비중</td><td class="num">17.7% → 20.3% <strong>(+2.63%p)</strong></td><td class="num">20.3% → 25.2% <strong>(+4.97%p)</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="newuser">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 3</span><h2>신규 유저 확장</h2></div>
+          <div class="part-headline">보장형DA 접점자의 대부분은 최근 광고에 닿지 않던 <strong>신규 유저</strong>로, 기존 광고 접점 밖의 신규 도달을 크게 만든 것으로 확인됨.</div>
+          <p class="definition-copy">보장형DA 접점 유저의 신규 여부는 유저 단위로 최근 30일 lookback 기간 내 전체 광고 접점 유무를 판정한 NPay·광고로그 기준임.</p>
+          <div class="grid-2">
+            <div class="card">
+              <h3>보장형DA 접점 유저 중 신규 비중</h3>
+              <p class="lead">최근 30일 lookback 기간 내 전체 광고 ID 기준으로 광고 접점이 없던 유저 비중임.</p>
+              <div style="margin-bottom:18px">
+                <div class="seg-label"><span>보장형DA 클릭 유저</span></div>
+                <div class="segbar"><span class="new" style="width:87.42%">신규 87.4%</span><span class="old" style="width:12.58%">기존 12.6%</span></div>
+              </div>
+              <div>
+                <div class="seg-label"><span>보장형DA 노출 유저</span></div>
+                <div class="segbar"><span class="new" style="width:93.26%">신규 93.3%</span><span class="old" style="width:6.74%">기존 6.7%</span></div>
+              </div>
+              <div class="callout blue" style="margin-top:18px">즉 보장형DA는 기존 성과형·검색 광고에 반응하던 유저를 다시 만난 것이 아니라, 광고가 닿지 않던 신규 잠재 고객을 대규모로 열어준 도달 상품으로 해석됨.</div>
+            </div>
+            <div class="card">
+              <h3>보장형DA 도달 모수 확장</h3>
+              <p class="lead">집행 중 광고 접점 유저 모수와 보장형DA 접점 신규 유저 규모임.</p>
+              <div class="reach-flow">
+                <div class="strip-card up"><span>보장형DA 접점 유저</span><b>대규모</b><small>클릭 약 10만 · 노출 약 1,069만명</small></div>
+                <div class="reach-arrow">→</div>
+                <div class="strip-card up"><span>광고 접점 유저 모수</span><b>약 90배 확장</b><small>약 12.5만 → 약 1,133만명</small></div>
+              </div>
+              <div class="callout warn">보장형DA 집행을 통해 대규모 광고 도달 모수를 만들었고, 그 결과 광고 접점 유저 모수가 약 12.5만 명에서 약 1,133만 명으로 크게 확장됨. 이 때문에 <b>전체 광고 유저 대비 단순 구매율</b>은 낮아 보일 수 있으나, 이는 보장형DA가 구매 직전이 아닌 상단 퍼널(신규 도달)에서 작동하기 때문에 나타나는 자연스러운 현상임. 보장형DA는 단독 효율보다 신규 도달 공급과 후속 상품 결합 관점에서 평가하는 것이 적절함.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="journey">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 4</span><h2>구매여정에서 본 접점 역할</h2></div>
+          <div class="part-headline">보장형DA는 더 이른 단계에서 신규 잠재 고객을 넓히는 <strong>마중물</strong> 역할을, 검색광고·성과형DA는 형성된 관심을 구매로 <strong>회수</strong>하는 역할을 나눠 수행한 것으로 확인됨.</div>
+          <p class="definition-copy">구매여정·리드타임은 유저 단위로 광고와 구매 로그를 매칭할 수 있는 NPay 구매 기준임.</p>
+          <div class="card" style="margin-bottom:18px">
+            <h3>광고 접점 이후 NPay 구매자</h3>
+            <p class="lead">집행 중에는 광고를 거쳐 NPay로 구매한 유저가 크게 늘며, 구매여정에서 광고가 차지하는 비중이 뚜렷하게 확대됨. 이는 보장형DA가 넓힌 신규 도달이 광고 접점을 통해 구매로 이어졌음을 보여줌.</p>
+            <table>
+              <thead><tr><th>지표</th><th class="num">집행 전 (6/15~6/22)</th><th class="num">집행 중 (6/23~6/30)</th><th class="num">변화</th></tr></thead>
+              <tbody>
+                <tr><td>광고 접점 이후 NPay 구매자</td><td class="num">약 4,000명</td><td class="num">약 7,600명</td><td class="num"><strong>+89.6%</strong></td></tr>
+                <tr><td>광고 접점 이후 NPay GMV</td><td class="num">약 3.3억원</td><td class="num">약 7.4억원</td><td class="num"><strong>+123.9%</strong></td></tr>
+                <tr><td>광고 접점 구매자 비중</td><td class="num">45.4%</td><td class="num">72.3%</td><td class="num"><strong>+26.9%p</strong></td></tr>
+                <tr><td>광고 접점 GMV 비중</td><td class="num">50.2%</td><td class="num">74.4%</td><td class="num"><strong>+24.2%p</strong></td></tr>
+                <tr><td>보장형DA 접점 구매자 비중</td><td class="num">0%</td><td class="num">38.3%</td><td class="num"><strong>신규</strong><small class="cell-note">집행 중 광고 접점 구매자의 38.3%가 보장형DA 접점 포함</small></td></tr>
+                <tr><td>구매자 평균 광고 접점 빈도</td><td class="num">0.87회</td><td class="num">4.07회</td><td class="num"><strong>+3.2회</strong></td></tr>
+              </tbody>
+            </table>
+            <p class="small-note">광고 접점 이후 NPay 구매자 = 집행 기간 내 광고(보장형DA·성과형DA·검색광고 등) 접점을 거친 뒤 NPay로 구매한 유저(광고 미접점 구매자 제외).<br>광고 접점 구매자 비중 = 광고 접점 이후 NPay 구매자 ÷ 전체 NPay 구매자.<br>광고 접점 GMV 비중 = 광고 접점 이후 NPay GMV ÷ 전체 NPay GMV.</p>
+          </div>
+          <div class="flow">
+            <div class="flow-step"><b>보장형DA 노출</b><span>광고 미접점 신규 유저에게 대규모 도달</span></div>
+            <div class="flow-step"><b>보장형DA 클릭</b><span>관심 형성 및 잠재 고객 풀 확대</span></div>
+            <div class="flow-step"><b>성과형DA·검색 접점</b><span>브랜드·상품 탐색으로 구매 의도 확인</span></div>
+            <div class="flow-step"><b>NPay 구매</b><span>구매자 +19%, 접점 결합 시 구매율 상승</span></div>
+          </div>
+          <div class="journey-visual">
+            <h3>네이버 내 대표적인 져니 패턴</h3>
+            <p class="journey-sub">각 광고 상품 접점에서 NPay 구매까지의 평균 리드타임으로, 디스플레이 광고, 검색광고의 상단 도달과 구매 직전 회수 역할이 뚜렷하게 나뉨.</p>
+            <div class="journey-map">
+              <svg class="route-line" viewBox="0 0 900 230" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M30,60 C210,32 250,196 440,150 S710,150 880,120" fill="none" stroke="#b8c4d3" stroke-width="2" stroke-dasharray="7 7"/>
+              </svg>
+              <div class="journey-stage">
+                <div class="journey-stage-title">디스플레이 광고 접점</div>
+                <div class="journey-bubbles">
+                  <div class="bubble da large" style="left:34px;top:96px"><span>보장형DA<br>노출</span><small>2.15일</small></div>
+                  <div class="bubble da" style="left:192px;top:30px"><span>성과형DA<br>노출</span><small>1.88일</small></div>
+                  <div class="bubble da mid" style="left:164px;top:214px"><span>보장형DA<br>클릭</span><small>1.16일</small></div>
+                  <div class="bubble da mid" style="left:300px;top:120px"><span>성과형DA<br>클릭</span><small>1.15일</small></div>
+                </div>
+              </div>
+              <div class="journey-stage">
+                <div class="journey-stage-title">검색·탐색 접점</div>
+                <div class="journey-bubbles">
+                  <div class="bubble sa" style="left:34px;top:44px"><span>쇼핑검색<br>클릭</span><small>0.40일</small></div>
+                  <div class="bubble sa" style="left:140px;top:140px"><span>브랜드검색<br>클릭</span><small>0.37일</small></div>
+                  <div class="bubble sa" style="left:34px;top:236px"><span>파워링크<br>클릭</span><small>0.33일</small></div>
+                </div>
+              </div>
+              <div class="purchase-stage">
+                <div>
+                  <svg class="people-mark" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+                    <circle class="pool-bg" cx="120" cy="120" r="112"></circle>
+                    <g class="pool-people">
+                      <use href="#user-pool-person" x="75" y="54" width="30" height="32"></use>
+                      <use href="#user-pool-person" x="105" y="54" width="30" height="32"></use>
+                      <use href="#user-pool-person" x="135" y="54" width="30" height="32"></use>
+                      <use href="#user-pool-person" x="56" y="82" width="32" height="34"></use>
+                      <use href="#user-pool-person" x="88" y="82" width="32" height="34"></use>
+                      <use href="#user-pool-person" x="120" y="82" width="32" height="34"></use>
+                      <use href="#user-pool-person" x="152" y="82" width="32" height="34"></use>
+                      <use href="#user-pool-person" x="39" y="112" width="34" height="36"></use>
+                      <use href="#user-pool-person" x="71" y="112" width="34" height="36"></use>
+                      <use href="#user-pool-person" x="103" y="112" width="34" height="36"></use>
+                      <use href="#user-pool-person" x="135" y="112" width="34" height="36"></use>
+                      <use href="#user-pool-person" x="167" y="112" width="34" height="36"></use>
+                      <use href="#user-pool-person" x="47" y="146" width="38" height="40"></use>
+                      <use href="#user-pool-person" x="83" y="146" width="38" height="40"></use>
+                      <use href="#user-pool-person" x="119" y="146" width="38" height="40"></use>
+                      <use href="#user-pool-person" x="155" y="146" width="38" height="40"></use>
+                    </g>
+                  </svg>
+                  <b>NPay<br>구매 전환</b>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grid-2" style="margin-top:18px">
+            <div class="card">
+              <h3>보장형DA (상단 퍼널)</h3>
+              <p class="lead">보장형DA는 <strong>리드타임(노출 약 2.15일)이 가장 길고 접점 빈도가 높은 상단 퍼널</strong> 접점으로, 더 넓은 신규 잠재 고객에게 먼저 도달해 이후 검색·구매로 이어질 모수를 키우는 <strong>마중물 역할</strong>을 함. 즉 구매 여정을 단축했다기보다, 더 이른 단계의 유저를 유입시켜 여러 접점을 거쳐 구매로 이어지게 만든 것으로 해석하는 편이 안전함.</p>
+            </div>
+            <div class="card">
+              <h3>검색광고·성과형DA (회수)</h3>
+              <p class="lead">검색광고는 <strong>리드타임이 짧고(약 0.3~0.4일) 구매 의도가 확정된 회수 접점</strong>으로, 보장형DA가 넓힌 신규 풀이 이 접점과 결합될 때 구매 전환이 크게 일어남. 실제로 집행 중 <strong>광고 접점 구매자 비중이 45.4%에서 72.3%로</strong> 늘며 광고가 구매 여정에서 차지하는 비중이 커짐.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="synergy">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 5</span><h2>광고 상품 시너지</h2></div>
+          <div class="part-headline">보장형DA는 단독으로 즉시 전환을 만들기보다, 넓게 도달한 유저가 <strong>성과형DA·검색광고 접점까지 이어질 때</strong> 구매로 연결되는 경향이 더 뚜렷하게 나타남.</div>
+          <div class="card">
+            <h3>보장형DA 결합 시 구매 전환 상승</h3>
+            <p class="lead">보장형DA 접점 유저가 다른 광고 상품 접점(클릭)까지 이어질 경우 구매 전환율이 약 36배 증가하며 뚜렷하게 높아짐.</p>
+            <p class="definition-copy">기존 CMS에서 제공하지 않는 일부 전환 성과는 별도 트래킹 기준으로 확인했으며, 아래 수치는 일반 전환 CVR이 아니라 NPay 구매자 기준 유저저니에서 확인 가능한 채널 도달 모수 대비 구매자 비율임.</p>
+          </div>
+          <div class="card" style="margin-top:18px">
+            <h3>상품별 보장형DA 동반 시너지</h3>
+            <p class="lead">같은 광고 상품이라도 보장형DA를 함께 접한 유저는 <strong>구매 전환율</strong>이 더 높게 나타남.</p>
+            <div class="legend" style="justify-content:center;gap:16px;margin:0 0 16px">
+              <span><i class="dot sq" style="background:#b9b9b9"></i>미동반(보장형DA 미접점)</span>
+              <span><i class="dot sq" style="background:#7fb0e8"></i>보장형DA 노출 동반</span>
+              <span><i class="dot sq" style="background:#6a5cf0"></i>보장형DA 클릭 동반</span>
+            </div>
+            <div class="lift-grid">
+              <div class="lift-card">
+                <h4>파워링크</h4>
+                <div class="lift-bars">
+                  <span class="lift-badge">클릭 동반 시<b>약 1.6배</b></span>
+                  <div class="col"><i style="height:84px"></i></div>
+                  <div class="col"><i class="mid" style="height:109px"></i></div>
+                  <div class="col"><i class="after" style="height:138px"></i></div>
+                </div>
+                <div class="lift-xlabels"><span>미동반</span><span>노출<br>동반</span><span>클릭<br>동반</span></div>
+                <div class="lift-metrics"><span class="lm-h">클릭 동반 시</span><span>리드타임 <b>+0.76일</b></span><span>프리퀀시 <b>+4.78회</b></span></div>
+              </div>
+              <div class="lift-card">
+                <h4>쇼핑검색</h4>
+                <div class="lift-bars">
+                  <span class="lift-badge">클릭 동반 시<b>약 1.2배</b></span>
+                  <div class="col"><i style="height:84px"></i></div>
+                  <div class="col"><i class="mid" style="height:72px"></i></div>
+                  <div class="col"><i class="after" style="height:105px"></i></div>
+                </div>
+                <div class="lift-xlabels"><span>미동반</span><span>노출<br>동반</span><span>클릭<br>동반</span></div>
+                <div class="lift-metrics"><span class="lm-h">클릭 동반 시</span><span>리드타임 <b>+1.33일</b></span><span>프리퀀시 <b>+7.03회</b></span></div>
+              </div>
+              <div class="lift-card">
+                <h4>브랜드검색</h4>
+                <div class="lift-bars">
+                  <span class="lift-badge">클릭 동반 시<b>약 1.0배</b></span>
+                  <div class="col"><i style="height:84px"></i></div>
+                  <div class="col"><i class="mid" style="height:71px"></i></div>
+                  <div class="col"><i class="after" style="height:86px"></i></div>
+                </div>
+                <div class="lift-xlabels"><span>미동반</span><span>노출<br>동반</span><span>클릭<br>동반</span></div>
+                <div class="lift-metrics"><span class="lm-h">클릭 동반 시</span><span>리드타임 <b>+1.05일</b></span><span>프리퀀시 <b>+5.81회</b></span></div>
+              </div>
+              <div class="lift-card">
+                <h4>성과형DA(GFA)</h4>
+                <div class="lift-bars">
+                  <span class="lift-badge">클릭 동반 시<b>약 17.2배</b></span>
+                  <div class="col"><i style="height:84px"></i></div>
+                  <div class="col"><i class="mid" style="height:112px"></i></div>
+                  <div class="col"><i class="after" style="height:150px"></i><span class="bar-break" aria-hidden="true"><svg viewBox="0 0 52 16" preserveAspectRatio="none"><rect width="52" height="16" fill="#fff"></rect><path d="M0 5 Q6.5 1 13 5 T26 5 T39 5 T52 5" fill="none" stroke="#9aa4b2" stroke-width="1.4"></path><path d="M0 11 Q6.5 7 13 11 T26 11 T39 11 T52 11" fill="none" stroke="#9aa4b2" stroke-width="1.4"></path></svg></span></div>
+                </div>
+                <div class="lift-xlabels"><span>미동반</span><span>노출<br>동반</span><span>클릭<br>동반</span></div>
+                <div class="lift-metrics"><span class="lm-h">클릭 동반 시</span><span>리드타임 <b>+0.14일</b></span><span>프리퀀시 <b>+3.95회</b></span></div>
+              </div>
+            </div>
+            <div class="definition-note">정의: 접점 도달·반응 유저 중 구매 연결 비율을 채널 단위로 집계한 접점도달 중 전환율</div>
+            <div class="callout blue" style="margin-top:12px">보장형DA 동반 접점은 특히 <b>성과형DA와 결합될 때 상승폭이 가장 크게</b> 나타났으며, 파워링크·쇼핑검색도 보장형DA 클릭 동반군에서 구매 전환율이 함께 상승함.</div>
+            <div class="callout" style="margin-top:12px">한편 리드타임과 프리퀀시가 대부분 증가한 만큼, 보장형DA는 구매 여정을 단축하는 매체라기보다 <b>신규 잠재 고객을 먼저 확보하고 후속 광고 상품이 전환을 회수</b>하는 상단 퍼널 확장 역할로 해석하는 것이 적절함.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="proposal">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">RECOMMENDATION</span><h2>보장형DA 운영 전략</h2></div>
+          <div class="part-headline">보장형DA는 구매 직전 효율만 보는 상품이 아니라, 브랜드의 <strong>구매 후보군을 넓히는 상단 퍼널 도달 상품</strong>으로 활용하는 것이 적절함.</div>
+          <div class="card">
+            <p class="lead">집행 중 네이버에서는 신규 유저 대규모 도달, 광고 접점 이후 구매자 비중 확대, 신규구매 GMV 성장, 상품 결합 시 구매율 상승이 함께 확인됨. 따라서 보장형DA로 확보한 신규 풀을 성과형DA·검색광고로 회수하고, 이후 리타깃팅 자산으로 연결하는 구조를 권장함.</p>
+            <div class="recommendation-grid">
+              <div class="recommendation-card">
+                <span class="num">1</span>
+                <b>도달 상품으로 포지셔닝</b>
+                <p>보장형DA는 단독 전환 효율이 아닌 신규 도달과 후속 결합 관점에서 평가함. 접점자의 87~93%가 광고 미접점 신규 유저였음.</p>
+              </div>
+              <div class="recommendation-card">
+                <span class="num">2</span>
+                <b>신규 풀 회수 설계</b>
+                <p>보장형DA로 넓힌 신규 풀을 성과형DA·검색광고로 회수하도록 상품을 함께 운영함. 결합 시 구매로 이어지는 경향이 뚜렷하게 높아짐.</p>
+              </div>
+              <div class="recommendation-card">
+                <span class="num">3</span>
+                <b>여성 핵심층 유지·확장</b>
+                <p>여성에서 구매자·GMV 성장이 집중되었고 남성 확장도 함께 관측되었으므로, 여성 핵심층을 유지하며 카테고리 관심층으로 확장 여지를 검토함.</p>
+              </div>
+              <div class="recommendation-card">
+                <span class="num">4</span>
+                <b>커스텀 타겟팅 리타깃팅</b>
+                <p>보장형DA 클릭 유저가 성과형DA(GFA)와 만났을 때 구매 전환율이 크게 상승함. 보장형DA가 상단에서 부어준 관심 유저를 커스텀 타겟팅으로 리타깃팅해 전환으로 회수하는 전략을 추천함.</p>
+              </div>
+            </div>
+          </div>
+          <div class="report-endcap" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        팸퍼스 보장형DA x NAVER Performance Report
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // 비밀번호 게이트 (년도+계정 규칙: 2026pampers)
+    const REPORT_YEAR = '2026';
+    const REPORT_ACCOUNT_KEY = 'pampers';
+    const REPORT_PASSWORD_CHECKSUM = 3912121159;
+    const REPORT_ACCESS_STORAGE_KEY = `tvc-report-access-${REPORT_YEAR}-${REPORT_ACCOUNT_KEY}`;
+    function passwordChecksum(value) {
+      let hash = 2166136261;
+      const bytes = new TextEncoder().encode(value);
+      bytes.forEach(byte => {
+        hash ^= byte;
+        hash = Math.imul(hash, 16777619) >>> 0;
+      });
+      return hash >>> 0;
+    }
+    function unlockReport() {
+      document.body.classList.remove('locked');
+      document.body.classList.add('unlocked');
+      document.getElementById('passwordGate')?.setAttribute('hidden', '');
+      window.setTimeout(() => {
+        if (typeof updateActiveNav === 'function') updateActiveNav();
+        if (typeof drawDaily === 'function') drawDaily();
+      }, 0);
+    }
+    function setupPasswordGate() {
+      const form = document.getElementById('passwordForm');
+      const input = document.getElementById('reportPassword');
+      const error = document.getElementById('passwordError');
+      if (sessionStorage.getItem(REPORT_ACCESS_STORAGE_KEY) === 'unlocked') {
+        unlockReport();
+        return;
+      }
+      input?.focus();
+      form?.addEventListener('submit', event => {
+        event.preventDefault();
+        const value = input.value.trim();
+        if (passwordChecksum(value) === REPORT_PASSWORD_CHECKSUM) {
+          sessionStorage.setItem(REPORT_ACCESS_STORAGE_KEY, 'unlocked');
+          input.value = '';
+          if (error) error.textContent = '';
+          unlockReport();
+        } else {
+          if (error) error.textContent = '비밀번호가 일치하지 않음.';
+          input.select();
+        }
+      });
+    }
+    setupPasswordGate();
+
+    const daily = {
+      dates:["06/15","06/16","06/17","06/18","06/19","06/20","06/21","06/22","06/23","06/24","06/25","06/26","06/27","06/28","06/29","06/30"],
+      buyers:[1257,1483,887,1080,1490,775,756,1271,2946,1874,1261,967,829,892,991,983],
+      gmv:[110.9,111.6,67.2,92.8,65.7,45.8,53.3,111.5,241.3,201.5,124.4,90.6,78.1,79.5,90.6,88.7],
+      split:8
+    };
+    const CHART_FONT = '"NanumSquareNEO","NanumSquareNeo","NanumSquare Neo","Malgun Gothic",sans-serif';
+    function drawDaily() {
+      const c = document.getElementById('dailyTrend');
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      // 고해상도(레티나) 대응 + 표시 크기 기준 렌더링
+      const dpr = window.devicePixelRatio || 1;
+      const cssW = c.clientWidth || 960, cssH = c.clientHeight || 360;
+      c.width = Math.round(cssW * dpr);
+      c.height = Math.round(cssH * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const W = cssW, H = cssH;
+      ctx.clearRect(0,0,W,H);
+      const padL = 46, padR = 52, padT = 22, padB = 46;
+      const plotW = W - padL - padR, plotH = H - padT - padB;
+      const n = daily.buyers.length;
+      const maxB = Math.max.apply(null, daily.buyers) * 1.12;
+      const maxG = Math.max.apply(null, daily.gmv) * 1.15;
+      const bw = plotW / n;
+      // 집행 중 음영
+      const splitX = padL + bw * daily.split;
+      ctx.fillStyle = 'rgba(3,199,90,.08)';
+      ctx.fillRect(splitX, padT, padL + plotW - splitX, plotH);
+      // 구분선
+      ctx.strokeStyle = '#03C75A';
+      ctx.setLineDash([5,4]);
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(splitX, padT); ctx.lineTo(splitX, padT + plotH); ctx.stroke();
+      ctx.setLineDash([]);
+      // grid
+      ctx.strokeStyle = '#eef1f6'; ctx.lineWidth = 1;
+      ctx.fillStyle = '#9aa4b2'; ctx.font = '11px ' + CHART_FONT; ctx.textAlign = 'right';
+      for (let i=0;i<=4;i++){
+        const y = padT + plotH - (plotH*i/4);
+        ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(padL+plotW,y); ctx.stroke();
+        ctx.fillText(Math.round(maxB*i/4/100)/10+'k', padL-6, y+3);
+      }
+      // 구간 라벨
+      ctx.textAlign = 'center'; ctx.font = '900 12px ' + CHART_FONT;
+      ctx.fillStyle = '#8a94a3';
+      ctx.fillText('집행 전', padL + bw*4, padT + 14);
+      ctx.fillStyle = '#0b9b4d';
+      ctx.fillText('집행 중', splitX + bw*4, padT + 14);
+      // bars
+      for (let i=0;i<n;i++){
+        const x = padL + bw*i + bw*0.2;
+        const w = bw*0.6;
+        const h = (daily.buyers[i]/maxB)*plotH;
+        const y = padT + plotH - h;
+        ctx.fillStyle = i < daily.split ? '#c3ccd8' : '#7d8ff0';
+        ctx.beginPath();
+        const r = 3;
+        ctx.moveTo(x, y+r); ctx.arcTo(x, y, x+r, y, r);
+        ctx.lineTo(x+w-r, y); ctx.arcTo(x+w, y, x+w, y+r, r);
+        ctx.lineTo(x+w, y+h); ctx.lineTo(x, y+h); ctx.closePath(); ctx.fill();
+      }
+      // x labels (every 2nd)
+      ctx.fillStyle = '#9aa4b2'; ctx.font = '10px ' + CHART_FONT; ctx.textAlign = 'center';
+      for (let i=0;i<n;i+=2){
+        ctx.fillText(daily.dates[i], padL + bw*i + bw*0.5, padT + plotH + 16);
+      }
+      // gmv line (secondary axis, 부드러운 곡선)
+      ctx.strokeStyle = '#03C75A'; ctx.lineWidth = 2.4;
+      ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      const pts = [];
+      for (let i=0;i<n;i++){
+        pts.push({ x: padL + bw*i + bw*0.5, y: padT + plotH - (daily.gmv[i]/maxG)*plotH });
+      }
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let i=0;i<pts.length-1;i++){
+        const p0 = pts[i-1] || pts[i];
+        const p1 = pts[i];
+        const p2 = pts[i+1];
+        const p3 = pts[i+2] || p2;
+        const cp1x = p1.x + (p2.x - p0.x)/6;
+        const cp1y = p1.y + (p2.y - p0.y)/6;
+        const cp2x = p2.x - (p3.x - p1.x)/6;
+        const cp2y = p2.y - (p3.y - p1.y)/6;
+        ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
+      }
+      ctx.stroke();
+    }
+    drawDaily();
+    window.addEventListener('resize', drawDaily);
+    // 웹폰트 로드 완료 후 차트 라벨을 지정 글씨체로 재렌더링
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(drawDaily); }
+
+    // 네비게이션 스크롤 스파이 (현재 스크롤 위치의 섹션 링크를 하이라이트)
+    function updateActiveNav() {
+      const links = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+      const sections = links
+        .map(link => document.querySelector(link.getAttribute('href')))
+        .filter(Boolean);
+      if (!sections.length) return;
+      const marker = window.scrollY + Math.max(140, window.innerHeight * 0.24);
+      let current = sections[0];
+      sections.forEach(section => {
+        if (section.offsetTop <= marker) current = section;
+      });
+      const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 12;
+      if (nearBottom) current = sections[sections.length - 1];
+      links.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${current.id}`);
+      });
+    }
+    updateActiveNav();
+    window.addEventListener('scroll', updateActiveNav, {passive:true});
+    window.addEventListener('resize', updateActiveNav);
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+      link.addEventListener('click', () => window.setTimeout(updateActiveNav, 120));
+    });
+  </script>
+</body>
+</html>
