@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>에어비앤비 TVC × NAVER 크로스캠페인 분석 리포트</title>
+  <style>
+    @font-face{font-family:"NanumSquareNEO";font-style:normal;font-weight:300;font-display:swap;src:local("NanumSquareNeoTTF-aLt"),url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.woff") format("woff");}
+    @font-face{font-family:"NanumSquareNEO";font-style:normal;font-weight:400;font-display:swap;src:local("NanumSquareNeoTTF-bRg"),url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff") format("woff");}
+    @font-face{font-family:"NanumSquareNEO";font-style:normal;font-weight:700;font-display:swap;src:local("NanumSquareNeoTTF-cBd"),url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff") format("woff");}
+    @font-face{font-family:"NanumSquareNEO";font-style:normal;font-weight:800;font-display:swap;src:local("NanumSquareNeoTTF-dEb"),url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff") format("woff");}
+    @font-face{font-family:"NanumSquareNEO";font-style:normal;font-weight:900;font-display:swap;src:local("NanumSquareNeoTTF-eHv"),url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.woff") format("woff");}
+    :root{--navy:#0b2447;--navy2:#183b65;--green:#03C75A;--ink:#202633;--muted:#697386;--line:#e4e8ef;--soft:#f5f7fb;--card:#fff;--blue:#5a7d92;--violet:#715cff;--coral:#d38b98;--orange:#e0802b;--shadow:0 16px 42px rgba(12,36,71,.10);--report-font:"NanumSquareNEO","NanumSquareNeo","Malgun Gothic",sans-serif;}
+    *{box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{margin:0;background:var(--soft);color:var(--ink);font-family:var(--report-font);line-height:1.58;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased;}
+    body.locked{overflow:hidden;background:linear-gradient(135deg,var(--navy),#0f6c73);}
+    body.locked .page,body.locked>svg{display:none;}
+    a{color:inherit;text-decoration:none;}
+    .password-gate{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:24px;background:#12345a;}
+    body:not(.locked) .password-gate{display:none;}
+    .password-card{width:min(380px,100%);border-radius:18px;padding:38px 30px 30px;background:#fff;box-shadow:0 28px 80px rgba(3,18,38,.28);text-align:center;}
+    .gate-lock{display:block;margin-bottom:12px;font-size:34px;}
+    .password-card h2{margin:0;color:var(--navy);font-size:20px;font-weight:900;}
+    .gate-report-title{display:block;margin-top:8px;color:#2f3a4b;font-size:14px;font-weight:900;}
+    .password-card p{margin:10px 0 22px;color:#647085;font-size:14px;}
+    .gate-input-row{display:grid;gap:12px;}
+    .gate-input-row input{width:100%;height:44px;border:1.5px solid var(--green);border-radius:9px;padding:0 14px;font:inherit;text-align:center;outline:none;}
+    .gate-input-row button{width:100%;height:46px;border:0;border-radius:9px;background:#08c95a;color:#fff;font:inherit;font-weight:900;cursor:pointer;}
+    .gate-error{min-height:18px;margin:9px 0 0!important;color:#d53f3f!important;font-size:12px!important;font-weight:800;}
+    .gate-footer{display:block;margin-top:24px;color:#9aa5b8;font-size:11px;}
+    .page{display:grid;grid-template-columns:272px minmax(0,1fr);min-height:100vh;}
+    .side-nav{position:sticky;top:0;height:100vh;padding:26px 18px;background:#fff;border-right:1px solid var(--line);box-shadow:8px 0 26px rgba(20,37,61,.04);z-index:5;}
+    .brandmark{display:flex;flex-direction:column;gap:4px;margin-bottom:24px;}
+    .brandmark b{font-size:18px;color:var(--navy);}.brandmark span{font-size:12px;color:var(--muted);font-weight:800;}
+    .nav-links{display:flex;flex-direction:column;gap:7px;}
+    .nav-links a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:900;color:#475164;border:1px solid transparent;transition:background .18s,color .18s,border-color .18s;}
+    .nav-links a:hover{color:var(--navy);background:#edf7f2;}
+    .nav-links a.active{background:#e8f7ee;color:#078f45;border-color:#bfe8cf;}
+    .nav-index{width:22px;color:#8b96a7;font-size:11px;font-weight:900;}
+    .nav-links a.active .nav-index{color:#078f45;}
+    main{min-width:0;}
+    .hero{color:#fff;background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 58%,#0f6c73 100%);padding:46px 44px 40px;}
+    .wrap{width:min(1180px,calc(100% - 36px));margin:0 auto;}
+    .eyebrow{color:#8af0b5;font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;}
+    h1{margin:0;font-size:38px;line-height:1.15;font-weight:900;}
+    .hero-lead{margin:18px 0 0;color:#eef1f4;font-size:14px;line-height:1.7;}
+    .hero-note{margin:10px 0 0;max-width:none;color:#aebccb;font-size:12px;line-height:1.65;}
+    a.sup-link{color:#0a9c53;font-weight:800;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;cursor:pointer;}
+    a.sup-link:hover{color:#03C75A;}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;}
+    .chip{display:inline-flex;align-items:center;border:1px solid rgba(255,255,255,.26);background:rgba(255,255,255,.10);border-radius:999px;padding:7px 12px;color:#fff;font-size:12px;font-weight:900;}
+    .one-message{margin-top:28px;display:grid;grid-template-columns:1fr 380px;gap:18px;align-items:stretch;}
+    .message-box{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.10);border-radius:12px;padding:20px;}
+    .message-box b{display:block;font-size:15px;color:#a9f4c6;margin-bottom:8px;}
+    .message-box p{margin:0;font-size:19px;line-height:1.55;font-weight:600;}
+    .message-box p strong{font-weight:900;}
+    .mix-card{margin:20px 0 0;}
+    .mix-head h3{margin:0;font-size:18px;color:#243b5c;}
+    .mix-head h3 span{font-size:13px;color:#5a7d92;font-weight:600;margin-left:8px;}
+    .mix-note{margin:6px 0 12px;font-size:13.5px;color:#37576b;line-height:1.5;}
+    .mix-tbl{width:100%;border-collapse:collapse;font-size:14px;table-layout:fixed;}
+    .mix-tbl th{text-align:right;padding:8px 10px;font-size:12px;color:#5a7d92;border-bottom:1px solid #e3e9ee;font-weight:700;}
+    .mix-tbl th:first-child{text-align:left;}
+    .mix-tbl td{padding:9px 10px;text-align:right;border-bottom:1px solid #eef2f5;}
+    .mix-tbl td:first-child{text-align:left;font-weight:700;color:#243b5c;}
+    .mix-tbl td em{font-style:normal;font-size:11px;color:#8aa0ae;margin-left:6px;font-weight:600;}
+    .mix-tbl tr.hl td{background:#fbf4ef;}
+    .mix-tbl tr.tot td{border-top:2px solid #cdd6dd;font-weight:800;background:#f4f7f9;}
+    .mix-tbl .flat{color:#8aa0ae;font-weight:700;}
+    .mix-tbl .up{color:#0a9c53;font-weight:800;}
+    .mix-tbl .down{color:#d06a3a;font-weight:800;}
+    .mix-cap{margin:12px 0 0;font-size:13.5px;color:#37576b;line-height:1.55;background:#f4f7f9;border-left:3px solid #5a7d92;padding:10px 12px;border-radius:0 8px 8px 0;}
+    .fchart{display:flex;gap:12px;align-items:flex-end;height:152px;padding:8px 6px 0;margin:10px 0 10px;border-bottom:1px solid #eef1f6;}
+    .fbar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:0;}
+    .fbar .v{font-size:12.5px;font-weight:800;color:#37576b;margin-bottom:5px;}
+    .fbar .bar{width:100%;max-width:52px;border-radius:6px 6px 0 0;background:#c3d2dd;}
+    .fbar.hl .bar{background:#03C75A;}
+    .fbar .lb{font-size:10.5px;color:#8894a3;margin-top:7px;text-align:center;line-height:1.25;}
+    .fstat{display:flex;gap:14px;margin:8px 0 12px;}
+    .fstat .s{flex:1;background:#f4f7f9;border-radius:10px;padding:14px 16px;text-align:center;}
+    .fstat .s.main{background:#eaf8f0;}
+    .fstat .s .n{font-size:30px;font-weight:900;color:#0a9c53;line-height:1;}
+    .fstat .s.ref .n{color:#5a7d92;font-size:24px;}
+    .fstat .s .c{font-size:12px;color:#5a7d92;margin-top:7px;line-height:1.35;}
+    .role-tbl td:first-child{font-weight:800;color:#243b5c;white-space:nowrap;}
+    .role-tbl td em{font-style:normal;font-size:11px;color:#8aa0ae;margin-left:5px;font-weight:600;}
+    .period-tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin:2px 0 8px;}
+    .period-tbl th,.period-tbl td{border:1px solid #e3e9ee;padding:6px 10px;text-align:left;}
+    .period-tbl th{background:#f4f7f9;color:#5a7d92;font-weight:700;}
+    .period-tbl td:first-child{font-weight:700;color:#243b5c;white-space:nowrap;}
+    .period-tbl td:nth-child(2),.period-tbl td:nth-child(3){white-space:nowrap;color:#37576b;}
+    .period-tbl td:last-child{color:#8aa0ae;}
+    .benefit-card{background:#eaf8f0;border:1px solid #c5e9d5;border-radius:12px;padding:15px 18px;margin:2px 0 18px;}
+    .benefit-card h3{margin:0 0 11px;font-size:16px;color:#0a7a41;}
+    .benefit-list{display:grid;grid-template-columns:1fr 1fr;gap:9px 22px;}
+    .benefit-list .bi{font-size:13px;color:#2f5140;line-height:1.4;}
+    .benefit-list .bi b{color:#0a7a41;}
+    @media(max-width:720px){.benefit-list{grid-template-columns:1fr;}}
+    .compbar{display:flex;height:30px;border-radius:8px;overflow:hidden;font-size:11px;font-weight:800;color:#fff;margin:8px 0 6px;}
+    .compbar span{display:flex;align-items:center;justify-content:center;min-width:0;white-space:nowrap;padding:0 4px;}
+    .complegend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:#5a7d92;margin:0 0 2px;}
+    .complegend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+    .growbar{display:flex;flex-direction:column;gap:8px;margin:6px 0 10px;}
+    .growrow{display:flex;align-items:center;gap:10px;}
+    .growrow .gl{width:52px;font-size:12px;color:#5a7d92;font-weight:800;text-align:right;flex:none;}
+    .growrow .gt{flex:1;height:26px;position:relative;}
+    .growrow .gb{position:absolute;top:0;height:100%;border-radius:5px;}
+    .growrow .gv{flex:none;width:104px;font-size:12px;font-weight:800;}
+    .sbar-wrap{display:flex;gap:16px;align-items:flex-end;height:205px;padding:8px 8px 0;margin:10px 0 8px;border-bottom:1px solid #eef1f6;}
+    .sbar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:0;}
+    .sbar .tot{font-size:12px;font-weight:800;color:#37576b;margin-bottom:4px;}
+    .sbar .stack{width:100%;max-width:58px;border-radius:5px 5px 0 0;overflow:hidden;}
+    .sbar .seg{width:100%;}
+    .sbar .lb{font-size:10.5px;color:#8894a3;margin-top:7px;text-align:center;line-height:1.3;}
+    .liftgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:8px 0 4px;}
+    .liftcard{background:#f7f9fb;border:1px solid #e6ecf1;border-radius:12px;padding:14px 12px 12px;text-align:center;}
+    .liftcard h4{margin:0 0 8px;font-size:14px;color:#243b5c;}
+    .liftcard .lbadge{display:inline-block;background:#eaf8f0;color:#0a7a41;font-weight:800;font-size:12px;border-radius:999px;padding:3px 11px;margin-bottom:12px;}
+    .liftcard .lbars{display:flex;gap:22px;align-items:flex-end;justify-content:center;height:150px;margin-top:26px;}
+    .liftcard .lb2{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;}
+    .liftcard .lb2 i{display:block;width:40px;border-radius:5px 5px 0 0;}
+    .liftcard .lb2.base i{background:#c3d2dd;}
+    .liftcard .lb2.mid i{background:#8fb0cf;}
+    .liftcard .lb2.hi i{background:#03C75A;}
+    .liftcard .lb2 .lvv{font-size:11px;font-weight:800;color:#5a7d92;margin-bottom:4px;white-space:nowrap;}
+    .liftcard .lb2.hi .lvv{color:#0a9c53;}
+    .liftcard .lx{display:flex;gap:22px;justify-content:center;margin-top:7px;font-size:11px;color:#8894a3;}
+    .liftcard .lx span{width:40px;text-align:center;line-height:1.2;}
+    .liftcard .lshare{margin-top:9px;padding-top:8px;border-top:1px dashed #e3e9ee;font-size:11.5px;color:#5a7d92;}
+    .liftcard .lshare b{color:#243b5c;font-size:14px;}
+    .nbar-wrap{display:flex;gap:38px;align-items:flex-end;justify-content:center;height:172px;margin:6px 0 2px;}
+    .nbar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;}
+    .nbar .nv{font-size:14px;font-weight:800;color:#37576b;margin-bottom:5px;}
+    .nbar.hl .nv{color:#0a9c53;}
+    .nbar i{display:block;width:52px;border-radius:5px 5px 0 0;background:#c3d2dd;}
+    .nbar.hl i{background:#03C75A;}
+    .nlrow{display:flex;gap:38px;justify-content:center;margin-top:8px;}
+    .nlrow span{width:52px;text-align:center;font-size:12px;color:#8894a3;}
+    .acc{position:relative;padding-top:28px;margin:6px 0 4px;}
+    .acc-band{position:absolute;left:0;top:28px;width:100%;height:180px;z-index:0;}
+    .accbars{position:relative;z-index:1;display:flex;justify-content:space-around;align-items:flex-end;height:180px;border-bottom:1px solid #c8d2da;}
+    .accbar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;position:relative;}
+    .accbar .acc-nl{position:absolute;left:calc(50% + 26px);font-size:10px;font-weight:800;color:#0a9c53;white-space:nowrap;line-height:1;z-index:5;background:rgba(255,255,255,.8);padding:1px 3px;border-radius:3px;}
+    .accbar .acc-nl.hl{font-size:10.5px;}
+    .accbar .av{font-size:14px;font-weight:800;color:#37576b;margin-bottom:5px;white-space:nowrap;}
+    .accbar .stk{width:52px;border-radius:5px 5px 0 0;overflow:hidden;display:flex;flex-direction:column;}
+    .accbar .sg{width:100%;}
+    .acc-lab{position:absolute;z-index:2;left:52%;transform:translateX(-50%);top:128px;color:#0a9c53;font-weight:800;font-size:11.5px;text-align:center;line-height:1.15;}
+    .acc-x{display:flex;justify-content:space-around;margin-top:9px;}
+    .acc-x span{font-size:12px;color:#8894a3;text-align:center;}
+    .acc-x b{display:block;font-size:10.5px;color:#b0bcc7;font-weight:700;margin-top:2px;}
+    .acc-x b.hl{color:#0a9c53;}
+    .retn{display:flex;align-items:center;gap:16px;margin:12px 0 4px;}
+    .retn .src{flex:none;width:118px;text-align:center;font-size:12px;color:#5a7d92;font-weight:800;line-height:1.35;}
+    .retn .src b{display:block;color:#37576b;}
+    .retn .src em{display:block;margin-top:3px;font-style:normal;font-size:11px;color:#8aa0ae;font-weight:700;}
+    .retn .arw{flex:none;text-align:center;color:#7a8595;font-size:12px;font-weight:800;line-height:1.3;}
+    .retn .arw span{display:block;font-size:20px;font-weight:900;color:#9aa6b3;}
+    .retn .track{flex:1;height:52px;background:#eef2f5;border-radius:9px;overflow:hidden;display:flex;position:relative;}
+    .retn .fill{height:100%;background:#03C75A;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:14.5px;}
+    .retn .rest{flex:1;display:flex;align-items:center;justify-content:center;color:#8aa0ae;font-size:12.5px;font-weight:700;}
+    .hero-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .hero-kpis div{border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:13px;background:rgba(255,255,255,.08);}
+    .hero-kpis span{display:block;font-size:11px;color:#d2dae2;font-weight:800;}
+    .hero-kpis strong{display:block;margin-top:4px;color:#fff;font-size:16px;line-height:1.35;font-weight:900;}
+    .hero-kpis em{display:block;margin-top:4px;color:#cfeede;font-size:12px;line-height:1.35;font-style:normal;font-weight:800;}
+    section{padding:42px 0;}
+    .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:12px;}
+    .sec-no{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:999px;background:#e9f7ef;color:#078f45;font-size:12px;font-weight:900;}
+    h2{margin:0;font-size:27px;line-height:1.3;color:#152033;}
+    h3{margin:0 0 12px;font-size:19px;color:#202633;}
+    .lead{margin:0 0 20px;color:#536071;font-size:15px;}
+    .part-headline{margin:0 0 18px;padding:12px 16px;border:1px solid #cfead9;border-left:4px solid var(--green);border-radius:9px;background:#f1fbf5;color:#143624;font-size:16px;line-height:1.55;font-weight:500;}
+    .part-headline strong{color:#078f45;font-weight:800;}
+    .part-headline.warn{border-color:#f0dcae;border-left-color:#e0a52b;background:#fff8ec;color:#5c4a1e;}
+    .part-headline.warn strong{color:#c47f10;}
+    .definition-copy{margin:8px 0 16px;color:#7c8796;font-size:12px;line-height:1.6;}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:22px;}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+    .summary-copy{font-size:16px;color:#344052;line-height:1.8;}.summary-copy p{margin:0 0 12px;}.summary-copy strong{color:#078f45;font-weight:800;}
+    .frame-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px;}
+    .frame-card{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;}
+    .frame-card .fh{padding:12px 16px;color:#fff;font-weight:900;font-size:14px;}
+    .frame-card.a .fh,.frame-card.b .fh,.frame-card.c .fh{background:#37576b;}
+    .frame-card .fb{padding:16px;}
+    .frame-card .fb b{display:block;color:#16233a;font-size:14px;margin-bottom:10px;}
+    .frame-card .fb p{margin:0;color:#5c6774;font-size:13px;line-height:1.6;}
+    .summary-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;}
+    .summary-item{border:1px solid var(--line);background:#fff;border-radius:9px;padding:16px;}
+    .summary-item b{display:block;margin-bottom:5px;color:#078f45;}
+    .summary-item.warn b{color:#c47f10;}
+    .summary-item span{color:#5b6573;font-size:14px;line-height:1.65;}
+    .small-note{display:block;margin-top:8px;color:#7a8595;font-size:11px;line-height:1.55;}
+    table{width:100%;border-collapse:collapse;background:#fff;overflow:hidden;border-radius:9px;}
+    th,td{padding:12px 13px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:13px;}
+    th{background:#0d2a55;color:#fff;font-weight:900;}
+    tr:last-child td{border-bottom:0;}
+    td strong{color:#37576b;font-weight:900;}
+    td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;}
+    td.hlc,th.hlc{background:#eef4fb;}
+    .recommendation-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px;}
+    .recommendation-card{border:1px solid #cfe9da;background:#f7fcf9;border-radius:10px;padding:18px;}
+    .recommendation-card .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#03C75A;color:#fff;font-size:13px;font-weight:900;margin-bottom:12px;}
+    .recommendation-card b{display:block;color:#025c2b;font-size:15px;margin-bottom:8px;}
+    .recommendation-card p{margin:0;color:#526071;font-size:13px;line-height:1.6;word-break:keep-all;}
+    .callout{border-left:0;background:transparent;padding:0;color:#4a5666;line-height:1.7;}
+    .kpi3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+    .kpi3 .k{border:1px solid var(--line);border-radius:10px;padding:16px;background:#fff;text-align:center;}
+    .kpi3 .k span{display:block;color:#697386;font-size:12px;font-weight:900;}
+    .kpi3 .k b{display:block;margin-top:8px;font-size:30px;font-weight:900;color:#03a64f;}
+    .kpi3 .k.down b{color:#d06a3a;}
+    .kpi3 .k small{color:#8b96a7;font-size:11px;}
+    .kpi4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+    .kpi4 .k{border:1px solid var(--line);border-radius:10px;padding:14px;background:#fff;text-align:center;}
+    .kpi4 .k span{display:block;color:#697386;font-size:12px;font-weight:900;}
+    .kpi4 .k b{display:block;margin-top:8px;font-size:26px;font-weight:900;color:#03a64f;line-height:1;}
+    .kpi4 .k.down b{color:#d06a3a;}
+    .kpi4 .k small{display:block;margin-top:6px;color:#8b96a7;font-size:11px;}
+    .dgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+    .dvg-h{font-size:12.5px;font-weight:900;color:#4a5666;margin:0 0 8px;}
+    .dvg{display:grid;grid-template-columns:66px 1fr 60px;gap:8px;align-items:center;margin:7px 0;font-size:12.5px;}
+    .dvg .nm{color:#25324a;font-weight:800;white-space:nowrap;}
+    .dvg .trk{position:relative;height:18px;background:#f2f4f8;border-radius:4px;}
+    .dvg .zl{position:absolute;top:-3px;bottom:-3px;width:1px;background:#c3ccd8;}
+    .dvg .br{position:absolute;top:2px;height:14px;border-radius:3px;}
+    .dvg .br.pos{background:linear-gradient(90deg,#22b46a,#0a9c53);}
+    .dvg .br.neg{background:linear-gradient(90deg,#e88a5a,#d06a3a);}
+    .dvg .vl{text-align:right;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:12px;}
+    /* 관심군 교차 SOV 바 */
+    .crow{display:grid;grid-template-columns:138px 1fr;gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid #f0f2f6;}
+    .crow:last-child{border-bottom:0;}
+    .crow .cn{font-weight:900;font-size:13px;color:#16233a;}
+    .crow .cn small{display:inline-block;font-weight:800;font-size:10.5px;margin-left:5px;padding:1px 6px;border-radius:999px;}
+    .crow .cn small.s{background:#e8f7ee;color:#0a9c53;}.crow .cn small.w{background:#fbe9e2;color:#c0603a;}.crow .cn small.n{background:#eef1f4;color:#5b6573;}
+    .cbars{display:grid;gap:6px;}
+    .cbar{display:grid;grid-template-columns:60px 1fr 48px;gap:8px;align-items:center;font-size:11.5px;}
+    .cbar .lg{color:#8894a3;font-weight:800;}
+    .cbar .tr{height:14px;background:#eef1f6;border-radius:4px;overflow:hidden;}
+    .cbar .tr i{display:block;height:100%;border-radius:4px;}
+    .cbar .tr i.me{background:linear-gradient(90deg,#22b46a,#0a9c53);}
+    .cbar .tr i.cp{background:linear-gradient(90deg,#57708f,#37576b);}
+    .cbar .vv{text-align:right;font-weight:900;color:#3a4658;}
+    .arw-u{color:#0a9c53;font-weight:900;}.arw-d{color:#c0603a;font-weight:900;}
+    /* 메인 수치 블록 */
+    .bignum{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 4px;}
+    .bignum .bn{border:1px solid var(--line);border-radius:12px;background:#f8fafc;padding:18px 20px;text-align:center;}
+    .bignum .bn>b{display:block;font-size:32px;font-weight:900;line-height:1;}
+    .bignum .bn .lb{display:block;margin-bottom:8px;font-size:11.5px;font-weight:900;color:#8894a3;}
+    .bignum .bn p{margin:10px 0 0;font-weight:900;color:#16233a;font-size:13.5px;line-height:1.45;}
+    .bignum .bn small{display:block;margin-top:7px;color:#8894a3;font-size:11.5px;}
+    .bignum2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 4px;}
+    .bn2{border:1px solid var(--line);border-radius:12px;background:#f8fafc;padding:14px 16px;}
+    .bn2 .h{font-weight:900;color:#16233a;font-size:13.5px;margin-bottom:10px;}
+    .bn2 .r{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .bn2 .r>div{text-align:center;}
+    .bn2 .r .lb{display:block;font-size:10.5px;font-weight:900;color:#8894a3;}
+    .bn2 .r b{display:block;margin:3px 0;font-size:22px;font-weight:900;line-height:1;}
+    .bn2 .r small{display:block;color:#9aa5b8;font-size:10.5px;line-height:1.4;}
+    /* 교차율·상대교차율 2열 바 */
+    .crow2{display:grid;grid-template-columns:116px 1fr 1fr;gap:18px;align-items:center;padding:10px 0;border-bottom:1px solid #f0f2f6;}
+    .crow2:last-child{border-bottom:0;}
+    .crow2 .cn{font-weight:900;font-size:12.5px;color:#16233a;line-height:1.35;}
+    .crow2 .cn small{display:inline-block;font-weight:800;font-size:10px;margin-left:4px;padding:1px 6px;border-radius:999px;}
+    .crow2 .cn small.s{background:#e8f7ee;color:#0a9c53;}.crow2 .cn small.w{background:#fbe9e2;color:#c0603a;}.crow2 .cn small.n{background:#eef1f4;color:#5b6573;}
+    .crow2 .hh{font-size:11.5px;font-weight:900;color:#4a5666;}
+    .crow2 .hh small{display:block;font-weight:700;font-size:10.5px;color:#9aa5b8;margin-top:1px;}
+    .mp{display:grid;gap:5px;}
+    .mp .b{display:grid;grid-template-columns:1fr 44px;gap:6px;align-items:center;font-size:11px;}
+    .mp .b .tr{height:12px;background:#eef1f6;border-radius:3px;overflow:hidden;}
+    .mp .b .tr i{display:block;height:100%;border-radius:3px;}
+    .mp .b .tr i.me{background:linear-gradient(90deg,#22b46a,#0a9c53);}
+    .mp .b .tr i.cp{background:linear-gradient(90deg,#57708f,#37576b);}
+    .mp .b .v{text-align:right;font-weight:900;color:#3a4658;font-variant-numeric:tabular-nums;}
+    /* table 내 교차율·상대교차율 막대 (정렬 안정) */
+    .mrow{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:11.5px;}
+    .mtr{flex:1 1 auto;height:13px;background:#eef1f6;border-radius:3px;overflow:hidden;min-width:0;}
+    .mtr i{display:block;height:100%;border-radius:3px;}
+    .mtr i.me{background:linear-gradient(90deg,#22b46a,#0a9c53);}
+    .mtr i.cp{background:linear-gradient(90deg,#57708f,#37576b);}
+    .mv{flex:0 0 42px;text-align:right;font-weight:900;color:#3a4658;font-variant-numeric:tabular-nums;}
+    .segchip{display:inline-block;font-weight:800;font-size:10px;margin-left:5px;padding:1px 7px;border-radius:999px;vertical-align:middle;}
+    .segchip.s{background:#e8f7ee;color:#0a9c53;}.segchip.w{background:#fbe9e2;color:#c0603a;}.segchip.n{background:#eef1f4;color:#5b6573;}.segchip.v{background:#e6edf6;color:#37576b;}
+    /* 성연령 bar chart */
+    .agechart{display:flex;align-items:flex-end;justify-content:space-around;gap:8px;height:210px;border-bottom:1px solid #dfe4ec;padding-top:10px;}
+    .agecol{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;flex:1;}
+    .agebars{display:flex;align-items:flex-end;gap:5px;height:100%;}
+    .agebars i{display:block;width:16px;border-radius:3px 3px 0 0;}
+    .agebars i.m{background:#6d8a9e;}.agebars i.w{background:#d38b98;}
+    .agex{display:flex;justify-content:space-around;margin-top:8px;}
+    .agex span{flex:1;text-align:center;color:#748094;font-size:11px;font-weight:800;}
+    .legend{display:flex;gap:14px;align-items:center;font-size:12px;color:#5b6472;font-weight:800;}
+    .dot{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:5px;}
+    .chart-box{padding:18px;}
+    .chart-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;margin-bottom:8px;flex-wrap:wrap;}
+    .chart-head p{margin:0;color:#6d7787;font-size:12px;}
+    .svg-chart{width:100%;display:block;}
+    .svg-chart svg{width:100%;height:auto;display:block;overflow:visible;font-family:var(--report-font);}
+    .svg-chart svg+svg{margin-top:8px;border-top:1px solid #eef1f6;padding-top:4px;}
+    .kwmap{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
+    .kwmap .g{border:1px solid var(--line);border-radius:9px;padding:12px 14px;background:#fbfcfe;}
+    .kwmap .g b{display:inline-flex;align-items:center;font-size:13px;font-weight:900;margin-bottom:8px;color:#16233a;}
+    .kwmap .g b i{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:6px;}
+    .kwmap .kw{display:inline-block;margin:3px 5px 0 0;padding:3px 9px;border-radius:999px;background:#eef2f7;color:#4a5666;font-size:12px;font-weight:800;}
+    .search-row{display:grid;grid-template-columns:minmax(0,2fr) minmax(270px,.82fr);gap:18px;align-items:stretch;}
+    .insight-panel{border:1px solid #dbe4ee;background:#f8fafc;border-radius:10px;padding:18px;height:100%;}
+    .insight-panel h3{color:#152033;margin-bottom:4px;}
+    .kwg{padding:10px 0;border-bottom:1px solid #e6ebf2;}
+    .kwg:last-of-type{border-bottom:0;}
+    .kwg-h{display:flex;justify-content:space-between;align-items:center;font-weight:900;font-size:14px;color:#16233a;}
+    .kwg-h i{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:6px;vertical-align:middle;}
+    .kwg-k{margin-top:4px;color:#6b7686;font-size:11.5px;line-height:1.5;}
+    .insight-highlight{margin-top:12px;padding:12px 13px;border-radius:9px;background:#fff;border:1px solid #dbe4ee;color:#213347;font-weight:700;font-size:13px;line-height:1.6;}
+    /* VS 비교 레이아웃 */
+    .vs-grid{display:grid;grid-template-columns:1fr 58px 1fr;align-items:stretch;}
+    .vs-col{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;}
+    .vs-col .vh{padding:13px;text-align:center;color:#fff;font-weight:900;font-size:16px;}
+    .vs-col.me .vh{background:#37576b;}.vs-col.comp .vh{background:#243b5c;}
+    .vs-col .vsub{text-align:center;padding:12px 14px 2px;font-weight:900;color:#2b3a4f;font-size:14px;}
+    .vs-col .vsub em{display:block;color:#8894a3;font-weight:700;font-style:normal;font-size:12px;margin-top:3px;}
+    .vs-col .vrow{display:flex;gap:11px;align-items:flex-start;padding:12px 16px;}
+    .vs-col .vtag{flex:0 0 92px;display:inline-flex;align-items:center;justify-content:center;text-align:center;padding:8px 6px;border-radius:8px;font-size:12px;font-weight:900;color:#fff;line-height:1.25;}
+    .vs-col.me .vtag{background:#4a6a80;}.vs-col.comp .vtag{background:#526b89;}
+    .vs-col .vrow p{margin:0;color:#4a5666;font-size:13px;line-height:1.5;}
+    .vs-col .vrow b{color:#16233a;}
+    .vs-mid{display:grid;place-items:center;}
+    .vs-mid .vb{width:46px;height:46px;border-radius:50%;background:#0d2a55;color:#fff;display:grid;place-items:center;font-weight:900;font-size:14px;}
+    .vs-foot{margin-top:14px;border-left:4px solid #37576b;background:#eef1f4;padding:12px 16px;border-radius:0 8px 8px 0;color:#2b3a4f;font-size:13px;font-weight:700;}
+    /* 브랜드 성격 스트립 */
+    .bstrip{display:grid;gap:10px;}
+    .brow{display:grid;grid-template-columns:120px 130px 1fr 52px;gap:12px;align-items:center;font-size:13px;}
+    .brow .bn{font-weight:900;color:#16233a;}
+    .brow .bt{display:inline-flex;align-items:center;justify-content:center;padding:4px 8px;border-radius:999px;font-size:11.5px;font-weight:900;}
+    .brow .bt.disc{background:#e8f7ee;color:#078f45;}.brow .bt.deal{background:#fff1e6;color:#d06a3a;}
+    .brow .track{height:12px;background:#eef1f6;border-radius:999px;overflow:hidden;}
+    .brow .track i{display:block;height:100%;border-radius:999px;}
+    .brow .track i.g{background:linear-gradient(90deg,#22b46a,#03C75A);}.brow .track i.o{background:linear-gradient(90deg,#f0a35a,#e0802b);}
+    .brow .bv{text-align:right;font-weight:900;color:#3a4658;}
+    /* 여행지 칩 */
+    .chipset{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;}
+    .tchip{display:inline-flex;align-items:center;padding:5px 11px;border-radius:999px;font-size:12.5px;font-weight:800;background:#eef1f4;color:#3f5c72;border:1px solid #dde3ea;}
+    .tchip.o{background:#fff4ea;color:#b5651d;border-color:#f4dcc2;}
+    .maplegend{margin-top:12px;color:#8894a3;font-size:11px;}
+    .maplegend b{color:#5c6774;}
+    /* 대표 키워드 비교 (디즈니식 막대 리스트) */
+    .kwl-col{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;}
+    .kwl-head{padding:12px 14px;color:#fff;font-weight:900;font-size:14px;text-align:center;}
+    .kwl-head.me{background:#37576b;}.kwl-head.comp{background:#243b5c;}
+    .kwl-head small{display:block;font-weight:700;font-size:11.5px;opacity:.85;margin-top:2px;}
+    .kwl-cat{display:flex;align-items:center;gap:7px;background:#eef1f6;padding:7px 13px;font-size:12px;font-weight:900;color:#4a5666;border-top:1px solid #e6eaf0;}
+    .kwl-cat .ico{font-size:13px;}
+    .kwl-row{display:grid;grid-template-columns:1fr 150px;gap:12px;align-items:center;padding:9px 14px;border-top:1px solid #f2f4f8;font-size:13px;}
+    .kwl-row span{color:#25324a;font-weight:700;}
+    .kwl-row .kt{height:14px;background:#f0f2f6;border-radius:4px;overflow:hidden;}
+    .kwl-row .kt i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#5a7d92,#37576b);}
+    .kwl-row .kt i.o{background:linear-gradient(90deg,#57708f,#243b5c);}
+    /* 페르소나 카드 */
+    .persona{display:flex;gap:18px;align-items:center;border:1px solid #dde3ea;border-radius:14px;background:linear-gradient(135deg,#eef1f4,#ffffff 60%);padding:20px 22px;margin-top:6px;}
+    .persona .pa{flex:0 0 66px;height:66px;border-radius:50%;background:#e6e9ee;display:grid;place-items:center;font-size:32px;}
+    .persona .pname{display:block;font-weight:900;color:#123;font-size:16.5px;margin-bottom:7px;line-height:1.4;}
+    .persona .pb p{margin:0;color:#48566a;font-size:13.5px;line-height:1.7;}
+    .persona .pb p b{color:#37576b;}
+    .vsname{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;}
+    .vsname .nc{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;}
+    .vsname .nc.me{border-top:4px solid #37576b;}.vsname .nc.comp{border-top:4px solid #243b5c;}
+    .vsname .nc .tt{font-weight:900;font-size:14.5px;color:#16233a;margin-bottom:6px;}
+    .vsname .nc .em{font-size:12px;font-weight:800;color:#8a97a8;}
+    .vsname .nc p{margin:8px 0 0;color:#4a5666;font-size:13px;line-height:1.65;}
+    /* before/after mini bars */
+    .ba{display:flex;align-items:flex-end;justify-content:center;gap:34px;height:170px;border-bottom:1px solid #dfe4ec;position:relative;}
+    .ba .col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
+    .ba i{display:block;width:56px;border-radius:5px 5px 0 0;}
+    .ba i.pre{background:#c3ccd8;}
+    .ba i.up{background:linear-gradient(180deg,#22b46a,#0a9c53);}
+    .ba i.dn{background:linear-gradient(180deg,#e88a5a,#d06a3a);}
+    .ba.sm{gap:22px;height:150px;}.ba.sm i{width:40px;}
+    .ba .col{position:relative;}
+    .dlt{position:absolute;left:50%;transform:translateX(-50%);font-size:14px;font-weight:900;white-space:nowrap;}
+    .ba .v{margin-bottom:6px;font-size:13px;font-weight:900;color:#0b2447;}
+    .bacap{display:flex;justify-content:center;gap:52px;margin-top:9px;color:#808a98;font-weight:900;font-size:12px;}
+    /* profile persona */
+    .pcard{border:1px solid var(--line);border-radius:10px;padding:18px;background:#fff;}
+    .ptag{display:inline-flex;align-items:center;height:24px;padding:0 11px;border-radius:999px;font-size:12px;font-weight:900;color:#fff;margin-bottom:8px;}
+    .ptag.pre{background:#8b96a7;}.ptag.dur{background:var(--green);}
+    .pcard ul{margin:6px 0 0;padding-left:16px;color:#4a5666;font-size:13px;line-height:1.7;}
+    .badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;background:#eef2f7;color:#4a5666;font-size:11px;font-weight:900;margin-right:6px;}
+    .posbar{display:flex;height:16px;border-radius:4px;overflow:hidden;background:#eef1f6;}
+    .posbar i{display:block;height:100%;}
+    .footer{padding:26px 44px 44px;color:#7a8492;font-size:12px;}
+    @media (max-width:1060px){
+      .page{display:block;}.side-nav{position:relative;height:auto;padding:14px 18px;}
+      .nav-links{flex-direction:row;overflow:auto;}
+      .one-message,.grid-2,.grid-3,.frame-grid,.summary-list,.kpi3,.kpi4,.search-row,.kwmap,.vs-grid,.dgrid,.bignum,.bignum2,.recommendation-grid{grid-template-columns:1fr;}
+      .vs-mid{padding:8px 0;}.brow{grid-template-columns:1fr 1fr;}
+    }
+    @media (max-width:640px){.hero{padding:34px 20px;}.wrap{width:calc(100% - 28px);}h1{font-size:29px;}}
+  </style>
+</head>
+<body class="locked">
+  <div class="password-gate" id="passwordGate" role="dialog" aria-modal="true">
+    <form class="password-card" id="passwordForm">
+      <span class="gate-lock" aria-hidden="true">🔐</span>
+      <h2>보호된 리포트</h2>
+      <strong class="gate-report-title">에어비앤비</strong>
+      <p>이 문서는 비밀번호로 보호되어 있습니다.<br>전달받은 비밀번호를 입력해 주세요.</p>
+      <div class="gate-input-row">
+        <input id="reportPassword" type="password" autocomplete="current-password" placeholder="비밀번호" required>
+        <button type="submit">열기</button>
+      </div>
+      <p class="gate-error" id="passwordError" aria-live="polite"></p>
+      <small class="gate-footer">NAVER X TVC 대외비</small>
+    </form>
+  </div>
+
+  <div class="page">
+    <aside class="side-nav">
+      <div class="brandmark"><b>에어비앤비 TVC</b><span>NAVER 크로스캠페인</span></div>
+      <nav class="nav-links">
+        <a class="summary-link" href="#summary"><span class="nav-index">★</span>핵심요약</a>
+        <a href="#search"><span class="nav-index">01</span>검색 관심도</a>
+        <a href="#position"><span class="nav-index">02</span>검색 포지셔닝</a>
+        <a href="#profile"><span class="nav-index">03</span>광고반응자 프로파일</a>
+        <a href="#interest"><span class="nav-index">04</span>여행 관심군 SOV</a>
+        <a href="#reach"><span class="nav-index">05</span>신규유입·경쟁침투</a>
+        <a href="#branding"><span class="nav-index">S</span>월드컵 기간 브랜딩 효과 분석</a>
+        <a href="#reco"><span class="nav-index">R</span>운영 제언</a>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">TVC x NAVER Cross Campaign Report</div>
+          <h1>에어비앤비 TVC × NAVER 크로스캠페인 분석 리포트</h1>
+          <p class="hero-lead">TVC 기간(2026.07.01–07.12) 네이버 내 검색 관심도, 검색 포지셔닝, 광고 반응자 프로파일, 신규 도달·경쟁 침투를 연결해 본 브랜딩 관점 통합 리포트</p>
+          <p class="hero-note">에어비앤비는 커머스(쇼핑·전환) 데이터가 없는 논커머스 광고주로, 본 리포트는 검색 쿼리와 오디언스 프로파일 중심의 관측 데이터 비교 분석임.<br>TVC 기간이 짧고 동일 소재를 6월부터 디지털에서 지속 활용했으며 보장형DA를 TVC 전(월드컵 시즌)에 집중 집행해, 단순 전·중 효율 비교보다 질적 지표(관심 확산·오디언스·경쟁 침투)로 해석.</p>
+          <div class="chips">
+            <span class="chip">TVC 2026.07.01-07.12 (12일)</span>
+          </div>
+          <div class="one-message">
+            <div class="message-box">
+              <b>One Message</b>
+              <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
+                <li style="margin-bottom:9px">TVC 기간 <strong>브랜드·여행지 탐색 수요가 확대</strong>되었으며, 에어비앤비의 <strong>'여행지+숙소 발견형'</strong> 포지션과 <strong>경쟁사 대비 높은 SOV 침투력</strong>을 확인함.</li>
+                <li>다만 <strong>신규 유입 감소와 경쟁사 겹침 확대</strong>가 나타나, 네이버 내 형성된 관심 수요의 <strong>자사 광고 접점으로 적극 회수·경쟁 방어</strong>가 필요함.<br>→ 월드컵 시즌 보장형DA 선집행 이후의 포트폴리오 변화 영향은 신규 형성·재접점 흐름과 함께 <a href="#branding" class="sup-link" style="color:#fff">스페셜 부록</a>에서 별도 분석함.</li>
+              </ul>
+            </div>
+            <div class="hero-kpis">
+              <div><span>브랜드형 키워드</span><strong>+16%</strong><em>탐색형 키워드 +21%</em></div>
+              <div><span>발견형 포지션</span><strong>지역·여행지 56%</strong><em>경쟁평균 대비 +55%p</em></div>
+              <div><span>3040 여성 관심</span><strong>여성 68.6%</strong><em>TVC 중 검색 성별</em></div>
+              <div><span>월드컵 신규 재접점</span><strong>44.3%</strong><em>TVC '재접점 자산'으로 흡수</em></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section id="summary">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">SUMMARY</span><h2>핵심요약</h2></div>
+          <div class="card summary-copy">
+            <p>TVC 집행 중 네이버 내 <strong>브랜드·여행지 탐색 검색 수요가 확대</strong>되었고(브랜드형 +16%, 탐색형 +21%), 검색어 구조에서 에어비앤비는 경쟁사와 달리 <strong>'여행지+숙소 발견형'</strong> 포지션을 뚜렷하게 유지함. 여행 관심군 교차분석에서도 <strong>배낭여행·자유여행·국내여행 관심군과의 결합이 높게</strong> 나타났으며, 해외 권역 관심군 역시 <strong>상대교차율(SOV) 기준으로는 경쟁사 대비 높은 침투력</strong>이 확인됨. 광고 반응자 프로파일도 아침 숏폼으로 브랜드를 인지한 <strong>상단 퍼널 관심층</strong>으로, 경쟁사(숙박·항공 검색 실행층)와 결이 다름.</p>
+            <p>다만 같은 12일 동안 네이버 광고 클릭 유저 볼륨이 −30% 줄고 신규 유입 비중도 감소한 반면, 경쟁사(5사 합집합)는 광고 클릭 유저를 +13% 늘림. 단, 이 신규 비중 감소는 실제 신규가 줄었다기보다, <strong>TVC 직전 월드컵 시즌에 보장형DA를 대규모로 선집행하며 신규 접점을 미리 대량 확보→잔존</strong>시킨 데다 TVC 전→중 광고비 포트폴리오가 크게 바뀐 데서 비롯된 측면이 큼(실제 신규 형성·이월 흐름은 <a href="#branding" class="sup-link">스페셜 부록</a>에서 별도 분석). 그럼에도 TVC 기간 중 형성된 관심 수요를 자사 접점에서 회수하려면 검색·DA를 유지·증액하고, TVC 집행 중에도 브랜딩을 함께 운영하는 것이 유리함.</p>
+          </div>
+
+          <div class="card mix-card">
+            <div class="mix-head">
+              <h3>광고주 네이버 상품 믹스 변화 <span>TVC 전(6/19–6/30) → 중(7/1–7/12)</span></h3>
+              <p class="mix-note">광고주 제공 네이버 집행 데이터(상품별 광고비, VAT 제외) 기준.<br>검색·성과형DA는 유지·증액한 반면 <strong>신규 도달을 만들던 보장형DA는 축소</strong>함.<br>예산이 <strong>보장형DA(−38.1%)에서 성과형DA(GFA, +33.6%)로 이동</strong>했고 전체 네이버 광고비도 −10.6%.<br>보장형DA는 신규 유저 도달의 핵심 상품으로, 이 축소가 뒤에서 다룰 <strong>신규 유입·광고 접점 감소(노출유저 −18.6%, 클릭유저 −30%)의 직접 원인</strong>으로 해석되는 집행 환경 변화임.</p>
+            </div>
+            <table class="mix-tbl">
+              <colgroup><col style="width:34%"><col style="width:20%"><col style="width:20%"><col style="width:26%"></colgroup>
+              <thead><tr><th>상품 (계열)</th><th>광고비 (TVC 전)</th><th>광고비 (TVC 중)</th><th>변화</th></tr></thead>
+              <tbody>
+                <tr><td>브랜드검색 <em>검색</em></td><td>0.22억</td><td>0.22억</td><td class="flat">+0.0%</td></tr>
+                <tr><td>파워링크 <em>검색</em></td><td>1.07억</td><td>1.16억</td><td class="up">+9.2%</td></tr>
+                <tr><td>성과형DA·GFA <em>디스플레이</em></td><td>1.57억</td><td>2.09억</td><td class="up">+33.6%</td></tr>
+                <tr class="hl"><td>보장형DA <em>디스플레이</em></td><td>3.35억</td><td>2.07억</td><td class="down">−38.1%</td></tr>
+                <tr class="tot"><td>합계</td><td>6.20억</td><td>5.55억</td><td class="down">−10.6%</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 style="margin:24px 0 0">분석 프레임</h3>
+          <div class="frame-grid">
+            <div class="frame-card a"><div class="fh">짧은 TVC 기간</div><div class="fb"><b>12일 단기 집행</b><p>TVC 기간이 비교적 짧아(7/1–7/12), 누적 효과보다 기간 내 방향성 위주로 해석함.</p></div></div>
+            <div class="frame-card b"><div class="fh">집행 환경 변화</div><div class="fb"><b>선집행·포트폴리오 변화</b><p>보장형DA는 TVC 전(6월) 집중 집행, TVC 소재를 6월부터 디지털에서 지속 활용 → 단순 전·중 효율 비교가 부적절함.<span style="display:block;margin-top:7px;color:#8aa0ae;font-size:11.5px">※ 월드컵 시즌과 TVC 기간의 브랜딩에 대한 영향과 흐름에 대한 분석은 <a href="#branding" class="sup-link">스페셜 부록</a>에서 다룸.</span></p></div></div>
+            <div class="frame-card c"><div class="fh">브랜딩 관점</div><div class="fb"><b>질적 지표 중심</b><p>전환 데이터가 없는 논커머스 광고주로, 검색 관심 확산·오디언스 프로파일·경쟁 침투 등 질적 지표로 평가함.</p></div></div>
+          </div>
+
+          <div class="summary-list">
+            <div class="summary-item"><b>검색 관심 확대</b><span>TVC 중(7/1–7/12)이 TVC 전 동기간(6/19–6/30, 각 12일) 대비 브랜드형 키워드 +16%, 여행지·숙소 탐색형 키워드 +21% 증가. 단, 광고캠페인형 키워드는 6월부터 디지털 선집행으로 −19%(임팩트 희석).</span></div>
+            <div class="summary-item"><b>발견형 포지션 + 여행관심군 SOV 우위</b><span>에어비앤비는 지역·여행지 키워드 56%(경쟁평균 대비 +55%p) + 숙소 키워드 27%의 '발견형' 포지션으로, 프로모션·거래·CS형인 경쟁사들과는 다른 포지셔닝 구조.<br>여행 관심군 기준으로도 배낭·자유·국내여행과의 결합이 강하고, 해외 권역 관심군에서도 SOV 우위가 확인됨.</span></div>
+            <div class="summary-item"><b>상단 퍼널 인지층</b><span>광고 반응자는 아직 숙소 검색은 없이 네이버 숏폼(클립)에 강하게 반응하는 아침(6~7시) 인지층으로, 경쟁사와 다른 프로파일.</span></div>
+            <div class="summary-item warn"><b>⚠ 접점 경쟁 열위 (기회)</b><span>TVC 12일간 에어비앤비의 네이버 광고 접점과 신규 유입은 축소된 반면, 일부 경쟁사는 클릭 유저와 에어비앤비와의 공유 오디언스 접점을 확대함. TVC 기간 중 네이버 안에 형성된 수요를 네이버 광고에서 회수·방어할 필요가 확인됨. (TVC 집행 기간에 맞춰 브랜딩 믹스를 고려하는 것을 추천)</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="search">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 1</span><h2>검색 관심도 변화</h2></div>
+          <div class="part-headline">TVC 중 네이버 내 <strong>브랜드·여행지 탐색 검색 수요가 확대</strong>되었고, 특히 <strong>3040 여성층</strong>의 관심이 집중됨.</div>
+          <div class="search-row">
+            <div class="card chart-box">
+              <div class="chart-head">
+                <div><h3>키워드군별 일별 검색 추이</h3><p>절대 쿼리량이 아닌 index화 한 완화 추세선 · 네이버 통합검색창 기준<br>각 키워드군을 자기 5월~6월 평균=100으로 index화해 한 축에서 비교함.</p></div>
+                <div class="legend"><span><i class="dot" style="background:#03C75A"></i>브랜드형</span><span><i class="dot" style="background:#5a7d92"></i>탐색형</span><span><i class="dot" style="background:#e0802b"></i>광고캠페인형</span></div>
+              </div>
+              <div id="searchTrend" class="svg-chart" role="img" aria-label="키워드군별 일별 검색 추이 차트"></div>
+            </div>
+            <div class="insight-panel">
+              <h3>키워드군별 전·중 증감</h3>
+              <p style="margin:0 0 6px;color:#6b7686;font-size:12px">TVC 전(6/19–6/30) 대비 중(7/1–7/12) 동일 12일</p>
+              <div class="kwg"><div class="kwg-h"><span><i style="background:#03C75A"></i>브랜드형</span><b style="color:#03a64f">+16%</b></div><div class="kwg-k">airbnb · 에어비앤비 · 에어비엔비</div></div>
+              <div class="kwg"><div class="kwg-h"><span><i style="background:#5a7d92"></i>탐색형</span><b style="color:#5a7d92">+21%</b></div><div class="kwg-k">에어비앤비숙소 · 에어비앤비예약 · 에어비앤비후기</div></div>
+              <div class="kwg"><div class="kwg-h"><span><i style="background:#e0802b"></i>광고캠페인형</span><b style="color:#d06a3a">−19%</b></div><div class="kwg-k">에어비앤비광고 · 에어비앤비마케팅 · 에어비앤비캠페인</div></div>
+              <div class="insight-highlight">5월~6월 평균 대비 TVC 기간 브랜드형 +31%, 탐색형 +41% 수준으로 상승.<br>광고캠페인형은 6월 디지털 소재 라이브로 크게 급등한 뒤 TVC 기간 높은 수준을 유지(단, 6월 선집행 탓에 TVC 전(6월말)→중엔 −19%로 TVC 단독 효과로 해석하지 않음).</div>
+            </div>
+          </div>
+          <div class="search-row" style="margin-top:18px">
+            <div class="card">
+              <h3>TVC 중 검색 성·연령</h3>
+              <div class="legend" style="margin-bottom:8px"><span><i class="dot" style="background:#d38b98"></i>여성</span><span><i class="dot" style="background:#6d8a9e"></i>남성</span></div>
+              <div class="agechart">
+                <div class="agecol"><div class="agebars"><i class="w" style="height:2px"></i><i class="m" style="height:1px"></i></div></div>
+                <div class="agecol"><div class="agebars"><i class="w" style="height:92px"></i><i class="m" style="height:31px"></i></div></div>
+                <div class="agecol"><div class="agebars"><i class="w" style="height:150px"></i><i class="m" style="height:67px"></i></div></div>
+                <div class="agecol"><div class="agebars"><i class="w" style="height:109px"></i><i class="m" style="height:57px"></i></div></div>
+                <div class="agecol"><div class="agebars"><i class="w" style="height:43px"></i><i class="m" style="height:22px"></i></div></div>
+                <div class="agecol"><div class="agebars"><i class="w" style="height:10px"></i><i class="m" style="height:9px"></i></div></div>
+              </div>
+              <div class="agex"><span>13-18</span><span>19-29</span><span>30-39</span><span>40-49</span><span>50-59</span><span>60+</span></div>
+            </div>
+            <div class="insight-panel">
+              <h3>성·연령 인사이트</h3>
+              <div class="insight-highlight" style="margin-top:0">여성 68.6% · 20~40대 여성 중심</div>
+              <p style="margin:12px 0 0;color:#4a5666;font-size:13px;line-height:1.65">TVC 중 에어비앤비 관련 검색은 <b>20~40대 여성</b>에 집중되며 여성 우세가 뚜렷함. 30~40대가 정점이고 20대 여성도 두터운 여성 친화 관심 구조임.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="position">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 2</span><h2>검색 포지셔닝 (경쟁사 비교)</h2></div>
+          <div class="part-headline">에어비앤비는 유일한 <strong>'여행지+숙소 발견형'</strong>으로, 경쟁사(프로모션·거래·CS형)와 검색 의도 구조가 뚜렷하게 갈림.</div>
+          <p class="definition-copy">TVC 기간 각 브랜드 포함 검색어의 상위 카테고리 구성 비중 기준. 절대 쿼리량이 아닌 상대 비중·특징으로 표기하며, 경쟁사는 A~E로 마스킹함.</p>
+          <div class="card">
+            <h3>검색 의도 구조 비교</h3>
+            <p class="lead">유저가 직접 검색한 브랜드명 포함 검색어를 분석하여, 브랜드별 검색 의도와 관심 맥락을 파악함.<br>에어비앤비만 '어디로 갈까' 발견형, 경쟁사는 '얼마에·어떻게' 프로모션·거래·CS형으로 뚜렷이 갈림 — 가격이 아닌 여행지 의도 기반의 자연 유입 구조.</p>
+            <div class="vs-grid">
+              <div class="vs-col me">
+                <div class="vh">에어비앤비</div>
+                <div class="vsub">여행지·숙소 발견형<em>"어디로 갈까?"</em></div>
+                <div class="vrow"><span class="vtag">지역·여행지</span><p><b>56%</b> · 부산·제주·후쿠오카 등 국내외 여행지 발견 검색<br>경쟁사 평균 대비 +55%p</p></div>
+                <div class="vrow"><span class="vtag">숙소 탐색</span><p><b>27%</b> · 숙소·예약·후기 등 머물 곳 탐색</p></div>
+                <div class="vrow"><span class="vtag">자연 유입</span><p>가격 프로모션이 아닌 여행지 의도 기반</p></div>
+              </div>
+              <div class="vs-mid"><div class="vb">VS</div></div>
+              <div class="vs-col comp">
+                <div class="vh">경쟁사 (A~E)</div>
+                <div class="vsub">프로모션·거래·CS형<em>"얼마에·어떻게?"</em></div>
+                <div class="vrow"><span class="vtag">프로모션</span><p>할인코드·프로모션·메가세일 등 <b>가격 중심</b> 검색 (A·B)</p></div>
+                <div class="vrow"><span class="vtag">CS·예약</span><p>고객센터·환불·예약조회 등 <b>거래·CS</b> 검색 (A·C)</p></div>
+                <div class="vrow"><span class="vtag">티켓·항공</span><p>공연·티켓(D)·항공권(B) 등 <b>인접 상품</b> 검색</p></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:18px">
+            <h3>브랜드별 검색어 특징</h3>
+            <p class="lead">경쟁사는 '프로모션·거래·CS' 중심인 반면, 에어비앤비는 지역·여행지 의도 기반의 자연 유입 구조로, 가격 프로모션이 아닌 여행지 발견 수요를 끌어들이는 브랜드 포지션이 확인됨.</p>
+            <table>
+              <thead><tr><th>브랜드</th><th>검색 성격</th><th>상위 카테고리 구성</th></tr></thead>
+              <tbody>
+                <tr><td><strong>에어비앤비</strong></td><td><strong>여행지·숙소 발견형</strong></td><td>지역·여행지 56% (경쟁평균 대비 +55%p) + 숙소 27%</td></tr>
+                <tr><td>경쟁사 A</td><td>프로모션 + CS·거래</td><td>프로모션 38% + 고객센터 34%</td></tr>
+                <tr><td>경쟁사 B</td><td>프로모션·항공</td><td>가격·프로모션 68% + 항공권 14%</td></tr>
+                <tr><td>경쟁사 C</td><td>CS·거래</td><td>고객센터 40% + 예약관리 20%</td></tr>
+                <tr><td>경쟁사 D</td><td>티켓·엔터 전환</td><td>공연·티켓·엔터 91%</td></tr>
+                <tr><td>경쟁사 E</td><td>국내 숙소 + B2B</td><td>여행상품 45% + 사업·제휴 20%</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card" style="margin-top:18px">
+            <h3>대표 검색 키워드 비교</h3>
+            <p class="lead">대표 키워드에서 발견형 vs 프로모션·거래형 구조가 확연히 갈림.</p>
+            <div class="grid-2">
+              <div class="kwl-col">
+                <div class="kwl-head me">에어비앤비<small>여행지·숙소 발견형</small></div>
+                <div class="kwl-cat"><span class="ico">🏠</span>숙소·예약</div>
+                <div class="kwl-row"><span>에어비앤비 숙소</span><div class="kt"><i style="width:100%"></i></div></div>
+                <div class="kwl-cat"><span class="ico">📍</span>국내 여행지</div>
+                <div class="kwl-row"><span>부산 에어비앤비</span><div class="kt"><i style="width:26%"></i></div></div>
+                <div class="kwl-row"><span>제주 에어비앤비</span><div class="kt"><i style="width:22%"></i></div></div>
+                <div class="kwl-row"><span>제주도 에어비앤비</span><div class="kt"><i style="width:16%"></i></div></div>
+                <div class="kwl-row"><span>강릉 에어비앤비</span><div class="kt"><i style="width:13%"></i></div></div>
+                <div class="kwl-row"><span>서울 에어비앤비</span><div class="kt"><i style="width:11%"></i></div></div>
+                <div class="kwl-row"><span>대전 에어비앤비</span><div class="kt"><i style="width:9%"></i></div></div>
+                <div class="kwl-row"><span>속초 에어비앤비</span><div class="kt"><i style="width:9%"></i></div></div>
+                <div class="kwl-row"><span>광안리 에어비앤비</span><div class="kt"><i style="width:8%"></i></div></div>
+                <div class="kwl-row"><span>경주 에어비앤비</span><div class="kt"><i style="width:8%"></i></div></div>
+                <div class="kwl-row"><span>대구 에어비앤비</span><div class="kt"><i style="width:6%"></i></div></div>
+                <div class="kwl-cat"><span class="ico">✈️</span>해외 여행지</div>
+                <div class="kwl-row"><span>후쿠오카 에어비앤비</span><div class="kt"><i style="width:11%"></i></div></div>
+                <div class="kwl-row"><span>오사카 에어비앤비</span><div class="kt"><i style="width:7%"></i></div></div>
+                <div class="kwl-cat"><span class="ico">💡</span>브랜드·이용 이해</div>
+                <div class="kwl-row"><span>에어비앤비 뜻</span><div class="kt"><i style="width:23%"></i></div></div>
+                <div class="kwl-row"><span>에어비앤비 사업(호스트)</span><div class="kt"><i style="width:15%"></i></div></div>
+              </div>
+              <div class="kwl-col">
+                <div class="kwl-head comp">경쟁사 (A~E)<small>프로모션·거래·CS·티켓형</small></div>
+                <div class="kwl-cat"><span class="ico">🎫</span>티켓·엔터</div>
+                <div class="kwl-row"><span>경쟁사 D 티켓</span><div class="kt"><i class="o" style="width:100%"></i></div></div>
+                <div class="kwl-row"><span>경쟁사 D 페스티벌</span><div class="kt"><i class="o" style="width:33%"></i></div></div>
+                <div class="kwl-row"><span>경쟁사 D 인터파크</span><div class="kt"><i class="o" style="width:13%"></i></div></div>
+                <div class="kwl-row"><span>경쟁사 D 공연장</span><div class="kt"><i class="o" style="width:6%"></i></div></div>
+                <div class="kwl-cat"><span class="ico">🏷️</span>프로모션·할인코드</div>
+                <div class="kwl-row"><span>경쟁사 B 할인코드</span><div class="kt"><i class="o" style="width:49%"></i></div></div>
+                <div class="kwl-row"><span>경쟁사 A 할인코드</span><div class="kt"><i class="o" style="width:32%"></i></div></div>
+                <div class="kwl-row"><span>경쟁사 A 7월 할인코드</span><div class="kt"><i class="o" style="width:6%"></i></div></div>
+                <div class="kwl-row"><span>경쟁사 B 메가세일</span><div class="kt"><i class="o" style="width:3%"></i></div></div>
+                <div class="kwl-cat"><span class="ico">🎧</span>고객센터·CS</div>
+                <div class="kwl-row"><span>경쟁사 A 고객센터</span><div class="kt"><i class="o" style="width:33%"></i></div></div>
+                <div class="kwl-row"><span>경쟁사 B 고객센터</span><div class="kt"><i class="o" style="width:8%"></i></div></div>
+                <div class="kwl-row"><span>경쟁사 C 고객센터</span><div class="kt"><i class="o" style="width:4%"></i></div></div>
+                <div class="kwl-row"><span>경쟁사 A 예약취소</span><div class="kt"><i class="o" style="width:6%"></i></div></div>
+                <div class="kwl-cat"><span class="ico">✈️</span>항공·숙박</div>
+                <div class="kwl-row"><span>경쟁사 A 호텔</span><div class="kt"><i class="o" style="width:12%"></i></div></div>
+                <div class="kwl-row"><span>경쟁사 A 항공권</span><div class="kt"><i class="o" style="width:4%"></i></div></div>
+                <div class="kwl-row"><span>경쟁사 B 항공권 할인코드</span><div class="kt"><i class="o" style="width:4%"></i></div></div>
+              </div>
+            </div>
+            <p class="small-note">막대는 각 열(브랜드군) 내 최상위 키워드=100 기준의 상대 크기임(열 간 절대량 직접 비교 아님). 경쟁사는 A~E로 마스킹.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="profile">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 3</span><h2>광고 반응자 프로파일</h2></div>
+          <div class="part-headline">에어비앤비 반응자는 <strong>아침 숏폼으로 브랜드를 인지한 상단 퍼널 관심층</strong>으로, 경쟁사(숙박·항공 검색 실행층)와 접점·시간대가 다른 프로파일을 가짐.</div>
+          <p class="definition-copy">네이버 광고를 <b>클릭한 반응자 집단</b>의 관심사·검색·이용 시간대·콘텐츠 접점을 종합한 프로파일임. 각 특성의 <b>강함/약함/없음</b>을 함께 읽어 성향을 해석함.</p>
+
+          <div class="persona">
+            <div class="pa"><svg viewBox="0 0 64 64" width="46" height="46" aria-hidden="true"><path d="M11 63c0-12 9-19 21-19s21 7 21 19z" fill="#4a6a86"/><path d="M17 33c-2 0-3-2-3-5s2-4 3-4c1-8 8-13 15-13s14 5 15 13c1 0 3 1 3 4s-1 5-3 5c0 6-1 10-3 13l-3-2c2-3 2-7 2-12 0-8-5-12-11-12s-11 4-11 12c0 5 0 9 2 12l-3 2c-2-3-3-7-3-13z" fill="#70616d"/><circle cx="32" cy="28" r="11.5" fill="#eccaa6"/></svg></div>
+            <div class="pb">
+              <span class="pname">"아침 출근길, 숏폼으로 여행을 꿈꾸는 40대 초중반 직장인 여성"</span>
+              <p>평일 아침 6~7시, 모바일에서 네이버 숏폼(클립)을 보다 에어비앤비 광고를 접한 <b>40대 초중반 여성(55%)</b>이 TVC 기간 반응자의 주를 이룸. 이들은 광고를 클릭하지만 아직 '숙소 검색·예약'까지는 가지 않는 인지·관심 단계로, 여행 욕구는 있으나 구체적 검색 행동으로는 이어지지 않은 <b>비교적 상단 퍼널의 관심층</b>임.</p>
+            </div>
+          </div>
+
+          <h3 style="margin-top:24px">① 에어비앤비 페르소나 변화 — TVC 집행 전 vs 중</h3>
+          <p class="lead">TVC는 타겟을 40대 초중반 여성·숏폼 친화층으로 선명화했으나 '여행 검색 의도'는 오히려 옅어짐 → 인지된 관심층을 검색·리타겟팅으로 하향 연결하는 후속 퍼널이 관건임.</p>
+          <div style="display:grid;grid-template-columns:1fr 46px 1fr;align-items:center;gap:12px">
+            <div class="pcard">
+              <span class="ptag pre">TVC 전</span>
+              <p class="lead" style="margin:6px 0 0">넓은 34~47세 · 여성 55% · 광고를 클릭하지만 전환까지는 느린 탐색형</p>
+              <ul>
+                <li>관심 연령이 34~47세로 넓게 퍼져 있음</li>
+                <li>광고를 클릭하지만 전환까지는 잘 가지 않음(탐색형)</li>
+                <li>여행·취미·가족 관심이 고르게 분포</li>
+                <li>아침 7시 모바일 + 네이버 숏폼(클립) 접점</li>
+              </ul>
+            </div>
+            <div style="display:grid;place-items:center;color:#7a8595;font-size:30px;font-weight:900" aria-hidden="true">→</div>
+            <div class="pcard">
+              <span class="ptag dur">TVC 중</span>
+              <p class="lead" style="margin:6px 0 0">41~46세로 좁아짐 · 여성 55% · 숏폼 친화 뚜렷</p>
+              <ul>
+                <li>관심층이 <b>41~46세로 좁고 선명</b>하게 모임</li>
+                <li>광고 클릭 반응이 전반적으로 올라감</li>
+                <li><b>네이버 숏폼(클립) 접점이 더 강해짐</b> · 취미·음악 관심</li>
+                <li>아직 '숙소 검색'까지는 가지 않음(피드·영상 소비 중심)</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3 style="margin-top:26px">② 같은 여행 관심, 다른 페르소나 — 에어비앤비 vs 경쟁사</h3>
+          <div class="vsname">
+            <div class="nc me">
+              <div class="tt">에어비앤비 반응자</div>
+              <div class="em">"숏폼으로 브랜드 인지를 한 비교적 상단 퍼널의 사람"</div>
+              <p>41~46세 여성 중심. 광고는 클릭하지만 <b>아직 숙소를 검색·비교하지 않는</b> 인지 단계. 아침 6~7시 네이버 숏폼(클립)이 주 접점.</p>
+            </div>
+            <div class="nc comp">
+              <div class="tt">경쟁사 반응자 (A~E 합집합)</div>
+              <div class="em">"이미 숙소를 검색·비교 중인 사람"</div>
+              <p>38~46세 여성 중심으로 성·연령·클릭 성향은 비슷하나, <b>호텔·숙소를 적극 검색·비교</b>하는 목적 지향층. 자정(00시) 퇴근 후 검색광고가 주 접점.</p>
+            </div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <p class="callout" style="margin:0 0 14px">클릭 성향(탐색형)은 비슷하나, 경쟁사군은 이미 숙박을 '검색·비교'하는 목적 지향층인 반면 <b>에어비앤비 반응자는 검색 없이 아침 숏폼으로 브랜드를 인지</b>한 비교적 상단 퍼널 관심층임.</p>
+            <table>
+              <thead><tr><th>축</th><th>에어비앤비</th><th>경쟁사 합집합 (A~E)</th></tr></thead>
+              <tbody>
+                <tr><td>연령·성별</td><td>41~46세 / 여성 55%</td><td>38~46세(42~44 집중) / 여성 56%</td></tr>
+                <tr><td>광고 반응</td><td>광고를 클릭하지만 전환까지는 느림(탐색형)</td><td>클릭 성향 비슷(탐색형) — <strong>유사</strong></td></tr>
+                <tr><td>여행 의도</td><td><strong>아직 숙소 검색 안 함</strong>(콘텐츠 소비)</td><td>호텔·숙소를 적극 검색·비교</td></tr>
+                <tr><td>콘텐츠 접점</td><td><strong>네이버 숏폼(클립)에 강하게 반응</strong></td><td>네이버 콘텐츠 접점 약함 → 검색광고 중심</td></tr>
+                <tr><td>시간대</td><td><strong>아침 6~7시</strong></td><td>자정(00시) 퇴근 후 비교 탐색</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card" style="margin-top:18px">
+            <h3>[참고] 경쟁사별 한 줄 페르소나</h3>
+            <table>
+              <thead><tr><th>경쟁사</th><th>연령·성별</th><th>한 줄 페르소나</th><th>주 이용 시간</th><th>특징</th></tr></thead>
+              <tbody>
+                <tr><td><span class="badge">A</span>경쟁사 A</td><td>32~46세 / 여성 58.6%</td><td>해외 호텔·면세 프로모션 찾는 탐색족</td><td>자정</td><td>해외·호텔·면세점, 승무원학원 검색 두드러짐(항공 직군 혼재). 클릭 활발·전환 느림</td></tr>
+                <tr><td><span class="badge">B</span>경쟁사 B</td><td>40~49세 / 여성 57.5%</td><td>항공권 프로모션 훑는 모바일 트래블러</td><td>자정</td><td>항공·여행 액세서리, 승무원학원 검색 두드러짐, 모바일 중심. 클릭 활발·전환 느림</td></tr>
+                <tr><td><span class="badge">C</span>경쟁사 C</td><td>39~43세 여성 집중</td><td><strong>해외 항공·예약까지 실행하는 글로벌족</strong></td><td>분산</td><td>항공권·해외여행·외국어/번역(커리어·글로벌교육). <strong>검색→예약 실행형</strong></td></tr>
+                <tr><td><span class="badge">D</span>경쟁사 D</td><td>38~46세 / 여성 51%</td><td><strong>바로 예약·티켓까지 지르는 실행형</strong></td><td>아침 7시</td><td>숙박 유형을 폭넓게 검색, <strong>검색→예약이 명확</strong>, 체험·티켓 중심</td></tr>
+                <tr><td><span class="badge">E</span>경쟁사 E</td><td>40~44세(43 정점)</td><td>가격 비교하는 국내 가족여행 엄마</td><td>새벽 4시</td><td>콘도·여관·민박·펜션 가격비교, 초등 자녀 국내·가족여행. 클릭 활발·전환 느림</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="interest">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 4</span><h2>여행 관심군 SOV</h2></div>
+          <div class="part-headline">에어비앤비는 <strong>배낭·자유·국내여행 관심군에서 강한 결합</strong>을 보이며, <strong>해외 권역 관심군에서도 SOV 기준 경쟁사 대비 높은 침투력</strong>을 확보하고 있음. 다만 반응자 구성은 특정 해외 목적지형보다 <strong>개별 숙소·자유여행형 수요에 더 집중</strong>되어 있음.</div>
+          <div class="bignum2">
+            <div class="bn2">
+              <div class="h">배낭여행</div>
+              <div class="r">
+                <div><span class="lb">교차율(관심 구성)</span><b style="color:#0a9c53">56.4%</b><small>반응자의 56%가 관심군<br>경쟁사 평균의 약 8배</small></div>
+                <div><span class="lb">상대교차율(SOV)</span><b style="color:#37576b">59.2%</b><small>관심군의 59%가 반응<br>경쟁사는 1% 미만</small></div>
+              </div>
+            </div>
+            <div class="bn2">
+              <div class="h">자유여행</div>
+              <div class="r">
+                <div><span class="lb">교차율(관심 구성)</span><b style="color:#0a9c53">80.3%</b><small>반응자의 80%가 관심군<br>자유여행형 정체성</small></div>
+                <div><span class="lb">상대교차율(SOV)</span><b style="color:#37576b">9.9%</b><small>관심군의 10%가 반응<br>경쟁사는 1% 미만</small></div>
+              </div>
+            </div>
+          </div>
+          <p class="definition-copy"><b>교차율</b> = 광고반응자 중 해당 관심군 비율(내 고객의 관심 구성)<br><b>상대교차율</b> = 관심군 모수 중 광고반응자 비율(그 관심군에서의 SOV·확장 여력)<br><span style="color:#8aa0ae;font-size:12.5px">본 리포트의 여행 관심군은 네이버 광고의 관심사 타겟팅에 활용되는 내부 기준 기반 세그먼트이며, 세부 분류 조건 및 산정 로직은 공개가 어려운 점 양해 부탁드립니다.</span></p>
+
+          <div class="card">
+            <h3>① TVC 전 → 중 — 에어비앤비 반응자의 여행 관심 집중</h3>
+            <p class="callout" style="margin:0 0 14px">TVC 중 반응자는 규모는 줄었지만 <b>여행 관심이 더 집중</b>돼 대부분 관심군에서 교차율이 상승(▲). 반면 상대교차율은 반응자 수 자체가 줄며 전반 하락(▼).<br>관심 밀도는 높아졌으나 커버리지 모수는 축소됨.</p>
+            <table>
+              <thead><tr><th>여행 관심군</th><th class="num">교차율 (전 → 중)</th><th class="num">상대교차율 (전 → 중)</th></tr></thead>
+              <tbody>
+                <tr><td><strong>배낭여행</strong></td><td class="num">48.3% → <b>56.4%</b> <span class="arw-u">▲</span></td><td class="num">74.1% → 59.2% <span class="arw-d">▼</span></td></tr>
+                <tr><td><strong>국내여행</strong></td><td class="num">96.9% → <b>92.4%</b> <span class="arw-d">▼</span></td><td class="num">17.0% → 11.1% <span class="arw-d">▼</span></td></tr>
+                <tr><td>자유여행</td><td class="num">72.2% → <b>80.3%</b> <span class="arw-u">▲</span></td><td class="num">13.0% → 9.9% <span class="arw-d">▼</span></td></tr>
+                <tr><td>아시아(일본/중국)</td><td class="num">22.7% → <b>25.3%</b> <span class="arw-u">▲</span></td><td class="num">10.4% → 7.9% <span class="arw-d">▼</span></td></tr>
+                <tr><td>동남아시아</td><td class="num">17.2% → <b>19.5%</b> <span class="arw-u">▲</span></td><td class="num">10.4% → 8.1% <span class="arw-d">▼</span></td></tr>
+                <tr><td>패키지 여행</td><td class="num">17.7% → <b>19.4%</b> <span class="arw-u">▲</span></td><td class="num">9.7% → 7.3% <span class="arw-d">▼</span></td></tr>
+                <tr><td>유럽</td><td class="num">2.9% → <b>3.2%</b> <span class="arw-u">▲</span></td><td class="num">10.6% → 8.1% <span class="arw-d">▼</span></td></tr>
+                <tr><td>북미</td><td class="num">3.1% → <b>3.5%</b> <span class="arw-u">▲</span></td><td class="num">11.3% → 8.8% <span class="arw-d">▼</span></td></tr>
+                <tr><td>괌/사이판</td><td class="num">2.0% → <b>2.3%</b> <span class="arw-u">▲</span></td><td class="num">13.4% → 10.8% <span class="arw-d">▼</span></td></tr>
+                <tr><td>호주/뉴질랜드</td><td class="num">1.3% → <b>1.5%</b> <span class="arw-u">▲</span></td><td class="num">10.8% → 8.4% <span class="arw-d">▼</span></td></tr>
+              </tbody>
+            </table>
+            <p class="small-note">브랜드 성격은 교차율로, 확장 여력은 상대교차율로 해석(상대교차율은 오디언스 모수가 클수록 커짐).</p>
+          </div>
+
+          <div class="card" style="margin-top:18px">
+            <h3>② TVC 중 — 에어비앤비 vs 경쟁사 (교차율 · 상대교차율)</h3>
+            <p class="callout" style="margin:0 0 12px"><b>강점</b> — 배낭·자유·국내여행은 교차율(관심 구성)·SOV 모두 경쟁사를 크게 앞섬.<br><b>해외 권역</b> — 반응자 내 구성비(교차율)는 일부 경쟁사보다 낮지만, 관심군 내 SOV(침투력)는 경쟁사 대비 오히려 높음 → 목적지별 소재로 확장할 여지가 큰 타겟.</p>
+            <div class="legend" style="margin:2px 0 8px"><span><i class="dot" style="background:#0a9c53"></i>에어비앤비</span><span><i class="dot" style="background:#37576b"></i>경쟁사 평균</span></div>
+            <table style="table-layout:fixed">
+              <colgroup><col style="width:22%"><col style="width:39%"><col style="width:39%"></colgroup>
+              <thead><tr><th>관심군</th><th>교차율 <span style="font-weight:700;color:#9aa5b8">· 반응자의 관심 구성</span></th><th>상대교차율 <span style="font-weight:700;color:#9aa5b8">· 관심군 내 SOV·확장 여력</span></th></tr></thead>
+              <tbody>
+                <tr><td>배낭여행 <span class="segchip s">강점</span></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:56.4%"></i></div><span class="mv">56.4%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:6.9%"></i></div><span class="mv">6.9%</span></div></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:59.2%"></i></div><span class="mv">59.2%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:0.6%"></i></div><span class="mv">0.6%</span></div></td></tr>
+                <tr><td>국내여행 <span class="segchip s">강점</span></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:92.4%"></i></div><span class="mv">92.4%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:72.9%"></i></div><span class="mv">72.9%</span></div></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:11.1%"></i></div><span class="mv">11.1%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:0.7%"></i></div><span class="mv">0.7%</span></div></td></tr>
+                <tr><td>자유여행 <span class="segchip s">강점</span></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:80.3%"></i></div><span class="mv">80.3%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:88.9%"></i></div><span class="mv">88.9%</span></div></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:9.9%"></i></div><span class="mv">9.9%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:0.9%"></i></div><span class="mv">0.9%</span></div></td></tr>
+                <tr><td>아시아(일본/중국) <span class="segchip v">SOV 우위</span></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:25.3%"></i></div><span class="mv">25.3%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:41.2%"></i></div><span class="mv">41.2%</span></div></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:7.9%"></i></div><span class="mv">7.9%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:1.0%"></i></div><span class="mv">1.0%</span></div></td></tr>
+                <tr><td>동남아시아 <span class="segchip v">SOV 우위</span></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:19.5%"></i></div><span class="mv">19.5%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:33.4%"></i></div><span class="mv">33.4%</span></div></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:8.1%"></i></div><span class="mv">8.1%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:1.1%"></i></div><span class="mv">1.1%</span></div></td></tr>
+                <tr><td>패키지 여행 <span class="segchip v">SOV 우위</span></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:19.4%"></i></div><span class="mv">19.4%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:47.2%"></i></div><span class="mv">47.2%</span></div></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:7.3%"></i></div><span class="mv">7.3%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:1.5%"></i></div><span class="mv">1.5%</span></div></td></tr>
+                <tr><td>유럽 <span class="segchip v">SOV 우위</span></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:3.2%"></i></div><span class="mv">3.2%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:6.9%"></i></div><span class="mv">6.9%</span></div></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:8.1%"></i></div><span class="mv">8.1%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:1.1%"></i></div><span class="mv">1.1%</span></div></td></tr>
+                <tr><td>북미 <span class="segchip v">SOV 우위</span></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:3.5%"></i></div><span class="mv">3.5%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:5.3%"></i></div><span class="mv">5.3%</span></div></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:8.8%"></i></div><span class="mv">8.8%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:1.0%"></i></div><span class="mv">1.0%</span></div></td></tr>
+                <tr><td>괌/사이판 <span class="segchip v">SOV 우위</span></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:2.3%"></i></div><span class="mv">2.3%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:4.1%"></i></div><span class="mv">4.1%</span></div></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:10.8%"></i></div><span class="mv">10.8%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:1.5%"></i></div><span class="mv">1.5%</span></div></td></tr>
+                <tr><td>호주/뉴질랜드 <span class="segchip v">SOV 우위</span></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:1.5%"></i></div><span class="mv">1.5%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:2.8%"></i></div><span class="mv">2.8%</span></div></td><td><div class="mrow"><div class="mtr"><i class="me" style="width:8.4%"></i></div><span class="mv">8.4%</span></div><div class="mrow"><div class="mtr"><i class="cp" style="width:1.2%"></i></div><span class="mv">1.2%</span></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="reach">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 5</span><h2>신규 유입 & 경쟁 침투</h2></div>
+          <div class="part-headline warn">TVC 12일간 <strong>에어비앤비의 네이버 광고 접점과 신규 유입은 축소</strong>된 반면, 일부 경쟁사는 클릭 유저와 에어비앤비와의 공유 오디언스 접점을 확대함. <strong>TVC 기간 중 네이버 안에 형성된 수요를 네이버 광고에서 회수·방어할 필요</strong>가 확인됨.</div>
+          <p class="definition-copy">TVC 전 6/19–6/30 vs 중 7/1–7/12(각 12일, 동일 길이) 비교.<br>신규 판정 lookback window는 최근 30일 기준.<br>유저id로 잡힌 네이버 광고 노출유저 집단이며 TVC 자체 도달·총 마케팅은 미포함.</p>
+          <p class="small-note" style="background:#f4f7f9;border-left:3px solid #03C75A;border-radius:0 8px 8px 0;padding:11px 14px;margin:0 0 4px;line-height:1.7"><b>참고</b> — 여기서의 '신규 유입 축소'는 실제 신규 위축이라기보다 <b>TVC 직전 월드컵 시즌 보장형DA 대규모 선집행으로 확보한 신규의 잔존</b>과 <b>TVC 전→중 광고비 포트폴리오 변동</b>에 따른 측면이 큼.<br>신규 형성·이월의 실제 흐름은 <a href="#branding" class="sup-link">스페셜 부록</a>에서 별도로 분석함.</p>
+
+          <div class="card">
+            <p class="lead" style="margin:0 0 14px">TVC 12일간 자사 노출·클릭·신규가 모두 꺾여 네이버 내 존재감이 축소됨. TVC 중 노출유저의 89%가 이미 최근 30일 내 자사 광고에 닿은 유저로, 신규 유입이 축소됨.</p>
+            <div class="kpi4">
+              <div class="k down"><span>노출유저 변화</span><b>−18.6%</b><small>전 대비</small></div>
+              <div class="k down"><span>클릭유저 변화</span><b>−30%</b><small>전 대비</small></div>
+              <div class="k down"><span>노출신규비중</span><b>−27.0%p</b><small>37.6% → 10.6%</small></div>
+              <div class="k down"><span>클릭신규비중</span><b>−26.4%p</b><small>75.1% → 48.7%</small></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:18px">
+            <h3>상품별 상세 — 신규 붕괴는 보장형DA, 검색은 안정</h3>
+            <p class="callout" style="margin:0 0 14px">신규 유입 엔진인 보장형DA의 노출(−63%), 클릭(−41%) 유저가 감소하며 노출·클릭 신규비중이 모두 급감(78→14% / 75→38%)함.<br>TVC중 GFA는 노출·클릭유저를 늘렸지만 노출신규비중이 원래 낮아 신규 회복엔 한계.<br>반면 검색상품의 클릭신규비중은 전·중 거의 불변 → 신규 붕괴는 전적으로 디스플레이(보장형DA), 검색은 방어 가능한 지점.</p>
+            <table>
+              <thead><tr><th>상품</th><th>계열</th><th class="num">노출유저 변화</th><th class="num">클릭유저 변화</th><th class="num">노출신규비중 (전→중)</th><th class="num">클릭신규비중 (전→중)</th></tr></thead>
+              <tbody>
+                <tr><td><strong>보장형DA</strong></td><td>디스플레이</td><td class="num"><b style="color:#d06a3a">−62.9%</b></td><td class="num"><b style="color:#d06a3a">−41.0%</b></td><td class="num">78.4 → 13.5% <b style="color:#d06a3a">−64.9%p</b></td><td class="num">75.3 → 38.0% <b style="color:#d06a3a">−37.3%p</b></td></tr>
+                <tr><td>GFA(성과형DA)</td><td>디스플레이</td><td class="num"><b style="color:#0a9c53">+26.3%</b></td><td class="num"><b style="color:#0a9c53">+124.5%</b></td><td class="num">19.2 → 16.2% <b>−3.0%p</b></td><td class="num">97.5 → 96.4% <b>−1.1%p</b></td></tr>
+                <tr><td>파워링크</td><td>검색</td><td class="num">–</td><td class="num"><b style="color:#8b96a7">−2.9%</b></td><td class="num">–</td><td class="num">92.9 → 93.2% <b style="color:#0a9c53">유지</b></td></tr>
+                <tr><td>브랜드검색</td><td>검색</td><td class="num">–</td><td class="num"><b style="color:#0a9c53">+14.7%</b></td><td class="num">–</td><td class="num">76.8 → 76.7% <b style="color:#0a9c53">유지</b></td></tr>
+              </tbody>
+            </table>
+            <p class="small-note"><b>노출신규비중</b>=광고에 노출된 적 없던 유저 비중, <b>클릭신규비중</b>=클릭한 적 없던 유저 비중(각 상품 기준·최근 30일). 검색은 클릭형이라 노출 기준은 미산출(–).</p>
+          </div>
+
+          <div class="card" style="margin-top:18px">
+            <h3>에어비앤비 vs 경쟁사 — 노출·클릭·신규</h3>
+            <p class="callout" style="margin:0 0 14px">노출유저는 자사·경쟁사 모두 축소(업계 전반 디스플레이 축소).<br>클릭유저는 <b>자사 −30% vs 경쟁사 +13%</b>로 서로 다른 흐름을 보였으며, 클릭신규비중도 자사만 급락하고 경쟁사는 유지함. → 같은 기간 자사 클릭·신규 접점은 축소된 반면 경쟁사는 유지·확대되어, 네이버 안에 형성된 클릭·신규 수요를 자사가 충분히 확보하지 못한 국면.<br>단, 위에서 살펴봤듯이 자사 클릭 감소는 대부분 보장형DA 클릭 축소 탓이며 검색 클릭 자체는 안정.</p>
+            <div class="search-row" style="grid-template-columns:1.6fr 1fr;align-items:center;gap:20px">
+              <table>
+                <thead><tr><th>기준</th><th class="num">노출유저 변화</th><th class="num">클릭유저 변화</th><th class="num">노출신규비중 (전→중)</th><th class="num">클릭신규비중 (전→중)</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>에어비앤비</strong></td><td class="num"><b style="color:#d06a3a">−18.6%</b></td><td class="num"><b style="color:#d06a3a">−30.2%</b></td><td class="num">37.6 → 10.6% <b style="color:#d06a3a">−27.0%p</b></td><td class="num">75.1 → 48.7% <b style="color:#d06a3a">−26.4%p</b></td></tr>
+                  <tr><td>경쟁사(5사 합집합)</td><td class="num"><b style="color:#d06a3a">−27.5%</b></td><td class="num"><b style="color:#0a9c53">+13%</b></td><td class="num">57.6 → 46.0% <b style="color:#d06a3a">−11.6%p</b></td><td class="num">81.4 → 82.0%<br><b style="color:#0a9c53">유지</b></td></tr>
+                </tbody>
+              </table>
+              <div class="insight-panel">
+                <div class="legend" style="margin:0 0 8px;font-size:12px">클릭유저 전→중</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:230px;margin:0 auto">
+                  <div><div class="legend" style="margin-bottom:6px;font-size:11px">에어비앤비</div><div class="ba sm"><div class="col"><i class="pre" style="height:100px"></i></div><div class="col"><em class="dlt" style="bottom:76px;color:#d06a3a">−30%</em><i class="dn" style="height:70px"></i></div></div><div class="bacap"><span>전</span><span>중</span></div></div>
+                  <div><div class="legend" style="margin-bottom:6px;font-size:11px">경쟁사</div><div class="ba sm"><div class="col"><i class="pre" style="height:100px"></i></div><div class="col"><em class="dlt" style="bottom:119px;color:#0a9c53">+13%</em><i class="up" style="height:113px"></i></div></div><div class="bacap"><span>전</span><span>중</span></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:18px">
+            <h3>경쟁 지형 변화 — 도전자의 침투</h3>
+            <p class="lead">경쟁사별 <b>노출유저 변화</b>와 <b>에어비앤비 오디언스와의 겹침 변화</b>. 둘 다 증가하면 침투, 둘 다 감소하면 후퇴.</p>
+            <p class="callout" style="margin-top:8px"><b>경쟁 위협</b> — 노출유저·겹침이 <b>함께 늘어난 경쟁사 A·B·C가 에어비앤비 오디언스 영역을 파고듦</b>(침투), <b>D·E는 후퇴</b>. 경쟁사에 닿은 유저의 <b>70%+가 에어비앤비에도 닿는(침투율, 노출·클릭 기준)</b> 동일 여행 의도 오디언스로, <b>TVC 기간 여행 관심이 데워지는 시점에 에어비앤비는 접점(노출유저)을 축소한 반면 경쟁사 A·B·C는 접점을 확대</b>함 — 같은 오디언스를 둔 노출 경쟁에서 자사 커버리지가 상대적으로 밀린 국면임.</p>
+            <div class="dgrid">
+              <div>
+                <p class="dvg-h">노출유저 변화 (전 → 중)</p>
+                <div class="dvg"><span class="nm">경쟁사 A</span><div class="trk"><span class="zl" style="left:66.7%"></span><span class="br pos" style="left:66.7%;width:32.2%"></span></div><span class="vl" style="color:#0a9c53">+38.6%</span></div>
+                <div class="dvg"><span class="nm">경쟁사 B</span><div class="trk"><span class="zl" style="left:66.7%"></span><span class="br pos" style="left:66.7%;width:18.7%"></span></div><span class="vl" style="color:#0a9c53">+22.4%</span></div>
+                <div class="dvg"><span class="nm">경쟁사 C</span><div class="trk"><span class="zl" style="left:66.7%"></span><span class="br pos" style="left:66.7%;width:14.4%"></span></div><span class="vl" style="color:#0a9c53">+17.3%</span></div>
+                <div class="dvg"><span class="nm">경쟁사 D</span><div class="trk"><span class="zl" style="left:66.7%"></span><span class="br neg" style="left:49.5%;width:17.2%"></span></div><span class="vl" style="color:#d06a3a">−20.7%</span></div>
+                <div class="dvg"><span class="nm">경쟁사 E</span><div class="trk"><span class="zl" style="left:66.7%"></span><span class="br neg" style="left:2.9%;width:63.8%"></span></div><span class="vl" style="color:#d06a3a">−76.5%</span></div>
+              </div>
+              <div>
+                <p class="dvg-h">겹침(Jaccard 유사도) 변화 (전 → 중)</p>
+                <div class="dvg"><span class="nm">경쟁사 A</span><div class="trk"><span class="zl" style="left:61.5%"></span><span class="br pos" style="left:61.5%;width:36.2%"></span></div><span class="vl" style="color:#0a9c53">+47%</span></div>
+                <div class="dvg"><span class="nm">경쟁사 B</span><div class="trk"><span class="zl" style="left:61.5%"></span><span class="br pos" style="left:61.5%;width:26.2%"></span></div><span class="vl" style="color:#0a9c53">+34%</span></div>
+                <div class="dvg"><span class="nm">경쟁사 C</span><div class="trk"><span class="zl" style="left:61.5%"></span><span class="br pos" style="left:61.5%;width:16.2%"></span></div><span class="vl" style="color:#0a9c53">+21%</span></div>
+                <div class="dvg"><span class="nm">경쟁사 D</span><div class="trk"><span class="zl" style="left:61.5%"></span><span class="br neg" style="left:50.7%;width:10.8%"></span></div><span class="vl" style="color:#d06a3a">−14%</span></div>
+                <div class="dvg"><span class="nm">경쟁사 E</span><div class="trk"><span class="zl" style="left:61.5%"></span><span class="br neg" style="left:5.4%;width:56.2%"></span></div><span class="vl" style="color:#d06a3a">−73%</span></div>
+              </div>
+            </div>
+            <table style="margin-top:16px">
+              <thead><tr><th>브랜드</th><th class="num">노출유저 변화</th><th class="num">신규비중 전→중</th><th class="num">Jaccard 유사도 전→중</th><th class="num">겹침 변화</th><th>해석</th></tr></thead>
+              <tbody>
+                <tr><td><strong>에어비앤비</strong></td><td class="num"><b style="color:#d06a3a">−18.6%</b></td><td class="num">37.6 → 10.6%</td><td class="num">–</td><td class="num">–</td><td>신규 붕괴</td></tr>
+                <tr><td>경쟁사 A</td><td class="num"><b style="color:#0a9c53">+38.6%</b></td><td class="num">78.0 → 82.1%</td><td class="num">0.011 → 0.017</td><td class="num"><b style="color:#0a9c53">+47%</b></td><td>침투 확대</td></tr>
+                <tr><td>경쟁사 B</td><td class="num"><b style="color:#0a9c53">+22.4%</b></td><td class="num">44.0 → 48.5%</td><td class="num">0.083 → 0.111</td><td class="num"><b style="color:#0a9c53">+34%</b></td><td>침투 확대</td></tr>
+                <tr><td>경쟁사 C</td><td class="num"><b style="color:#0a9c53">+17.3%</b></td><td class="num">92.9 → 92.2%</td><td class="num">0.005 → 0.006</td><td class="num"><b style="color:#0a9c53">+21%</b></td><td>소폭 침투</td></tr>
+                <tr><td>경쟁사 D</td><td class="num"><b style="color:#d06a3a">−20.7%</b></td><td class="num">58.2 → 48.7%</td><td class="num">0.126 → 0.108</td><td class="num"><b style="color:#d06a3a">−14%</b></td><td>후퇴</td></tr>
+                <tr><td>경쟁사 E</td><td class="num"><b style="color:#d06a3a">−76.5%</b></td><td class="num">72.0 → 47.7%</td><td class="num">0.088 → 0.024</td><td class="num"><b style="color:#d06a3a">−73%</b></td><td>후퇴(보장형DA 미집행)</td></tr>
+              </tbody>
+            </table>
+            <p class="small-note">Jaccard 유사도: 두 집합 간 공통 요소 비율을 전체 요소 대비 얼마나 공유하는지 측정하는 유사도 지표임. 단, 겹침 변화는 <b>두 브랜드에 동시 노출된 접점의 변화</b>를 나타낼 뿐, 수요의 실제 이동(에어비앤비→경쟁사)이나 카테고리 전체 수요·집행량 변화와는 구분되지 않음 — 인과가 아닌 접점 확대/축소 현상으로 해석함.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="branding">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no" style="white-space:nowrap">SPECIAL SUPPLEMENT</span><h2>월드컵 기간 브랜딩과 TVC 집행기간 브랜딩의 영향·흐름 분석</h2></div>
+          <p class="small-note" style="background:#f4f7f9;border-left:3px solid #03C75A;border-radius:0 8px 8px 0;padding:12px 15px;margin:0 0 16px;line-height:1.75;font-size:13px;color:#37576b">※ <b>스페셜 부록으로 따로 다룬 배경</b> — PART 1~5는 <b>TVC 기간(7/1~7/12) 단일 관측</b>을 기준으로 한 비교 분석. 반면 본 파트는 <b>평월·월드컵·TVC 전·후 전체를 가로지르는</b> 기간 축·데이터 기준이 기존 TVC 분석 템플릿과 사뭇 달라 <b>추가 인사이트를 별도로 첨부</b>함. (본문 PART 5의 '신규 유입 감소'가 실제 신규 위축이 아니라 <b>선행 브랜딩·포트폴리오 변동에 따른 현상</b>임을 여기서 다룸.)</p>
+          <div class="part-headline">TVC 집행 전 <strong>월드컵 기간에 보장형DA로 브랜딩</strong>을 집중해, 네이버 안에서 신규 유저 풀을 <strong>평시의 약 2.3배</strong>로 미리 확대함. 이렇게 확보한 신규의 <strong>44.3%가 TVC 기간에 다시 광고 접점</strong>으로 이어져, <strong>보장형DA가 수요를 먼저 데워 TVC 기간으로 넘겨주는 역할</strong>을 함. 또한 월드컵 기간에 확보한 신규 유저는 TVC 기간에 다시 만났을 때 <strong>클릭 반응(관여)이 더 높아지는 효과(lift)</strong>도 확인됨.</div>
+          <table class="period-tbl">
+            <thead><tr><th>구간</th><th>기간</th><th>일수</th><th>비고</th></tr></thead>
+            <tbody>
+              <tr><td>평월</td><td>2026.05.22–06.10</td><td>20일</td><td>평시 기준</td></tr>
+              <tr><td>월드컵 기간</td><td>2026.06.11–06.30</td><td>20일</td><td>앞 PART의 'TVC 전(6/19–6/30)'은 이 구간 후반부에 해당</td></tr>
+              <tr><td>TVC 중</td><td>2026.07.01–07.12</td><td>12일</td><td>TVC 집행</td></tr>
+              <tr><td>TVC 후</td><td>2026.07.13–07.24</td><td>12일</td><td>평시 기준</td></tr>
+            </tbody>
+          </table>
+          <p class="small-note" style="margin:2px 0 16px">수치는 검색광고 노출까지 포함한 데이터 기준이며, 신규 lookback은 직전 30일.</p>
+
+          <div class="card">
+            <h3>① 월드컵 신규볼륨이 평시 대비 ×2.3 증가 — 그 견인은 보장형DA</h3>
+            <p style="margin:2px 0 12px;color:#37576b;font-size:13.5px">월드컵 기간 신규 비중이 평시(25.5%)의 약 1.5배로 오르고, 신규 규모는 평시 대비 약 2.3배. 월드컵 신규의 약 66%가 보장형DA에서 발생.<br><b>평시엔 파워링크가 신규 1위(56%)</b>였으나 <b>월드컵 기간엔 보장형DA가 66%</b>로 급부상하고, TVC중·후엔 보장형DA 축소로 다시 성과형DA(GFA)가 신규를 견인함.</p>
+            <table style="table-layout:fixed">
+              <colgroup><col style="width:22%"><col style="width:16%"><col style="width:16%"><col style="width:16%"><col style="width:15%"><col style="width:15%"></colgroup>
+              <thead><tr><th>구간</th><th class="num">신규 비중</th><th class="num">보장형DA</th><th class="num">성과형DA</th><th class="num">파워링크</th><th class="num">브랜드검색</th></tr></thead>
+              <tbody>
+                <tr><td>평월</td><td class="num">25.5%</td><td class="num">–</td><td class="num">44%</td><td class="num"><b>56%</b></td><td class="num">0.5%</td></tr>
+                <tr><td>월드컵 기간</td><td class="num"><b>39.1%</b></td><td class="num"><b style="color:#0a9c53">66%</b></td><td class="num">19%</td><td class="num">16%</td><td class="num">0.2%</td></tr>
+                <tr><td>TVC 중</td><td class="num">10.4%</td><td class="num">21%</td><td class="num"><b>48%</b></td><td class="num">32%</td><td class="num">0.3%</td></tr>
+                <tr><td>TVC 후</td><td class="num">10.4%</td><td class="num">12%</td><td class="num"><b>60%</b></td><td class="num">29%</td><td class="num">0.3%</td></tr>
+              </tbody>
+            </table>
+            <p class="small-note" style="margin:8px 0 0"><b>신규 비중 = 그 구간 접점(노출+클릭) 유저 중 신규 유저 비율.</b><br>표의 보장형DA·성과형DA·파워링크·브랜드검색 열 = 각 구간 <b>신규 유입에 기여한 상품별 비중</b>(그 구간 신규 유저의 상품 구성).</p>
+          </div>
+
+          <div class="card" style="margin-top:18px">
+            <h3>② 일평균 광고 접점 모수는 이전 구간별 획득한 신규모수가 쌓이면서 증가하고 있는 흐름</h3>
+            <p style="margin:2px 0 10px;color:#37576b;font-size:13.5px">월드컵 기간에 신규 볼륨이 평월 대비 <b>×2.3</b>로 대량 확보됐고, 이 신규가 <b>TVC 중·후엔 대부분 '기존 접점'으로 누적</b>돼 TVC 신규 비중(10.4%)은 작아 보여도 <b>실제 일평균 도달 자체는 가장 큼</b>.</p>
+            <p style="margin:2px 0 10px;color:#37576b;font-size:13.5px">막대 높이 = 구간별 <b>하루당 전체 광고 접점(도달) 볼륨</b>(평월=100 지수, 일평균).</p>
+            <div class="legend" style="margin:2px 0 10px"><span><i class="dot" style="background:#d9e0e6"></i>기존 접점</span><span><i class="dot" style="background:#03C75A"></i>신규·보장형DA</span><span><i class="dot" style="background:#5a7d92"></i>신규·성과형DA(GFA)</span><span><i class="dot" style="background:#93aab8"></i>신규·검색</span></div>
+            <div style="display:grid;grid-template-columns:1.55fr 0.85fr;gap:22px;align-items:start;position:relative">
+              <svg viewBox="0 0 120 60" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;left:44%;top:55%;width:24%;height:34%;z-index:7;overflow:visible;pointer-events:none"><path d="M6,4 C 40,62 80,60 114,22" fill="none" stroke="#0a9c53" stroke-width="1.1" stroke-dasharray="3 3" opacity="0.7" vector-effect="non-scaling-stroke"></path><path d="M111,31 L114,22 L105,26" fill="none" stroke="#0a9c53" stroke-width="1.1" stroke-dasharray="3 3" stroke-linecap="round" stroke-linejoin="round" opacity="0.75" vector-effect="non-scaling-stroke"></path></svg>
+              <div>
+                <div class="acc">
+                  <svg class="acc-band" viewBox="0 0 480 180" preserveAspectRatio="none" aria-hidden="true">
+                    <polygon points="60,98 180,58 300,15 420,5 420,180 60,180" fill="#03C75A" opacity="0.11"></polygon>
+                    <polygon points="82,98 158,58 158,106 82,119" fill="#2a6bc4" opacity="0.14"></polygon>
+                    <line x1="82" y1="98" x2="158" y2="58" stroke="#2a6bc4" stroke-width="1.4" stroke-dasharray="5 4" opacity="0.7" vector-effect="non-scaling-stroke"></line>
+                    <line x1="82" y1="119" x2="158" y2="106" stroke="#2a6bc4" stroke-width="1.4" stroke-dasharray="5 4" opacity="0.7" vector-effect="non-scaling-stroke"></line>
+                  </svg>
+                  <div class="acc-lab">누적<br>▲</div>
+                  <div style="position:absolute;z-index:6;left:25%;transform:translateX(-50%);top:56px;background:#e9f0fb;border:1px solid #bcd0ee;color:#2a6bc4;font-weight:900;font-size:10.5px;border-radius:999px;padding:2px 8px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.06)">신규 볼륨 ×2.3 ▲</div>
+                  <div style="position:absolute;z-index:4;left:28%;right:26%;top:10px;bottom:24px;border:1.6px dashed #0a9c53;border-radius:12px;opacity:0.55;pointer-events:none"></div>
+                  <div class="accbars">
+                    <div class="accbar"><span class="av">100</span><span class="acc-nl" style="top:27px">신규 25.5%</span><div class="stk"><div class="sg" style="height:12px;background:#93aab8"></div><div class="sg" style="height:9px;background:#5a7d92"></div><div class="sg" style="height:61px;background:#d9e0e6"></div></div></div>
+                    <div class="accbar"><span class="av">148</span><span class="acc-nl hl" style="top:40px">신규 39.1%</span><div class="stk"><div class="sg" style="height:8px;background:#93aab8"></div><div class="sg" style="height:9px;background:#5a7d92"></div><div class="sg" style="height:31px;background:#03C75A"></div><div class="sg" style="height:74px;background:#d9e0e6"></div></div></div>
+                    <div class="accbar"><span class="av">201</span><span class="acc-nl" style="top:25px">신규 10.4%</span><div class="stk"><div class="sg" style="height:5px;background:#93aab8"></div><div class="sg" style="height:8px;background:#5a7d92"></div><div class="sg" style="height:4px;background:#03C75A"></div><div class="sg" style="height:148px;background:#d9e0e6"></div></div></div>
+                    <div class="accbar"><span class="av" style="color:#0a9c53">213</span><span class="acc-nl" style="top:25px">신규 10.4%</span><div class="stk"><div class="sg" style="height:5px;background:#93aab8"></div><div class="sg" style="height:11px;background:#5a7d92"></div><div class="sg" style="height:2px;background:#03C75A"></div><div class="sg" style="height:157px;background:#d9e0e6"></div></div></div>
+                  </div>
+                  <div class="acc-x"><span>평월</span><span class="hl" style="color:#0a9c53;font-weight:800">월드컵 기간</span><span>TVC 중</span><span>TVC 후</span></div>
+                </div>
+              </div>
+              <div style="background:#f4f7f9;border:1px solid #e0e7ec;border-radius:12px;padding:14px 16px;position:relative">
+                <div style="font-size:11px;font-weight:800;color:#0a9c53;margin:0 0 6px">🔍 월드컵 → TVC 구간 확대 (zoom-in)</div>
+                <p style="margin:0 0 4px;font-weight:800;color:#243b5c;font-size:13.5px">월드컵 보장형DA로 확보한 신규의 44%가 TVC 기간 '재접점 자산'으로</p>
+                <div style="max-width:440px;margin:2px auto 0">
+                  <svg viewBox="0 0 480 222" style="width:100%;height:auto;display:block" role="img" aria-label="월드컵 보장형DA 신규의 44.3%가 TVC 기간에 재접점되며 전체 도달이 누적됨">
+                    <defs><marker id="rtah" markerWidth="10" markerHeight="10" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7.5,3 L0,6 z" fill="#0a9c53"></path></marker></defs>
+                    <polygon points="64,92 220,55 371,22 371,185 64,185" fill="#03C75A" opacity="0.10"></polygon>
+                    <line x1="30" y1="185" x2="452" y2="185" stroke="#c8d2da" stroke-width="1"></line>
+                    <rect x="64" y="75" width="90" height="110" rx="7" fill="#03C75A"></rect>
+                    <text x="109" y="135" text-anchor="middle" font-size="13" font-weight="900" fill="#ffffff">신규</text>
+                    <rect x="326" y="20" width="90" height="165" rx="7" fill="#d9e0e6"></rect>
+                    <path d="M326,69 v-42 a7,7 0 0 1 7,-7 h76 a7,7 0 0 1 7,7 v42 z" fill="#03C75A"></path>
+                    <text x="371" y="62" text-anchor="middle" font-size="12" font-weight="900" fill="#ffffff">재접점</text>
+                    <path d="M152,78 C 214,18 322,6 372,40" fill="none" stroke="#0a9c53" stroke-width="3" stroke-linecap="round" marker-end="url(#rtah)"></path>
+                    <text x="240" y="58" text-anchor="middle" font-size="13" font-weight="800" fill="#0a9c53" paint-order="stroke" stroke="#ffffff" stroke-width="3.5" stroke-linejoin="round">재접점 44.3%</text>
+                    <text x="109" y="207" text-anchor="middle" font-size="12.5" font-weight="800" fill="#5a7d92">월드컵 기간</text>
+                    <text x="371" y="207" text-anchor="middle" font-size="12.5" font-weight="800" fill="#5a7d92">TVC 기간</text>
+                  </svg>
+                </div>
+                <p class="small-note" style="margin:8px 0 0">월드컵 기간 보장형DA를 통해 확보한 <b>신규 유저 중 약 44%가 이후 TVC 기간에도 다시 광고 접점을 형성</b>. → 선행 브랜딩 집행이 <b>TVC 시작 전 오디언스를 미리 확보</b>하고, <b>TVC 기간의 누적 도달 기반을 넓히는 역할</b>을 했음을 보여줌.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:18px">
+            <h3>③ 이전에 터치된 유저일수록 다음 구간에 더 반응</h3>
+            <p style="margin:2px 0 10px;color:#37576b;font-size:13.5px">사전에 보장형DA를 <b>얼마나 깊게 터치</b>(미접점 / 노출만 / 클릭)했는지에 따라, 이후 구간의 <b>광고 클릭 관여</b>가 어떻게 달라지는지 확인했으며, <b>이전에 클릭까지 한 유저일수록 다음 구간의 클릭 반응이 뚜렷이 높아짐</b>.</p>
+            <div style="background:#f4f7f9;border-radius:9px;padding:11px 14px;margin:0 0 14px;font-size:12.5px;color:#37576b;line-height:1.75">
+              <div><b style="color:#243b5c">접점 깊이</b> <span style="color:#8aa0ae">(사전 보장형DA 기준)</span> — <b>미접점</b> 광고에 닿지 않음 · <b>노출만</b> 노출됐지만 클릭은 안 함 · <b>클릭</b> 클릭까지 함</div>
+              <div style="margin-top:5px"><b style="color:#243b5c">클릭 비중</b> — 각 접점 그룹 유저 중 <b>이후 구간에 광고를 한 번이라도 클릭</b>한 유저의 비율. <span style="color:#8aa0ae">막대 높이 = 클릭 비중, 막대 위 ×N = 미접점 대비 lift.</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:112px 1fr 1fr;gap:12px 14px;align-items:stretch;margin-top:4px">
+              <div style="display:flex;align-items:center;justify-content:center;text-align:center;background:#eef2f5;border-radius:9px;padding:10px 6px;font-weight:800;color:#243b5c;font-size:12.5px;line-height:1.45">사전 접점 =<br>월드컵<br>보장형DA</div>
+              <div class="liftcard"><h4>월드컵 보장형DA → TVC 중</h4><div class="lbars"><div class="lb2 base"><b class="lvv">×1.0</b><i style="height:12px"></i></div><div class="lb2 mid"><b class="lvv">×1.5</b><i style="height:18px"></i></div><div class="lb2 hi"><b class="lvv">×12.5</b><i style="height:150px"></i></div></div><div class="lx"><span>미접점</span><span>노출만</span><span>클릭</span></div></div>
+              <div class="liftcard"><h4>월드컵 보장형DA → TVC 후</h4><div class="lbars"><div class="lb2 base"><b class="lvv">×1.0</b><i style="height:13px"></i></div><div class="lb2 mid"><b class="lvv">×1.5</b><i style="height:20px"></i></div><div class="lb2 hi"><b class="lvv">×11.8</b><i style="height:150px"></i></div></div><div class="lx"><span>미접점</span><span>노출만</span><span>클릭</span></div></div>
+              <div style="display:flex;align-items:center;justify-content:center;text-align:center;background:#eef2f5;border-radius:9px;padding:10px 6px;font-weight:800;color:#243b5c;font-size:12.5px;line-height:1.45">사전 접점 =<br>TVC 보장형DA<br>· 교집합</div>
+              <div class="liftcard"><h4>TVC 보장형DA → TVC 후</h4><div class="lbars"><div class="lb2 base"><b class="lvv">×1.0</b><i style="height:12px"></i></div><div class="lb2 mid"><b class="lvv">×1.3</b><i style="height:15px"></i></div><div class="lb2 hi"><b class="lvv">×12.9</b><i style="height:150px"></i></div></div><div class="lx"><span>미접점</span><span>노출만</span><span>클릭</span></div></div>
+              <div class="liftcard" style="background:#eef3f8;border-color:#d5e2ee"><h4>교집합 (월드컵∩TVC → TVC 후)</h4><div class="lbars" style="gap:10px"><div class="lb2 base"><b class="lvv">×1.0</b><i style="height:29px"></i></div><div class="lb2 mid"><b class="lvv">×1.9</b><i style="height:55px"></i></div><div class="lb2 mid"><b class="lvv">×2.3</b><i style="height:66px"></i></div><div class="lb2 hi"><b class="lvv">×5.3</b><i style="height:150px"></i></div></div><div class="lx" style="gap:10px"><span style="width:40px">둘다<br>미접점</span><span style="width:40px">월드컵<br>만</span><span style="width:40px">TVC<br>만</span><span style="width:40px">둘다</span></div><div class="lshare"><span style="color:#8aa0ae">기간별 겹침 기준 · 접점 = 노출+클릭 합산(깊이 미구분)</span></div></div>
+            </div>
+          </div>
+
+
+          <div class="card" style="margin-top:18px">
+            <h3>④ 접점이 깊을수록, 이후 '검색광고 반응'도 함께 증가</h3>
+            <p style="margin:2px 0 10px;color:#37576b;font-size:13.5px"><b>월드컵 보장형DA에 어떤 깊이로 접점한 유저</b>가, 이후 <b>TVC 기간에 검색광고를 얼마나 더 클릭</b>했는지 확인했으며, <b>접점이 깊을수록(미접점 → 노출만 → 클릭) 검색광고 반응 비중이 뚜렷이 높아짐</b>(클릭 유저는 미접점 대비 3.1배). 브랜딩이 넓혀 놓은 관심을 검색·리타겟팅으로 <b>수확·회수</b>할 수 있다는 의미이며, 브랜딩(신규 형성)·리타겟팅(재접점)·검색(수확)을 <b>병행</b>할 때 형성된 관심이 실제 성과로 이어질 수 있음.</p>
+            <div style="background:#f4f7f9;border-radius:9px;padding:11px 14px;margin:0 0 12px;font-size:12.5px;color:#37576b;line-height:1.75">
+              <div><b style="color:#243b5c">접점 깊이</b> <span style="color:#8aa0ae">(월드컵 보장형DA 기준 · 서로 겹치지 않는 3그룹, 합 = 월드컵 도달 전체)</span> — <b>미접점</b> 광고에 닿지 않음 · <b>노출만</b> 노출됐지만 클릭은 안 함 · <b>클릭</b> 클릭까지 함</div>
+              <div style="margin-top:5px"><b style="color:#243b5c">검색광고 반응 비중</b> — 각 그룹 유저 중 <b>이후 TVC 기간에 검색광고(파워링크·브랜드검색)를 한 번이라도 클릭</b>한 유저의 비율</div>
+            </div>
+            <div class="liftcard" style="max-width:540px;margin:0 auto">
+              <h4>월드컵 보장형DA 접점 깊이 → TVC 기간 검색광고 반응 (미접점 대비 lift)</h4>
+              <div class="lbars" style="gap:40px">
+                <div class="lb2 base"><b class="lvv">×1.0</b><i style="height:49px"></i></div>
+                <div class="lb2 mid"><b class="lvv">×1.11</b><i style="height:54px"></i></div>
+                <div class="lb2 hi"><b class="lvv">×3.08</b><i style="height:150px"></i></div>
+              </div>
+              <div class="lx" style="gap:40px"><span>미접점</span><span>노출만</span><span>클릭</span></div>
+            </div>
+            <p class="small-note" style="margin:8px 0 0">기존 '원래 검색하던 유저'의 성향도 섞여 있어, <b>보장형DA가 검색 수요를 새로 만든다기보다</b> 이미 형성한 관심을 검색으로 <b>전환·회수</b>한다고 해석됨.</p>
+          </div>
+
+          <div class="card" style="margin-top:18px">
+            <h3>⑤ DA는 더 이른 단계에서 신규 잠재 고객을 넓히는 마중물 역할을, SA는 형성된 관심을 회수하는 역할을 나눠 수행</h3>
+            <table class="role-tbl" style="table-layout:fixed">
+              <colgroup><col style="width:26%"><col style="width:28%"><col style="width:46%"></colgroup>
+              <thead><tr><th>상품</th><th>역할</th><th>근거</th></tr></thead>
+              <tbody>
+                <tr><td>보장형DA <em>DA</em></td><td>신규 획득 엔진</td><td>TVC 집행 전 월드컵 시즌에 대규모 브랜딩으로 <b>신규 유저 풀을 선제 확대</b>하고, 이 신규를 TVC 기간까지 재접점 자산으로 이어지게 한 마중물. 검색·GFA 유저까지 폭넓게 커버하면서 고유 도달도 큼.</td></tr>
+                <tr><td>성과형DA·GFA <em>DA</em></td><td>상시 워크호스</td><td>평상시 도달을 꾸준히 유지·확장하는 상시 채널로, <b>TVC·평시후 신규 유입을 교대로 견인</b>. 안정적인 재도달로 도달 기반을 지속시킴.</td></tr>
+                <tr><td>파워링크·브랜드검색 <em>SA</em></td><td>상시 대규모 검색 수확</td><td>이미 형성된 검색 수요를 <b>상시 대규모로 회수하는 수확 채널</b>. 평시 신규 유입원으로도 크지만, 브랜딩으로 새로 창출되기보다 형성된 관심을 검색에서 거둬들이는 역할.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="reco">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">RECOMMENDATION</span><h2>TVC 기간 네이버 운영 전략</h2></div>
+          <div class="card">
+            <p class="lead">TVC로 형성된 여행 관심 수요를 자사 광고 접점에서 효과적으로 회수하려면, TVC 전·중·후에 걸쳐 <strong>브랜딩·성과형DA·검색광고를 유기적으로 연계</strong>할 필요가 있음. 보장형DA는 신규 유저와 관심 기반을 형성하고, 성과형DA와 리타겟팅은 형성된 관심을 유지·전환하며, 검색광고는 확대된 브랜드·여행지 탐색 수요를 자사 접점으로 즉시 흡수하는 역할을 수행함.<br>특히 <strong>보장형DA를 TVC 직전에 집중하기보다 TVC 기간에도 지속 운영</strong>할 경우 신규 유입의 냉각을 방지하고 관심 흐름을 이어가는 데 유리할 것으로 판단됨. 실제로 TVC 직전 월드컵 시즌에 확보한 신규 유저가 TVC 기간까지 재접점으로 이어진 흐름은 <a href="#branding" class="sup-link">스페셜 부록</a>에서 확인할 수 있음.<br>향후에는 <strong>핵심 여행 관심군과 SOV 우위 권역을 중심으로 타깃과 소재를 확장</strong>하고, 광고 반응 유저를 <strong>리타겟팅·커스텀 세그먼트로 축적</strong>하여 후속 캠페인에 재활용하는 등 상품별 역할과 오디언스 활용 전략을 결합한 <strong>미디어 믹스 설계</strong>를 권장함.</p>
+            <div class="recommendation-grid" style="grid-template-columns:repeat(2,1fr)">
+              <div class="recommendation-card">
+                <span class="num">1</span>
+                <b>TVC 전·중 브랜딩 지속 운영</b>
+                <p>신규 도달의 핵심인 보장형DA를 TVC 직전에 집중하기보다 TVC 기간에도 지속 운영해 신규 유입의 냉각을 방지. 신규 유저 형성과 이월 효과에 대한 근거는 <a href="#branding" class="sup-link">스페셜 부록</a>에서 확인 가능함.</p>
+              </div>
+              <div class="recommendation-card">
+                <span class="num">2</span>
+                <b>관심 수요의 조기 전환 회수</b>
+                <p>월드컵과 TVC로 확대된 관심 접점 모수가 감소하기 전에 리타겟팅 프로모션과 성과형DA(GFA)를 연계해 신규모수의 전환을 끌어올려야함. 관심이 유지되는 시점에 회수·전환 드라이브가 필요함.</p>
+              </div>
+              <div class="recommendation-card">
+                <span class="num">3</span>
+                <b>여행지 탐색 수요의 검색 흡수</b>
+                <p>TVC 기간 증가한 브랜드·여행지·숙소 탐색 수요를 파워링크와 브랜드검색으로 즉시 흡수. 에어비앤비의 강점인 '지역·여행지+숙소' 수요를 목적지별 키워드와 소재로 연결해 자사 탐색 접점을 강화.</p>
+              </div>
+              <div class="recommendation-card">
+                <span class="num">4</span>
+                <b>핵심 관심군 확장 및 세그먼트 활용</b>
+                <p>배낭·자유·국내여행 등 핵심 관심군은 지속 활용하고, SOV 우위가 확인된 해외 권역은 목적지별 소재로 확장. 광고 반응 유저는 리타겟팅·커스텀 세그먼트로 축적해 후속 캠페인의 재접점 대상으로 활용.</p>
+              </div>
+            </div>
+          </div>
+          <p class="small-note" style="margin-top:18px">본 리포트는 외부 마케팅 영향도 측정은 제외하고, 네이버 내 검색·광고 반응 관측 데이터 비교에 초점을 맞춘 브랜딩 관점 분석임. 분석 결과는 순수 인과 효과가 아닌 집행 기간 내 방향성으로 해석해야 하며, TVC 자체 도달·총 마케팅은 미포함임.</p>
+          <div style="min-height:60px"></div>
+        </div>
+      </section>
+
+      <footer class="footer">에어비앤비 TVC × NAVER Cross Campaign Report</footer>
+    </main>
+  </div>
+
+  <script>
+    const REPORT_YEAR='2026',REPORT_ACCOUNT_KEY='airbnb',REPORT_PASSWORD_CHECKSUM=2536666033;
+    const KEY=`tvc-report-access-${REPORT_YEAR}-${REPORT_ACCOUNT_KEY}`;
+    function checksum(v){let h=2166136261;new TextEncoder().encode(v).forEach(b=>{h^=b;h=Math.imul(h,16777619)>>>0;});return h>>>0;}
+    function unlock(){document.body.classList.remove('locked');document.getElementById('passwordGate')?.setAttribute('hidden','');window.setTimeout(()=>{if(typeof updateActiveNav==='function')updateActiveNav();if(typeof drawTrend==='function')drawTrend();},0);}
+    (function(){const f=document.getElementById('passwordForm'),i=document.getElementById('reportPassword'),e=document.getElementById('passwordError');
+      if(sessionStorage.getItem(KEY)==='unlocked'){unlock();return;} i?.focus();
+      f?.addEventListener('submit',ev=>{ev.preventDefault();if(checksum(i.value.trim())===REPORT_PASSWORD_CHECKSUM){sessionStorage.setItem(KEY,'unlocked');i.value='';e.textContent='';unlock();}else{e.textContent='비밀번호가 일치하지 않음.';i.select();}});
+    })();
+    const TREND={
+      dates:['05-01','05-02','05-03','05-04','05-05','05-06','05-07','05-08','05-09','05-10','05-11','05-12','05-13','05-14','05-15','05-16','05-17','05-18','05-19','05-20','05-21','05-22','05-23','05-24','05-25','05-26','05-27','05-28','05-29','05-30','05-31','06-01','06-02','06-03','06-04','06-05','06-06','06-07','06-08','06-09','06-10','06-11','06-12','06-13','06-14','06-15','06-16','06-17','06-18','06-19','06-20','06-21','06-22','06-23','06-24','06-25','06-26','06-27','06-28','06-29','06-30','07-01','07-02','07-03','07-04','07-05','07-06','07-07','07-08','07-09','07-10','07-11','07-12','07-13','07-14','07-15','07-16','07-17','07-18','07-19'],
+      series:[
+        {n:'브랜드형',c:'#03C75A',v:[94.7,79.8,78.7,89.4,72.5,97.2,93.6,91.5,65.8,80.9,111.5,104.5,100.0,96.8,86.9,71.7,82.4,120.9,111.9,109.5,105.6,100.7,85.5,78.4,83.3,107.9,99.0,97.1,87.7,70.8,78.3,117.9,108.8,85.1,114.3,106.2,81.6,86.3,121.6,117.8,113.6,112.0,94.4,79.6,88.5,126.2,121.4,120.9,117.5,101.7,86.7,97.3,134.2,125.7,123.7,109.4,106.3,86.7,101.0,141.5,136.9,138.2,134.2,125.4,98.4,117.4,161.8,154.1,144.0,140.9,130.2,103.3,122.1,170.7,155.9,146.5,137.5,107.5,100.7,112.8]},
+        {n:'탐색형',c:'#5a7d92',v:[110.1,85.7,92.4,84.5,85.0,92.2,77.4,87.6,72.2,99.5,102.7,99.1,92.4,85.0,82.4,86.4,91.6,105.0,103.7,103.5,101.9,101.4,105.3,85.0,90.5,95.9,94.3,89.3,86.9,83.1,88.7,102.0,109.6,93.0,100.8,93.6,86.9,102.6,108.4,118.9,95.1,103.2,86.4,93.4,99.4,115.9,105.8,110.8,118.8,107.2,108.9,109.3,119.8,111.3,120.7,105.6,108.9,99.9,117.2,140.7,145.3,153.0,139.2,124.0,123.5,138.5,156.2,158.7,141.8,141.5,125.7,133.5,157.5,182.0,157.4,148.3,137.9,134.0,120.5,126.8]},
+        {n:'광고캠페인형',c:'#e0802b',v:[41.2,30.8,20.6,20.6,20.6,10.3,92.6,30.8,10.3,30.8,51.4,41.2,30.8,20.6,10.3,10.3,20.6,82.3,10.3,10.3,41.2,20.6,10.3,20.6,20.6,51.4,20.6,41.2,41.2,30.8,30.8,123.5,144.0,226.3,92.6,164.6,144.0,82.3,133.7,246.9,102.9,113.1,195.4,205.8,164.6,164.6,113.1,185.2,267.5,360.1,133.7,216.0,185.2,113.1,195.4,360.1,226.3,61.7,195.4,113.1,144.0,113.1,82.3,226.3,205.8,174.9,133.7,144.0,185.2,133.7,205.8,144.0,102.9,61.7,82.3,123.5,82.3,30.8,185.2,277.8]}
+      ]};
+    const SVG_NS='http://www.w3.org/2000/svg';
+    function svgEl(n,a={},t=null){const e=document.createElementNS(SVG_NS,n);for(const k in a){if(a[k]!==null&&a[k]!==undefined)e.setAttribute(k,a[k]);}if(t!==null)e.textContent=t;return e;}
+    function medianSmooth(v){const med=v.map((x,i)=>{const s=v.slice(Math.max(0,i-1),i+2).slice().sort((a,b)=>a-b);return s[Math.floor(s.length/2)];});const w=[1,2,3,2,1],c=2;return med.map((x,i)=>{let t=0,tw=0;w.forEach((ww,o)=>{const j=i+o-c;if(j>=0&&j<med.length){t+=med[j]*ww;tw+=ww;}});return tw?t/tw:x;});}
+    function smoothPathD(vals,x,y){const p=vals.map((v,i)=>({x:x(i),y:y(v)}));let d=`M ${p[0].x.toFixed(1)} ${p[0].y.toFixed(1)}`;for(let i=0;i<p.length-1;i++){const p0=p[Math.max(0,i-1)],p1=p[i],p2=p[i+1],p3=p[Math.min(p.length-1,i+2)];const c1x=p1.x+(p2.x-p0.x)/6,c1y=p1.y+(p2.y-p0.y)/6,c2x=p2.x-(p3.x-p1.x)/6,c2y=p2.y-(p3.y-p1.y)/6;d+=` C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;}return d;}
+    function drawChart(cfg){
+      const dates=TREND.dates,w=980,h=cfg.h,pad={l:52,r:18,t:24,b:cfg.showX?36:14};
+      const plotW=w-pad.l-pad.r,plotH=h-pad.t-pad.b,yMin=cfg.yMin,yMax=cfg.yMax,step=cfg.step;
+      const x=i=>pad.l+(i/(dates.length-1))*plotW;
+      const y=v=>pad.t+plotH-((Math.max(yMin,Math.min(yMax,v))-yMin)/(yMax-yMin))*plotH;
+      const svg=svgEl('svg',{viewBox:`0 0 ${w} ${h}`,role:'img','aria-label':cfg.title});
+      svg.appendChild(svgEl('rect',{x:0,y:0,width:w,height:h,fill:'#fff'}));
+      const bs=dates.indexOf('07-01'),be=dates.indexOf('07-12');
+      if(bs>=0&&be>=0){svg.appendChild(svgEl('rect',{x:x(bs),y:pad.t,width:Math.max(1,x(be)-x(bs)),height:plotH,fill:'#03C75A',opacity:.09}));if(cfg.bandLabel)svg.appendChild(svgEl('text',{x:x(bs)+8,y:pad.t+15,fill:'#078f45','font-size':12,'font-weight':800},'TVC 집행 (7/1–7/12)'));}
+      for(let tick=yMin;tick<=yMax+0.01;tick+=step){const yy=y(tick);svg.appendChild(svgEl('line',{x1:pad.l,y1:yy,x2:w-pad.r,y2:yy,stroke:tick===100?'#b8c2d0':'#eef1f6','stroke-width':tick===100?1.4:1,'stroke-dasharray':tick===100?'5 4':null}));svg.appendChild(svgEl('text',{x:pad.l-8,y:yy+4,fill:'#9aa5b2','font-size':11,'text-anchor':'end'},String(tick)));}
+      const jm=dates.indexOf('06-01');if(jm>=0){svg.appendChild(svgEl('line',{x1:x(jm),y1:pad.t,x2:x(jm),y2:pad.t+plotH,stroke:'#c9b483','stroke-width':1.2,'stroke-dasharray':'4 4'}));if(cfg.bandLabel)svg.appendChild(svgEl('text',{x:x(jm)+6,y:pad.t+plotH-8,fill:'#a98a3a','font-size':10.5,'font-weight':800},'6월 디지털 소재 라이브'));}
+      if(cfg.showX)['05-01','06-01','07-01','07-12','07-19'].forEach(d=>{const i=dates.indexOf(d);if(i>=0)svg.appendChild(svgEl('text',{x:x(i),y:h-12,fill:'#8894a3','font-size':11,'text-anchor':'middle'},d));});
+      svg.appendChild(svgEl('text',{x:pad.l,y:13,fill:'#5b6573','font-size':11.5,'font-weight':800},cfg.title));
+      cfg.series.forEach(s=>{svg.appendChild(svgEl('path',{d:smoothPathD(medianSmooth(s.v),x,y),fill:'none',stroke:s.c,'stroke-width':2.6,'stroke-linecap':'round','stroke-linejoin':'round'}));});
+      return svg;
+    }
+    function drawTrend(){
+      const t=document.getElementById('searchTrend');if(!t)return;t.innerHTML='';
+      t.appendChild(drawChart({series:TREND.series,yMin:0,yMax:250,step:50,h:340,title:'키워드군별 일별 검색 추이 · index(5월~6월 평균=100)',showX:true,bandLabel:true}));
+    }
+    if(document.fonts&&document.fonts.ready){document.fonts.ready.then(drawTrend);}else{drawTrend();}
+    drawTrend();
+    function updateActiveNav(){
+      const links=Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+      const sections=links.map(l=>document.querySelector(l.getAttribute('href'))).filter(Boolean);
+      if(!sections.length)return;
+      const marker=window.scrollY+Math.max(140,window.innerHeight*0.24);
+      let cur=sections[0];sections.forEach(s=>{if(s.offsetTop<=marker)cur=s;});
+      if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-12)cur=sections[sections.length-1];
+      links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')===`#${cur.id}`));
+    }
+    updateActiveNav();
+    window.addEventListener('scroll',updateActiveNav,{passive:true});
+    window.addEventListener('resize',updateActiveNav);
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(l=>l.addEventListener('click',()=>window.setTimeout(updateActiveNav,120)));
+  </script>
+</body>
+</html>
