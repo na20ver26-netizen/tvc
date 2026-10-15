@@ -1,0 +1,1439 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>한샘 TVC x NAVER 성과 리포트</title>
+  <style>
+    @font-face {
+      font-family:"NanumSquareNEO";
+      font-style:normal;
+      font-weight:300;
+      font-display:swap;
+      src:local("NanumSquareNeoTTF-aLt"), local("NanumSquareNeo Light"), url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.woff") format("woff");
+    }
+    @font-face {
+      font-family:"NanumSquareNEO";
+      font-style:normal;
+      font-weight:400;
+      font-display:swap;
+      src:local("NanumSquareNeoTTF-bRg"), local("NanumSquareNeo Regular"), url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff") format("woff");
+    }
+    @font-face {
+      font-family:"NanumSquareNEO";
+      font-style:normal;
+      font-weight:700;
+      font-display:swap;
+      src:local("NanumSquareNeoTTF-cBd"), local("NanumSquareNeo Bold"), url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff") format("woff");
+    }
+    @font-face {
+      font-family:"NanumSquareNEO";
+      font-style:normal;
+      font-weight:800;
+      font-display:swap;
+      src:local("NanumSquareNeoTTF-dEb"), local("NanumSquareNeo ExtraBold"), url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff") format("woff");
+    }
+    @font-face {
+      font-family:"NanumSquareNEO";
+      font-style:normal;
+      font-weight:900;
+      font-display:swap;
+      src:local("NanumSquareNeoTTF-eHv"), local("NanumSquareNeo Heavy"), url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.woff") format("woff");
+    }
+    :root {
+      --navy:#0b2447;
+      --navy2:#183b65;
+      --green:#03C75A;
+      --ink:#202633;
+      --muted:#697386;
+      --line:#e4e8ef;
+      --soft:#f5f7fb;
+      --card:#ffffff;
+      --blue:#1b84e7;
+      --violet:#715cff;
+      --orange:#e0802b;
+      --shadow:0 16px 42px rgba(12,36,71,.10);
+      --report-font:"NanumSquareNEO","NanumSquareNeo","NanumSquare Neo",sans-serif;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--soft); color:var(--ink); font-family:var(--report-font); line-height:1.58; letter-spacing:0; word-break:keep-all; overflow-wrap:break-word; }
+    body.locked { overflow:hidden; background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 58%, #0f6c73 100%); }
+    body.locked .page, body.locked > svg { display:none; }
+    a { color:inherit; text-decoration:none; }
+    .password-gate { position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:24px; background:#12345a; }
+    body:not(.locked) .password-gate { display:none; }
+    .password-card { width:min(380px, 100%); min-height:372px; border-radius:18px; padding:38px 30px 30px; background:#fff; box-shadow:0 28px 80px rgba(3,18,38,.28); text-align:center; }
+    .gate-lock { display:block; margin-bottom:12px; font-size:34px; line-height:1; }
+    .password-card h2 { margin:0; color:var(--navy); font-size:20px; line-height:1.35; font-weight:900; }
+    .gate-report-title { display:block; margin-top:8px; color:#2f3a4b; font-size:14px; font-weight:900; }
+    .password-card p { margin:10px 0 22px; color:#647085; font-size:14px; line-height:1.55; }
+    .gate-input-row { display:grid; gap:12px; }
+    .gate-input-row input { width:100%; height:44px; border:1.5px solid var(--green); border-radius:9px; padding:0 14px; font:inherit; color:var(--ink); outline:none; text-align:center; }
+    .gate-input-row input:focus { box-shadow:0 0 0 3px rgba(3,199,90,.13); }
+    .gate-input-row button { width:100%; height:46px; border:0; border-radius:9px; background:#08c95a; color:#fff; font:inherit; font-weight:900; cursor:pointer; }
+    .gate-input-row button:hover { background:#02b653; }
+    .gate-error { min-height:18px; margin:9px 0 0 !important; color:#d53f3f !important; font-size:12px !important; font-weight:800; }
+    .gate-footer { display:block; margin-top:28px; color:#9aa5b8; font-size:11px; line-height:1.5; }
+    .page { display:grid; grid-template-columns:236px minmax(0,1fr); min-height:100vh; }
+    .side-nav { position:sticky; top:0; height:100vh; padding:26px 18px; background:#fff; border-right:1px solid var(--line); box-shadow:8px 0 26px rgba(20,37,61,.04); z-index:5; }
+    .brandmark { display:flex; flex-direction:column; gap:4px; margin-bottom:24px; }
+    .brandmark b { font-size:18px; color:var(--navy); }
+    .brandmark span { font-size:12px; color:var(--muted); font-weight:800; }
+    .nav-links { display:flex; flex-direction:column; gap:7px; }
+    .nav-links a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:900; color:#475164; border:1px solid transparent; transition:background .18s ease, color .18s ease, border-color .18s ease; }
+    .nav-links a:hover { color:var(--navy); background:#edf7f2; }
+    .nav-links a.summary-link { font-size:14px; }
+    .nav-links a.active { background:#e8f7ee; color:#078f45; border-color:#bfe8cf; }
+    .nav-index { width:22px; color:#8b96a7; font-size:11px; font-weight:900; }
+    .nav-links a.active .nav-index { color:#078f45; }
+    .nav-note { position:absolute; left:18px; right:18px; bottom:22px; padding:12px; border-radius:8px; background:#f4f8fb; color:#6b7380; font-size:11px; }
+    main { min-width:0; }
+    .hero { color:#fff; background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 58%, #0f6c73 100%); padding:46px 44px 40px; }
+    .wrap { width:min(1180px, calc(100% - 36px)); margin:0 auto; }
+    .eyebrow { color:#8af0b5; font-size:12px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; margin-bottom:12px; }
+    h1 { margin:0; font-size:38px; line-height:1.15; font-weight:900; }
+    .hero-lead { max-width:none; margin:18px 0 0; color:#edf7ff; font-size:14px; line-height:1.7; white-space:nowrap; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; }
+    .chip { display:inline-flex; align-items:center; border:1px solid rgba(255,255,255,.26); background:rgba(255,255,255,.10); border-radius:999px; padding:7px 12px; color:#fff; font-size:12px; font-weight:900; }
+    .one-message { margin-top:28px; display:grid; grid-template-columns:1fr 380px; gap:18px; align-items:stretch; }
+    .message-box { border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.10); border-radius:12px; padding:20px; }
+    .message-box b { display:block; font-size:15px; color:#a9f4c6; margin-bottom:8px; }
+    .message-box p { margin:0; font-size:20px; line-height:1.5; font-weight:900; }
+    .scope-note { display:block; margin-top:14px; padding:10px 12px; border-radius:8px; background:rgba(255,255,255,.12); color:#eef8ff; font-size:13px; line-height:1.6; font-weight:700; }
+    .scope-note b { font-weight:900; }
+    .scope-note span { font-weight:400; opacity:.92; }
+    .hero-kpis { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .hero-kpis div { border:1px solid rgba(255,255,255,.18); border-radius:10px; padding:13px; background:rgba(255,255,255,.08); min-width:0; }
+    .hero-kpis span { display:block; font-size:11px; color:#c7dded; font-weight:800; }
+    .hero-kpis strong { display:block; margin-top:4px; color:#fff; font-size:16px; line-height:1.35; font-weight:900; }
+    .hero-kpis em { display:block; margin-top:4px; color:#fff; font-size:16px; line-height:1.35; font-style:normal; font-weight:900; }
+    section { padding:42px 0; }
+    .sec-head { display:flex; align-items:center; gap:13px; margin-bottom:12px; }
+    .sec-no { display:inline-flex; align-items:center; height:28px; padding:0 10px; border-radius:999px; background:#e9f7ef; color:#078f45; font-size:12px; font-weight:900; }
+    h2 { margin:0; font-size:27px; line-height:1.3; color:#152033; }
+    h3 { margin:0 0 12px; font-size:19px; color:#202633; }
+    .lead { margin:0 0 20px; color:#536071; font-size:15px; }
+    .part-headline { margin:0 0 18px; padding:12px 16px; border:1px solid #cfead9; border-left:4px solid var(--green); border-radius:9px; background:#f1fbf5; color:#143624; font-size:16px; line-height:1.55; font-weight:500; }
+    .part-headline strong { color:#078f45; font-weight:800; }
+    .part-headline.subtle { border-color:#d9e2ec; border-left-color:var(--green); background:#f8fafc; }
+    .definition-copy { margin:8px 0 16px; color:#7c8796; font-size:12px; line-height:1.6; font-weight:500; }
+    .topic-card { background:#fff; border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:22px; }
+    .topic-head { margin-bottom:16px; }
+    .topic-head h3 { margin-bottom:6px; }
+    .insight-panel { border:1px solid #dbe4ee; background:#f8fafc; border-radius:10px; padding:18px; height:100%; }
+    .insight-panel h3 { color:#152033; }
+    .insight-panel p { margin:0 0 12px; color:#3d4c5d; font-size:14px; line-height:1.65; }
+    .insight-highlight { margin-top:12px; padding:13px 14px; border-radius:9px; background:#fff; border:1px solid #dbe4ee; color:#213347; font-weight:700; line-height:1.6; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:22px; }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .kpi { min-height:132px; }
+    .kpi .lab { color:#697386; font-size:12px; font-weight:900; }
+    .kpi .val { margin-top:7px; font-size:31px; line-height:1.05; font-weight:900; color:var(--navy); }
+    .kpi .val.compact { font-size:25px; line-height:1.12; }
+    .kpi .val .prev { color:#98a2af; }
+    .kpi .val .arrow { color:#aab3bf; font-size:.82em; padding:0 5px; }
+    .kpi .val .current { color:#03a64f; }
+    .kpi .desc { margin-top:8px; color:#5f6b7b; font-size:13px; }
+    .kpi .delta { display:inline-flex; margin-top:10px; padding:6px 9px; border-radius:999px; background:#e9f8ef; color:#078f45; font-size:12px; font-weight:900; }
+    .kpi.green .val { color:#03a64f; } .kpi.blue .val { color:var(--blue); } .kpi.violet .val { color:var(--violet); } .kpi.orange .val { color:var(--orange); }
+    .summary-copy { font-size:16px; color:#344052; line-height:1.8; }
+    .summary-copy p { margin:0 0 12px; }
+    .summary-list { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px; }
+    .summary-item { border:1px solid var(--line); background:#fff; border-radius:9px; padding:16px; }
+    .summary-item b { display:block; margin-bottom:5px; color:#078f45; }
+    .summary-item span { color:#5b6573; font-size:14px; line-height:1.65; }
+    .summary-item ul { margin:8px 0; padding-left:18px; color:#3e4a59; font-size:14px; line-height:1.55; }
+    .summary-item .arrow-copy { display:block; margin-top:6px; color:#445163; }
+    .small-note { display:block; margin-top:8px; color:#7a8595; font-size:11px; line-height:1.55; }
+    .chart-box { padding:18px; }
+    .chart-head { display:flex; justify-content:space-between; gap:16px; align-items:flex-end; margin-bottom:10px; }
+    .chart-head p { margin:0; color:#6d7787; font-size:12px; }
+    canvas { width:100%; max-width:100%; height:330px; display:block; }
+    .svg-chart { width:100%; height:430px; display:block; }
+    .svg-chart svg { width:100%; height:100%; display:block; overflow:visible; font-family:var(--report-font); }
+    .svg-chart text { font-family:inherit; }
+    .search-row { display:grid; grid-template-columns:minmax(0,2fr) minmax(280px,.82fr); gap:18px; align-items:stretch; }
+    .legend { display:flex; flex-wrap:wrap; gap:10px; align-items:center; font-size:12px; color:#5b6472; font-weight:800; }
+    .dot { width:9px; height:9px; border-radius:50%; display:inline-block; margin-right:4px; }
+    .hbar-wrap { display:grid; gap:10px; }
+    .hbar-row { display:grid; grid-template-columns:130px 1fr 52px; gap:10px; align-items:center; font-size:13px; }
+    .hbar { height:13px; background:#edf1f6; border-radius:999px; overflow:hidden; }
+    .hbar i { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,#2c88ff,#7762ff); }
+    .hbar-row b { color:#078f45; font-size:13px; text-align:right; }
+    .lift-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+    .lift-card { background:#fff; border:1px solid var(--line); border-radius:9px; padding:14px 12px 12px; min-height:284px; }
+    .lift-card h4 { margin:0 0 10px; text-align:center; color:#fff; background:#1685e8; border-radius:7px; padding:7px; font-size:14px; }
+    .lift-card h4.internal { background:#526b89; }
+    .lift-card h4.search { background:#1685e8; }
+    .lift-bars { position:relative; height:222px; display:flex; align-items:end; justify-content:center; gap:28px; border-bottom:1px solid #dde2ea; padding-top:58px; }
+    .lift-bars::before, .lift-bars::after { display:none; }
+    .bar-col { display:flex; flex-direction:column; align-items:center; justify-content:flex-end; min-width:48px; height:178px; position:relative; }
+    .lift-bars i { display:block; width:42px; border-radius:4px 4px 0 0; }
+    .lift-bars .base { background:#b9b9b9; }
+    .lift-bars .after { background:linear-gradient(180deg,#715cff,#1599e8); }
+    .lift-bars .after.internal { background:linear-gradient(180deg,#6d7f99,#2a9bb6); }
+    .lift-bars .downbar { background:#9198a2; }
+    .lift-label { position:absolute; top:auto; bottom:var(--label-bottom, 118px); color:#6554ff; font-size:19px; font-weight:900; white-space:nowrap; }
+    .lift-label.down { color:#66717f; }
+    .lift-card p { margin:10px 0 0; text-align:center; color:#687386; font-size:12px; }
+    .mini-lift { border:1px solid var(--line); background:#fff; border-radius:9px; padding:14px; }
+    .mini-top { display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom:10px; }
+    .mini-top span { color:#6554ff; font-weight:900; }
+    .scale { position:relative; height:20px; background:#eef2f7; border-radius:999px; overflow:hidden; }
+    .scale i { position:absolute; left:0; top:0; bottom:0; border-radius:999px; }
+    .scale .before { background:#b8bdc5; z-index:1; }
+    .scale .during { background:linear-gradient(90deg,#188ee8,#6e60ff); z-index:2; opacity:.88; }
+    .mini-lift small { display:block; margin-top:8px; color:#778292; font-size:11px; }
+    .definition-note { margin-top:14px; color:#8a95a6; font-size:11px; line-height:1.6; text-align:right; }
+    .flow { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; align-items:stretch; }
+    .flow-step { position:relative; background:#fff; border:1px solid var(--line); border-radius:10px; padding:18px; min-height:118px; }
+    .flow-step:not(:last-child)::after { content:""; position:absolute; right:-16px; top:50%; width:22px; height:2px; background:#9fb2c7; }
+    .flow-step b { display:block; color:#0f2240; margin-bottom:8px; }
+    .flow-step span { color:#5f6b7a; font-size:13px; }
+    .journey-visual { margin-top:18px; padding:26px 20px; border:1px solid var(--line); border-radius:10px; background:#fff; box-shadow:var(--shadow); }
+    .journey-visual h3 { text-align:center; margin-bottom:22px; }
+    .journey-map { position:relative; display:grid; grid-template-columns:1.25fr .95fr .7fr; gap:26px; align-items:center; min-height:370px; overflow:hidden; }
+    .route-line { position:absolute; inset:42px 80px 44px 80px; width:calc(100% - 160px); height:240px; pointer-events:none; z-index:0; }
+    .people-mark { display:block; width:220px; height:220px; margin:auto; overflow:visible; }
+    .pool-bg { fill:#fff; stroke:#e3e8ef; stroke-width:1.2; filter:drop-shadow(0 12px 22px rgba(53,80,120,.12)); }
+    .pool-people use { color:#9eb9e8; fill:currentColor; stroke:#fff; stroke-width:2; stroke-linejoin:round; paint-order:stroke fill; }
+    .journey-stage { position:relative; min-height:310px; z-index:1; }
+    .journey-stage-title { position:absolute; top:0; left:0; color:#56657a; font-size:13px; font-weight:900; }
+    .purchase-stage { display:grid; place-items:center; min-height:310px; position:relative; z-index:1; }
+    .purchase-stage .people-mark { width:220px; height:220px; }
+    .purchase-stage b { display:block; text-align:center; margin-top:12px; font-size:18px; color:#24364a; }
+    .journey-bubbles { position:relative; min-height:310px; }
+    .bubble { display:grid; place-items:center; border-radius:50%; color:#fff; text-align:center; font-weight:900; line-height:1.25; box-shadow:0 12px 26px rgba(38,74,120,.12); position:relative; flex:0 0 auto; }
+    .bubble small { position:absolute; bottom:-24px; color:#4e5b69; font-size:12px; font-weight:800; white-space:nowrap; }
+    .bubble.sa { background:linear-gradient(180deg,#ffbd78,#f27a8c); width:82px; height:82px; font-size:13px; position:absolute; }
+    .bubble.da { background:linear-gradient(180deg,#795cff,#6ac5ff); width:122px; height:122px; font-size:18px; position:absolute; }
+    .bubble.mid { width:88px; height:88px; font-size:14px; }
+    .bubble.large { width:154px; height:154px; font-size:21px; }
+    table { width:100%; border-collapse:collapse; background:#fff; overflow:hidden; border-radius:9px; }
+    th, td { padding:13px 14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; font-size:13px; }
+    th { background:#0d2a55; color:#fff; font-weight:900; }
+    tr:last-child td { border-bottom:0; }
+    td strong { color:#006fe6; font-weight:900; }
+    .plain-strong { color:inherit; font-weight:900; }
+    .overlap-grid { display:grid; grid-template-columns:1.05fr .95fr; gap:18px; }
+    .metric-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px; }
+    .metric-strip.four { grid-template-columns:repeat(4,1fr); }
+    .strip-card { background:#fff; border:1px solid var(--line); border-radius:9px; padding:15px; }
+    .strip-card span { display:block; color:#667181; font-size:12px; font-weight:900; }
+    .strip-card b { display:block; margin-top:6px; font-size:24px; color:#0b2447; }
+    .strip-card small { color:#748094; }
+    .callout { border-left:4px solid var(--green); background:#eefaf3; padding:15px 16px; border-radius:9px; color:#304151; }
+    .purchase-visual { display:grid; grid-template-columns:.9fr .58fr 1fr; gap:18px; align-items:stretch; position:relative; overflow:hidden; }
+    .buyer-chart { min-height:300px; display:flex; flex-direction:column; justify-content:space-between; }
+    .buyer-bars { height:205px; display:flex; align-items:end; justify-content:center; gap:52px; border-bottom:1px solid #dfe4ec; position:relative; }
+    .buyer-bars::before, .buyer-bars::after { display:none; }
+    .buyer-bar { width:64px; background:#bcbcbc; border-radius:4px 4px 0 0; position:relative; }
+    .buyer-bar.after { background:linear-gradient(180deg,#7754ff,#2678f0); }
+    .buyer-bar em { position:absolute; left:50%; transform:translateX(-50%); top:-34px; color:#6554ff; font-style:normal; font-weight:900; font-size:24px; white-space:nowrap; }
+    .bar-caption { display:flex; justify-content:center; gap:82px; color:#808a98; font-weight:900; margin-top:10px; }
+    .purchase-pool { position:relative; display:grid; place-items:center; align-content:center; min-height:300px; }
+    .purchase-pool::before { content:""; position:absolute; left:-44px; top:118px; width:82px; border-top:2px dashed #aab8c8; transform:rotate(-12deg); }
+    .purchase-pool .people-mark { width:220px; height:220px; }
+    .purchase-pool span { margin-top:12px; color:#4d5d70; font-size:13px; font-weight:800; text-align:center; }
+    .increment-visual { margin-top:14px; border:1px solid #d8e2ee; background:#f7faff; border-radius:10px; padding:15px; }
+    .increment-visual h4 { margin:0 0 10px; color:#24364a; font-size:15px; }
+    .increment-bar { display:flex; height:34px; overflow:hidden; border-radius:7px; border:1px solid #c5d2e2; background:#fff; }
+    .increment-bar span { display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; }
+    .increment-bar .new { background:linear-gradient(90deg,#1f86e8,#7162ff); color:#fff; }
+    .increment-bar .repeat { background:#dbe4ef; color:#536274; }
+    .buyer-share { display:grid; align-content:center; gap:16px; }
+    .new-buyer-number { border:1px solid #d8e2ee; background:#f5f8fc; border-radius:9px; padding:18px 20px; }
+    .new-buyer-number span { display:block; color:#607086; font-size:12px; font-weight:900; }
+    .new-buyer-number b { display:block; margin-top:5px; color:#0b2447; font-size:42px; line-height:1; }
+    .share-row { display:grid; grid-template-columns:122px 1fr; gap:12px; align-items:center; color:#7b8492; font-weight:900; }
+    .share-track { height:32px; background:#f4f6f9; border:1px solid #b8c0ca; }
+    .share-track i { display:block; height:100%; background:#73a1e8; color:#fff; font-style:normal; padding-left:12px; line-height:30px; font-weight:800; }
+    .new-user-visual { display:grid; grid-template-columns:1fr .9fr; gap:18px; align-items:stretch; }
+    .reach-expansion { position:relative; min-height:190px; display:grid; place-items:center; overflow:hidden; }
+    .reach-circle { position:absolute; border-radius:50%; border:1px solid #bdd5ef; background:rgba(115,161,232,.10); }
+    .reach-circle.c1 { width:96px; height:96px; }
+    .reach-circle.c2 { width:148px; height:148px; opacity:.75; }
+    .reach-circle.c3 { width:206px; height:206px; opacity:.45; }
+    .reach-core { position:relative; z-index:1; width:82px; height:82px; border-radius:50%; display:grid; place-items:center; background:#3b73b3; color:#fff; font-size:14px; font-weight:900; text-align:center; }
+    .overlap-summary { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
+    .overlap-card { background:#fff; border:1px solid var(--line); border-radius:10px; padding:16px; }
+    .overlap-card h3 { margin-bottom:14px; }
+    .overlap-metrics { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .overlap-metrics div { background:#f6f8fb; border:1px solid #e2e8f0; border-radius:8px; padding:12px; }
+    .overlap-metrics span { display:block; color:#687386; font-size:11px; font-weight:900; }
+    .overlap-metrics b { display:block; margin-top:6px; color:#0b2447; font-size:23px; }
+    .overlap-metrics small { color:#748094; }
+    .segbar { display:flex; height:50px; border-radius:2px; overflow:hidden; color:#fff; font-weight:900; text-align:center; }
+    .segbar span { display:flex; align-items:center; justify-content:center; }
+    .segbar .new { background:#3b73b3; }
+    .segbar .old { background:#dce7f6; color:#405168; }
+    .blue-band { margin-top:14px; background:#3b73b3; color:#fff; text-align:center; padding:14px; font-weight:900; border-radius:2px; }
+    .split-cards { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .metric-mini { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:14px 0; }
+    .metric-mini div { background:#f5f7fb; border:1px solid var(--line); border-radius:8px; padding:12px; }
+    .metric-mini span { display:block; color:#748094; font-size:11px; font-weight:900; }
+    .metric-mini b { display:block; margin-top:5px; color:#0b2447; font-size:20px; }
+    .gam-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .perf-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:14px 0; }
+    .perf-card { border:1px solid var(--line); border-radius:9px; padding:14px; background:#fff; }
+    .perf-card b { display:block; color:#0b2447; }
+    .perf-card strong { display:block; margin-top:7px; font-size:25px; color:#1b84e7; }
+    .perf-card small { color:#728095; }
+    .common-profile { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:0 0 16px; }
+    .common-profile div { border:1px solid var(--line); background:#f7f9fc; border-radius:9px; padding:13px; }
+    .common-profile b { display:block; color:#0b2447; margin-bottom:6px; font-size:13px; }
+    .common-profile span { color:#5e6a7a; font-size:12px; line-height:1.55; }
+    .recommendation-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:18px; }
+    .recommendation-card { border:1px solid #cfe9da; background:#f7fcf9; border-radius:10px; padding:18px; min-height:170px; }
+    .recommendation-card .num { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:#03C75A; color:#fff; font-size:13px; font-weight:900; margin-bottom:12px; }
+    .recommendation-card b { display:block; color:#025c2b; font-size:17px; margin-bottom:8px; }
+    .recommendation-card p { margin:0; color:#526071; font-size:14px; line-height:1.65; word-break:keep-all; }
+    .report-endcap { min-height:220px; }
+    .muted { color:#728095; }
+    .footer { padding:28px 44px 44px; color:#7a8492; font-size:12px; }
+    @media (max-width: 1060px) {
+      .page { display:block; }
+      .side-nav { position:relative; height:auto; padding:14px 18px; }
+      .nav-links { flex-direction:row; overflow:auto; }
+      .nav-note { display:none; }
+      .one-message, .grid-2, .overlap-grid, .search-row, .journey-map, .purchase-visual, .overlap-summary, .recommendation-grid { grid-template-columns:1fr; }
+      .route-line { display:none; }
+      .journey-stage, .journey-bubbles { min-height:280px; }
+      .purchase-pool::before { display:none; }
+      .grid-3, .grid-4, .lift-grid { grid-template-columns:1fr 1fr; }
+      .flow { grid-template-columns:1fr 1fr; }
+      .flow-step::after { display:none; }
+    }
+    @media (max-width: 640px) {
+      .hero { padding:34px 20px; }
+      .wrap { width:calc(100% - 28px); }
+      h1 { font-size:31px; }
+      .hero-lead { white-space:normal; }
+      .svg-chart { height:360px; }
+      .report-endcap { min-height:180px; }
+      .grid-3, .grid-4, .lift-grid, .summary-list, .flow, .metric-strip, .metric-strip.four, .purchase-visual, .new-user-visual, .split-cards, .gam-grid, .perf-cards, .common-profile, .overlap-summary, .recommendation-grid { grid-template-columns:1fr; }
+      .hbar-row { grid-template-columns:110px 1fr 46px; }
+    }
+  
+    /* ── 한샘: 스토어 구매 성과 · 검색 성·연령(에어비앤비 final) ── */
+    .age-kpi{display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:6px 22px;min-height:0;}
+    .age-kpi .val{margin-top:0;} .age-kpi .desc{margin-top:0;}
+    @media (max-width:900px){.age-kpi{grid-template-columns:1fr;}}
+    .chart-head .legend{justify-content:flex-end;margin-left:auto;}
+    .hbar-row.nb{background:#fff7d6;border-radius:8px;padding:3px 6px;margin:0 -6px;}
+    .hbar-row.nb span{font-weight:900;color:#16233a;}
+    .kw-mark{background:#fff1b8;color:#16233a;font-weight:900;padding:0 3px;border-radius:3px;}
+    .kwl-row{grid-template-columns:96px 1fr 66px;}
+    .kwl-row b{white-space:nowrap;}
+    .intent-table th.g1,.intent-table th.g2{text-align:center;border-left:2px solid #fff;}
+    .intent-table th.g1{background:#1d3f6e;} .intent-table th.g2{background:#33507a;}
+    .intent-table thead tr:nth-child(2) th{font-size:11.5px;padding-top:6px;padding-bottom:6px;}
+    .intent-table th.i1{background:#e8edf5;color:#1d3f6e;} .intent-table th.i2{background:#f1f4f8;color:#5b6472;}
+    .intent-table td.i1{background:#f7f9fc;}
+    .intent-table td.i2{color:#5b6472;}
+    .intent-table td.i1.nm{font-weight:800;color:#16233a;border-left:2px solid #dfe5ee;}
+    .intent-table td.i2.nm{border-left:2px solid #dfe5ee;}
+    .intent-table td.sh{white-space:nowrap;}
+    .intent-table tr.me td{background:#eef3fa;}
+    .ibar{display:inline-block;width:56px;height:7px;border-radius:999px;background:#e6ebf2;vertical-align:middle;margin-right:6px;overflow:hidden;}
+    .ibar i{display:block;height:100%;border-radius:999px;}
+    .ibar.p1 i{background:#37576b;} .ibar.p2 i{background:#a9b3c1;}
+    .intent-table td.sh b{font-size:12.5px;}
+    .pen-note{margin-top:10px;padding:12px 14px;border:1px solid #dfe5ee;background:#f7f9fc;border-radius:8px;font-size:12px;color:#4a5666;line-height:1.7;}
+    .pen-note ul{margin:6px 0 0;padding-left:18px;}
+    .internal-note{margin-top:10px;padding:12px 14px;border:1.5px dashed #c9a227;background:#fffbea;border-radius:8px;font-size:12px;color:#4a5666;line-height:1.7;}
+    .internal-note .tag{display:inline-block;background:#c9a227;color:#fff;font-weight:900;font-size:11px;border-radius:4px;padding:1px 6px;margin-right:6px;}
+    .internal-note ul{margin:6px 0 0;padding-left:18px;}
+    tr.ghost-row td{color:#9aa4b2;}
+    .store-table th.g1,.store-table th.g2{text-align:center;border-left:2px solid #fff;}
+    .store-table th.g1{background:#33507a;} .store-table th.g2{background:#1d3f6e;}
+    .store-table th small{font-weight:700;opacity:.8;font-size:11px;}
+    .store-table thead tr:nth-child(2) th{font-size:11.5px;padding-top:6px;padding-bottom:6px;}
+    .store-table th.s1{background:#f1f4f8;color:#5b6472;} .store-table th.s2{background:#e8edf5;color:#1d3f6e;}
+    .store-table td.g1,.store-table td.g2{border-left:2px solid #dfe5ee;}
+    .store-table td.g2{background:#f7f9fc;}
+    .store-table td.dl{font-weight:800;white-space:nowrap;} .store-table td.dl.up{color:#1d6fd8;} .store-table td.dl.dn{color:#8a94a3;}
+    .period-box{margin-top:12px;padding:20px 22px 18px;}
+    .tl-grid{display:grid;grid-template-columns:72px repeat(82,minmax(0,1fr));grid-template-rows:26px 26px 26px 16px;row-gap:6px;padding-right:96px;}
+    .tl-scroll{overflow:visible;}
+    .tl-lab{grid-column:1;align-self:center;font-size:11px;font-weight:800;color:var(--muted);}
+    .tl-bar{display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:11.5px;font-weight:900;white-space:nowrap;overflow:hidden;min-width:0;padding:0 6px;}
+    .tl-bar.pre{background:#e9edf3;color:#3a4659;margin-right:2px;}
+    .tl-bar.dur{background:#dcf3e6;color:#0b6b3a;margin-left:2px;}
+    .tl-bar.tv{background:#c9d6e6;color:var(--navy);margin-left:2px;margin-right:2px;}
+    .tl-bar.da{background:#03C75A;color:#fff;}
+    .tl-bar.promo{background:rgba(101,84,255,.22);color:#3b2fa0;}
+    .tl-bar.chu{background:repeating-linear-gradient(135deg,rgba(224,128,43,.30) 0 6px,rgba(224,128,43,.18) 6px 12px);color:#8a4310;}
+    .tl-bar.fe{overflow:visible;justify-content:flex-start;padding:0;margin-left:2px;}
+    .tl-bar.fe span{padding-left:calc(100% + 6px);color:#5b4fd0;}
+    .tl-tick{justify-self:start;font-size:10.5px;color:var(--muted);font-weight:700;white-space:nowrap;transform:translateX(-50%);position:relative;}
+    .tl-tick.end{justify-self:end;transform:translateX(50%);}
+    .tl-tick::before{content:"";position:absolute;left:50%;top:-5px;width:1px;height:4px;background:#b8c1cf;}
+    .period-notes{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px;}
+    .period-notes>div{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;}
+    .period-notes .fh{padding:10px 14px;background:#37576b;color:#fff;font-weight:900;font-size:13px;}
+    .period-notes .fb{padding:12px 14px;font-size:12.5px;line-height:1.65;color:var(--ink);}
+    .period-notes i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px;}
+    @media (max-width:900px){.period-notes{grid-template-columns:1fr;}.tl-bar{font-size:10px;padding:0 2px;}.tl-grid{grid-template-columns:44px repeat(82,minmax(0,1fr));padding-right:72px;}.tl-lab,.tl-tick{font-size:9.5px;}.tl-bar.fe span{font-size:9.5px;}}
+    .definition-copy{color:#7a8595 !important;}
+    .definition-note{color:#7a8595 !important;font-size:11px !important;text-align:left !important;}
+    p.small-note{margin-top:8px;}
+    .calc-fold summary{cursor:pointer;list-style:none;color:#4a5666;}
+    .calc-fold summary::-webkit-details-marker{display:none;}
+    .calc-fold summary::before{content:"▸";display:inline-block;width:14px;color:#8a95a6;transition:transform .15s;}
+    .calc-fold[open] summary::before{transform:rotate(90deg);}
+    .calc-fold summary::after{content:" 펼쳐 보기";font-size:11px;color:#8a95a6;font-weight:500;}
+    .calc-fold[open] summary::after{content:" 접기";}
+    .persona-tbl th,.persona-tbl td{white-space:nowrap;font-size:11px;padding:8px 6px;}
+    .persona-tbl td:first-child,.persona-tbl th:first-child{text-align:center;}
+    .persona-tbl .badge{margin-right:0;}
+    @media (max-width:1280px){.persona-tbl th,.persona-tbl td{white-space:normal;}}
+    .om-list{margin:8px 0 0;padding-left:18px;font-size:17px;line-height:1.6;font-weight:600;}
+    .om-list li{margin-bottom:9px;}
+    .om-list strong{font-weight:900;}
+    .scope-note.limit{font-size:12px;line-height:1.6;}
+    .scope-note.limit b{display:block;margin:0 0 2px;color:#fff;font-size:12.5px;}
+    .scope-note.limit span{display:block;}
+    .hero-kpis em{font-size:12px !important;color:#cfeede !important;font-weight:800 !important;}
+    .purchase-visual .buyer-bars{gap:90px;}
+    .purchase-visual .bar-caption{gap:0;}
+    .purchase-visual .bar-caption span{width:154px;text-align:center;}
+    .bubble.ghost{opacity:.38;box-shadow:none;}
+    .bubble.ghost small{color:#6b7686;font-weight:700;}
+    .role-tag{margin-left:10px;font-size:12px;font-weight:800;color:#9aa4b2;letter-spacing:.02em;vertical-align:2px;}
+    .co-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:6px;}
+    .co-grid .card h3{margin:0 0 14px;}
+    .co-big{padding:12px 0;border-bottom:1px solid var(--line);}
+    .co-big b{display:block;font-size:34px;font-weight:900;color:#6554ff;line-height:1.1;}
+    .co-big.sub b{font-size:24px;color:#4a5666;}
+    .co-big span{display:block;margin-top:4px;font-size:12px;color:#6b7686;font-weight:700;}
+    .co-bars{display:flex;justify-content:center;align-items:flex-end;gap:26px;height:210px;border-bottom:1px solid #dde2ea;}
+    .co-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:64px;position:relative;}
+    .co-col b{font-size:14px;font-weight:900;color:#202633;}
+    .co-col small{font-size:11px;color:#8a95a6;font-weight:800;margin:2px 0 6px;}
+    .co-col i{display:block;width:44px;border-radius:4px 4px 0 0;background:#c3c9d2;}
+    .co-col i.mid{background:#9fb4d8;}
+    .co-col i.hi{background:linear-gradient(180deg,#715cff,#1599e8);}
+    .co-col span{position:absolute;bottom:-22px;font-size:12px;font-weight:800;color:#6b7686;white-space:nowrap;}
+    .co-bars+.co-note{margin-top:30px;}
+    .co-hbars{display:grid;gap:7px;}
+    .co-hrow{display:grid;grid-template-columns:52px 1fr 48px;align-items:center;gap:8px;font-size:12px;}
+    .co-hrow span{color:#6b7686;font-weight:800;}
+    .co-hbar{height:12px;background:#eef1f6;border-radius:3px;overflow:hidden;}
+    .co-hbar i{display:block;height:100%;background:linear-gradient(90deg,#9fb4d8,#6554ff);}
+    .co-hrow b{text-align:right;font-weight:900;color:#202633;}
+    .co-note{margin:12px 0 0;font-size:13px;line-height:1.65;color:#4a5666;}
+    @media (max-width:900px){.co-grid{grid-template-columns:1fr;}}
+    .co-rate{margin:4px 0 16px;}
+    .co-rh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px;}
+    .co-rh span{font-size:12.5px;color:#4a5666;font-weight:800;}
+    .co-rh b{font-size:15px;font-weight:900;color:var(--navy);}
+    .co-track{height:10px;border-radius:5px;background:#eef1f6;overflow:hidden;}
+    .co-track i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,#9fb4d8,#6554ff);}
+    .co-track.sub i{background:#b9c3d3;}
+    a.sup-link{color:#4b5bd6;font-weight:800;text-decoration:underline;text-underline-offset:2px;}
+    @media (max-width:900px){.recommendation-grid{grid-template-columns:1fr !important;}}
+    .sum-flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:6px;padding:12px 14px;border-radius:10px;background:#f4f7fc;}
+    .sum-flow span{padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #dbe2ee;color:var(--navy);font-size:13px;font-weight:900;}
+    .sum-flow i{font-style:normal;color:#8a95a6;font-weight:900;}
+    .action-hl{margin-top:16px;padding:14px 18px 14px 18px;border-radius:10px;background:#f3f6fa;border:1px solid #dbe2ec;border-left:4px solid #1d3f6e;font-size:14px;line-height:1.75;color:#2b3645;font-weight:500;}
+    .action-hl .action-tag{display:inline-block;margin-bottom:6px;padding:2px 9px;border-radius:999px;background:#1d3f6e;color:#fff;font-size:11.5px;font-weight:800;letter-spacing:.02em;}
+    .action-hl b,.action-hl strong{color:#1d3f6e;font-weight:800;}
+    .st-flow{display:grid;grid-template-columns:1fr 22px 1fr 22px 1fr;align-items:stretch;gap:0;margin:2px 0 14px;}
+    .st-flow>i{display:flex;align-items:center;justify-content:center;font-style:normal;color:#b3bcc8;font-weight:700;font-size:13px;}
+    .st-step{border:1px solid var(--line);border-radius:8px;padding:9px 12px;background:#fff;text-align:center;}
+    .st-step span{display:block;font-size:11.5px;font-weight:700;color:#7a8595;}
+    .st-step b{display:block;margin:3px 0 1px;font-size:18px;font-weight:800;color:#4a5666;line-height:1.2;}
+    .st-step b.dn{color:#8a94a3;}
+    .st-step small{font-size:11px;color:#9aa4b2;font-weight:600;}
+    .st-step.hi{border-color:#c9d4e3;background:#f5f8fc;}
+    .st-step.hi b{color:var(--navy);font-size:18px;}
+    .st-step.mute{background:#fafbfc;}
+    .st-points{margin:0 0 16px;padding:12px 16px 12px 34px;border-radius:10px;background:#f6f8fb;font-size:14px;line-height:1.8;color:#3a4659;}
+    .st-points b{color:var(--navy);font-weight:900;}
+    @media (max-width:900px){.st-flow{grid-template-columns:1fr;}.st-flow>i{transform:rotate(90deg);height:22px;}}
+    .kwg{padding:9px 0;border-bottom:1px solid #e6ebf2;}
+    .kwg-h{display:flex;justify-content:space-between;align-items:center;font-weight:900;font-size:14px;color:#16233a;}
+    .kwg-h span i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;}
+    .kwg-h b{font-size:17px;}
+    .kwg-s{margin-top:2px;color:#4a5666;font-size:11.5px;font-weight:700;}
+    .kwg-k{margin-top:3px;color:#6b7686;font-size:11.5px;line-height:1.5;}
+    .kwg-n{display:block;margin-top:3px;color:#8a94a3;font-size:11px;}
+    .kwg-k b,.kwg-s b{color:#4a5666;font-weight:800;}
+    .agegrid{display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,.82fr);grid-template-rows:auto auto;gap:18px;}
+    .agegrid .age-main{grid-column:1;grid-row:1 / 3;display:grid;grid-template-rows:subgrid;gap:18px;}
+    .agegrid .age-sec2{border-top:1px solid #e6ebf2;padding-top:16px;}
+    .agegrid .age-ins1{grid-column:2;grid-row:1;height:auto;}
+    .agegrid .age-ins2{grid-column:2;grid-row:2;height:auto;}
+    .age-sub{margin:10px 0 0;font-size:13px;color:#2b3a4f;}
+    @media (max-width:900px){.agegrid{grid-template-columns:1fr;grid-template-rows:none;}.agegrid .age-main,.agegrid .age-ins1,.agegrid .age-ins2{grid-column:1;grid-row:auto;}.agegrid .age-main{display:block;}}
+    .legend span[data-key]{cursor:pointer;user-select:none;transition:opacity .15s;}
+    .legend span[data-key].dim{opacity:.35;}
+    .legend.toggle::after{content:"범례를 누르면 해당 선만 강조";font-size:11px;font-weight:600;color:#9aa5b3;margin-left:4px;}
+    .legend-promo{display:inline-block;width:12px;height:9px;background:rgba(101,84,255,.16);margin-right:4px;border-radius:2px;}
+    #purchase td.num{text-align:center;}
+    .agechart{display:flex;align-items:flex-end;justify-content:space-around;gap:8px;height:170px;border-bottom:1px solid #dfe4ec;padding-top:10px;}
+    .agecol{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;flex:1;}
+    .agebars{display:flex;align-items:flex-end;gap:5px;height:100%;}
+    .agebars i{display:block;width:16px;border-radius:3px 3px 0 0;}
+    /* PART 1: 성·연령 구조 막대를 아래 증감 SVG(viewBox 900, 막대 28·간격 4, 좌 50·우 20 여백)와 같은 굵기로 */
+    .age-sec{container-type:inline-size;}
+    .age-sec .agechart,.age-sec .agex{gap:0;padding-left:calc(100cqw*50/900);padding-right:calc(100cqw*20/900);}
+    .age-sec .agebars{gap:calc(100cqw*4/900);}
+    .age-sec .agebars i{width:calc(100cqw*28/900);}
+    .agebars i.m{background:#6d8a9e;}.agebars i.w{background:#d38b98;}
+    .agebars i{position:relative;cursor:default;transition:filter .15s;}
+    .agebars i:hover{filter:brightness(.88);}
+    .agebars i:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+      white-space:nowrap;background:#16233a;color:#fff;font-size:11.5px;font-weight:800;font-style:normal;padding:4px 8px;border-radius:6px;z-index:5;pointer-events:none;}
+    .agex{display:flex;justify-content:space-around;margin-top:8px;}
+    .agex span{flex:1;text-align:center;color:#748094;font-size:11px;font-weight:800;}
+    /* ── 한샘: 광고 반응자 프로파일(에어비앤비 final PART 3) ── */
+    .persona{display:flex;gap:18px;align-items:center;border:1px solid #dde3ea;border-radius:14px;background:linear-gradient(135deg,#eef1f4,#ffffff 60%);padding:20px 22px;margin-top:6px;}
+    .persona .pa{flex:0 0 66px;height:66px;border-radius:50%;background:#e6e9ee;display:grid;place-items:center;}
+    .persona .pname{display:block;font-weight:900;color:#123;font-size:16.5px;margin-bottom:7px;line-height:1.4;}
+    .persona .pb p{margin:0;color:#48566a;font-size:13.5px;line-height:1.7;}
+    .persona .pb p b{color:#37576b;}
+    .pp-grid{display:grid;grid-template-columns:1fr 46px 1fr;align-items:center;gap:12px;}
+    .pp-arrow{display:grid;place-items:center;color:#7a8595;font-size:30px;font-weight:900;}
+    .pcard{border:1px solid var(--line);border-radius:10px;padding:18px;background:#fff;height:100%;box-sizing:border-box;}
+    .ptag{display:inline-flex;align-items:center;height:24px;padding:0 11px;border-radius:999px;font-size:12px;font-weight:900;color:#fff;margin-bottom:8px;}
+    .ptag.pre{background:#8b96a7;}.ptag.dur{background:var(--green);}
+    .pcard ul{margin:6px 0 0;padding-left:16px;color:#4a5666;font-size:13px;line-height:1.7;}
+    .vsname{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;}
+    .vsname .nc{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;}
+    .vsname .nc.me{border-top:4px solid #37576b;}.vsname .nc.comp{border-top:4px solid #243b5c;}
+    .vsname .nc .tt{font-weight:900;font-size:14.5px;color:#16233a;margin-bottom:6px;}
+    .vsname .nc .em{font-size:12px;font-weight:800;color:#8a97a8;}
+    .vsname .nc p{margin:8px 0 0;color:#4a5666;font-size:13px;line-height:1.65;}
+    .typo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+    .typo{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff;}
+    .typo b{font-size:14px;color:#16233a;margin-right:8px;}.typo .mem{font-size:12.5px;font-weight:800;color:#6b7788;}
+    .typo.explore{border-left:4px solid #8b96a7;}.typo.execute{border-left:4px solid var(--green);}
+    .typo p{margin:6px 0 0;color:#4a5666;font-size:13px;line-height:1.6;}
+    .badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;background:#eef2f7;color:#4a5666;font-size:11px;font-weight:900;margin-right:6px;}
+    .action-copy{margin-top:16px;color:#445163;font-size:14px;line-height:1.7;}
+    @media (max-width:760px){.pp-grid,.vsname,.typo-grid{grid-template-columns:1fr;}.pp-arrow{transform:rotate(90deg);}.persona{flex-direction:column;align-items:flex-start;}}
+    /* ── 한샘: 검색 포지셔닝(에어비앤비 final) + 주별 index ── */
+    .vs-grid{display:grid;grid-template-columns:1fr 58px 1fr;align-items:stretch;}
+    .vs-col{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;}
+    .vs-col .vh{padding:13px;text-align:center;color:#fff;font-weight:900;font-size:16px;}
+    .vs-col.me .vh{background:#37576b;}.vs-col.comp .vh{background:#243b5c;}
+    .vs-col .vsub{text-align:center;padding:12px 14px 2px;font-weight:900;color:#2b3a4f;font-size:14px;}
+    .vs-col .vsub em{display:block;color:#8894a3;font-weight:700;font-style:normal;font-size:12px;margin-top:3px;}
+    .vs-col .vrow{display:flex;gap:11px;align-items:flex-start;padding:12px 16px;}
+    .vs-col .vtag{flex:0 0 92px;display:inline-flex;align-items:center;justify-content:center;text-align:center;padding:8px 6px;border-radius:8px;font-size:12px;font-weight:900;color:#fff;line-height:1.25;}
+    .vs-col.me .vtag{background:#4a6a80;}.vs-col.comp .vtag{background:#526b89;}
+    .vs-col .vrow p{margin:0;color:#4a5666;font-size:13px;line-height:1.5;}
+    .vs-col .vrow b{color:#16233a;}
+    .vs-mid{display:grid;place-items:center;}
+    .vs-mid .vb{width:46px;height:46px;border-radius:50%;background:#0d2a55;color:#fff;display:grid;place-items:center;font-weight:900;font-size:14px;}
+    .kwl-col{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;}
+    .kwl-head{padding:12px 14px;color:#fff;font-weight:900;font-size:14px;text-align:center;}
+    .kwl-head.me{background:#37576b;}.kwl-head.comp{background:#243b5c;}
+    .kwl-head small{display:block;font-weight:700;font-size:11.5px;opacity:.85;margin-top:2px;}
+    .kwl-row{display:grid;grid-template-columns:96px 1fr 46px;gap:12px;align-items:center;padding:10px 14px;border-top:1px solid #f2f4f8;font-size:13px;}
+    .kwl-row span{color:#25324a;font-weight:700;}
+    .kwl-row b{color:#16233a;text-align:right;}
+    .kwl-row .kt{height:14px;background:#f0f2f6;border-radius:4px;overflow:hidden;}
+    .kwl-row .kt i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#03C75A,#078f45);}
+    .kwl-row .kt i.o{background:linear-gradient(90deg,#8ea2bb,#526b89);}
+    .maplegend{margin-top:12px;color:#8894a3;font-size:11px;}
+    .maplegend b{color:#5c6774;}
+    .wk-chart{display:flex;align-items:flex-end;gap:10px;height:250px;padding:34px 6px 0;border-bottom:1px solid #dfe4ec;position:relative;}
+    .wk-chart .base-line{position:absolute;left:0;right:0;bottom:calc(100 / 160 * 170px + 44px);border-top:1px dashed #b4bfcc;}
+    .wk-chart .base-line span{position:absolute;right:0;top:-18px;font-size:11px;color:#8a95a6;font-weight:800;}
+    .wk-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;min-width:0;}
+    .wk-col i{display:block;width:100%;max-width:38px;border-radius:4px 4px 0 0;background:#c3c9d2;}
+    .wk-col i.tvc{background:linear-gradient(180deg,#715cff,#1599e8);opacity:.75;}
+    .wk-col i.tvc.hl{opacity:1;}
+    .wk-col i.chu{background:#e2b9a0;}
+    .wk-col i.sam{background:#9fb3c8;}
+    .wk-col em{font-style:normal;font-size:12px;font-weight:900;color:#7c8796;}
+    .wk-col em.tvc{color:#5a6bd8;} .wk-col em.hl{color:#6554ff;font-size:15px;} .wk-col em.chu{color:#b4693f;}
+    .wk-col span{font-size:11px;color:#5d6878;font-weight:800;margin-top:4px;}
+    .wk-col small{font-size:10px;color:#9aa4b2;height:14px;}
+    .legend-chu{display:inline-block;width:12px;height:9px;background:rgba(224,128,43,.22);margin-right:4px;border-radius:2px;}
+    #overlap table th{white-space:nowrap;}
+    .mini-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
+    @media (max-width: 1060px){ .vs-grid{grid-template-columns:1fr;} .vs-mid{padding:8px 0;} }
+    @media (max-width: 640px){ .mini-kpis{grid-template-columns:1fr;} .wk-col small{display:none;} }
+
+  </style>
+</head>
+<body class="locked">
+  <div class="password-gate" id="passwordGate" role="dialog" aria-modal="true" aria-labelledby="passwordGateTitle">
+    <form class="password-card" id="passwordForm">
+      <span class="gate-lock" aria-hidden="true">🔐</span>
+      <h2 id="passwordGateTitle">보호된 리포트</h2>
+      <strong class="gate-report-title">한샘</strong>
+      <p>이 문서는 비밀번호로 보호되어 있습니다.<br>전달받은 비밀번호를 입력해 주세요.</p>
+      <div class="gate-input-row">
+        <input id="reportPassword" name="reportPassword" type="password" autocomplete="current-password" placeholder="비밀번호" required>
+        <button type="submit">열기</button>
+      </div>
+      <p class="gate-error" id="passwordError" aria-live="polite"></p>
+      <small class="gate-footer">NAVER X TVC 대외비</small>
+    </form>
+  </div>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden">
+    <symbol id="user-pool-person" viewBox="0 0 22 24">
+      <circle cx="11" cy="5" r="3.8"></circle>
+      <path d="M3.2 22.5v-2.8c0-4.8 3.4-8.3 7.8-8.3s7.8 3.5 7.8 8.3v2.8H3.2Z"></path>
+    </symbol>
+  </svg>
+
+  <div class="page">
+    <aside class="side-nav">
+      <div class="brandmark"><b>한샘 TVC</b><span>NAVER 성과 리포트</span></div>
+      <nav class="nav-links">
+        <a class="summary-link" href="#summary"><span class="nav-index">★</span>핵심요약</a>
+        <a href="#search"><span class="nav-index">01</span>검색 관심도</a>
+        <a href="#position"><span class="nav-index">02</span>검색 포지셔닝</a>
+        <a href="#profile"><span class="nav-index">03</span>광고반응자 프로파일</a>
+        <a href="#purchase"><span class="nav-index">04</span>스토어 구매자</a>
+        <a href="#overlap"><span class="nav-index">05</span>동종 제품군 탐색 고객</a>
+        <a href="#carryover"><span class="nav-index">A</span>접점 이월 효과</a>
+        <a href="#recommendation"><span class="nav-index">R</span>운영 전략</a>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">TVC x NAVER Cross Campaign Report</div>
+          <h1>한샘 TVC X NAVER 크로스캠페인 분석 리포트</h1>
+          <p class="hero-lead">TVC 기간 네이버 내 검색 관심도, 경쟁 브랜드 대비 검색 포지셔닝, 광고 반응, 구매 여정, 신규 고객 유입과 동종 제품군 탐색 고객 접점의 통합 분석</p>
+          <div class="one-message">
+            <div class="message-box">
+              <b>One Message</b>
+              <ul class="om-list">
+                <li>TVC 기간 <strong>모델·수납·키친 연상 검색 수요가 확대</strong>되었고, 그 관심이 <strong>수납 제품 탐색과 구매 직전 검색</strong>으로 이어짐.</li>
+                <li><strong>네이버 DA 확대 이후 신규 구매자 중심으로 스토어 구매가 늘어</strong>, TVC가 만든 관심을 네이버 DA·검색광고가 넓히고 회수하는 <strong>크로스미디어 연계 흐름</strong>을 확인함.</li>
+              </ul>
+              <div class="scope-note limit"><b>분석 한계</b>
+                <span>· 기간 편향: TVC 전 비교 기간 41일 중 25일이 미들급 프로모션 쌤위크(7월·8월 2회) 기간이라 비교 기준에 프로모션 효과가 섞여 있고, TVC 중에는 추석 연휴(9/21–9/27)로 검색·구매가 줄어든 구간이 있어 단순 전·중 비교 시 TVC 효과가 낮게 보일 수 있음. 이를 줄이기 위해 검색·스토어는 추석 주를 뺀 기간으로 비교함.</span>
+                <span>· 보장형DA(DOOH)는 TVC 기간(8/21–9/27) TV와 함께 집행되었으나, 유저 단위 노출 로그가 없어 신규 도달·접점 등 유저 단위 분석에서는 제외함. DOOH의 효과는 검색·스토어 추이에 함께 반영되어 있을 수 있으나 별도로 분리해 측정하지는 않음.</span>
+              </div>
+            </div>
+            <div class="hero-kpis">
+              <div><span>검색 관심</span><strong>모델 결합 키워드 +305%</strong><em>수납 +7% · 키친 +6% (TV 단독 기간)</em></div>
+              <div><span>검색 포지셔닝</span><strong>키친 검색 점유 64%</strong><em>비교 브랜드 8개 중 1위</em></div>
+              <div><span>스토어 구매</span><strong>구매자·매출 각 +8.1%</strong><em>DA 확대 후 추석 전 일평균</em></div>
+              <div><span>신규 고객 도달</span><strong>신규 도달 +15.0%</strong><em>동종 제품군 공통 접점 노출 +11.5%</em></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section id="summary">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">SUMMARY</span><h2>핵심요약</h2></div>
+          <div class="card summary-copy">
+            <p>본 분석은 단순 광고 성과 개선을 넘어, TVC로 형성된 <strong>키친·수납 중심의 검색 관심</strong>이 네이버 안에서 제품·구매 탐색 확대로 이어지고, <strong>네이버 DA 확대 이후 신규 구매자 유입과 구매 규모 증가</strong>로 연결되는 흐름을 확인함.</p>
+            <p>특히 한샘은 TVC를 통해 <strong>안성재·정은채(모델), 드레스룸·붙박이장(수납), 주방인테리어(키친)</strong> 등 실제 주거 공간과 제품을 연상시키는 검색 수요를 확대함. 수납 관련 구매 직전 검색이 브랜드 검색보다 크게 늘어 TVC 메시지가 실제 제품 탐색으로 이어지는 양상을 보임.</p>
+            <p>또한 <strong>네이버 DA 확대 후 추석 전까지 스토어 구매자와 매출이 각 +8.1%</strong> 늘었고, 구매자 증가분의 약 <strong>88%가 신규 구매자</strong>에서 발생함. 신규 광고 도달과 동종 제품군 탐색 고객과의 접점도 함께 확대됨.</p>
+            <div class="sum-flow"><span>TVC 관심 형성</span><i>→</i><span>네이버 DA 잠재 고객 확장</span><i>→</i><span>검색을 통한 구매 탐색</span><i>→</i><span>신규 구매자 확대</span></div>
+            <small class="small-note" style="margin-top:12px">※ 분석 유의사항: TVC 전 비교 기간에는 쌤위크 프로모션이 포함되어 있고, TVC 기간에는 추석 연휴와 쌤페스타 등 외부 요인이 섞여 있음. 따라서 성과 변화는 TVC만의 순수 인과 효과가 아닌 집행 기간 내 관측된 연계 흐름으로 해석해야 함. 스토어 구매 성과는 네이버쇼핑 공식 브랜드스토어 기준이며 자사몰 구매는 포함하지 않음.</small>
+          </div>
+          <h3 style="margin:24px 0 0">분석 기간 구성</h3>
+          <div class="card period-box">
+            <div class='tl-scroll'><div class='tl-grid'><div class='tl-lab' style='grid-row:1'>구분</div><div class='tl-bar pre' style='grid-column:2/43;grid-row:1'>TVC 전 · 비교 기준 41일</div><div class='tl-bar dur' style='grid-column:43/84;grid-row:1'>TVC 중 41일</div><div class='tl-lab' style='grid-row:2'>매체</div><div class='tl-bar tv' style='grid-column:43/56;grid-row:2'>TV 단독 13일</div><div class='tl-bar da' style='grid-column:56/84;grid-row:2'>TV + 네이버 DA 확대 28일</div><div class='tl-lab' style='grid-row:3'>행사·시즌</div><div class='tl-bar promo' style='grid-column:2/12;grid-row:3'>쌤위크 ~7/20</div><div class='tl-bar promo' style='grid-column:25/40;grid-row:3'>쌤위크 8/3–8/17</div><div class='tl-bar chu' style='grid-column:74/81;grid-row:3'>추석 주</div><div class='tl-bar promo fe' style='grid-column:81/84;grid-row:3'><span>쌤페스타 9/28~</span></div><div class='tl-tick' style='grid-column:2;grid-row:4'>7/11</div><div class='tl-tick' style='grid-column:11;grid-row:4'>7/20</div><div class='tl-tick' style='grid-column:25;grid-row:4'>8/3</div><div class='tl-tick' style='grid-column:39;grid-row:4'>8/17</div><div class='tl-tick' style='grid-column:43;grid-row:4'>8/21</div><div class='tl-tick' style='grid-column:56;grid-row:4'>9/3</div><div class='tl-tick' style='grid-column:74;grid-row:4'>9/21</div><div class='tl-tick end' style='grid-column:83;grid-row:4'>9/30</div></div></div>
+            <div class="period-notes">
+              <div><div class="fh"><i style="background:#8f84ff"></i>비교 기준(TVC 전)에 쌤위크 2회 포함</div><div class="fb">TVC 전 41일 중 25일이 미들급 프로모션 쌤위크 기간(7월 7/6–7/20 중 7/11–7/20, 8월 8/3–8/17)으로, 비교 기준에 프로모션 효과가 섞여 있음.</div></div>
+              <div><div class="fh"><i style="background:#e0802b"></i>TVC 중 추석 연휴 주(9/21–9/27)</div><div class="fb">연휴 주간에는 검색·구매가 함께 줄어 TVC 효과가 희석됨. 검색·스토어 비교는 추석 주를 뺀 34일을 기본으로 씀.</div></div>
+            </div>
+          </div>
+          <div class="summary-list">
+            <div class="summary-item">
+              <b>검색 관심도 확대</b>
+              <span>TV는 브랜드명보다 키친·수납 같은 공간 단위 키워드와 모델 연상 검색을 먼저 움직임.</span>
+              <ul><li>키친 키워드 +6% · 수납 키워드 +7% (TV 단독 기간)</li><li>모델(안성재·정은채) 결합 키워드 +305%</li><li>8개 브랜드의 키친 검색 중 한샘 점유 64%</li></ul>
+              <span class="arrow-copy">→ 브랜드 인지보다 '무엇을 바꿀지' 공간·제품 탐색이 먼저 늘어나는 구조가 형성됨.</span>
+            </div>
+            <div class="summary-item">
+              <b>광고 반응자 프로파일링</b>
+              <span>광고 반응자는 아침 6~7시 모바일로 인테리어·생활 정보를 탐색하는 30대 중반~40대 여성임.</span>
+              <ul><li>TVC 중 반응 연령이 37~44세 → 34~47세로 넓어짐</li><li>인테리어 시공·리모델링, 세탁·청소 검색 경향</li><li>광고 클릭은 활발하나 구매 결정은 신중한 탐색형 반응</li></ul>
+              <span class="arrow-copy">→ 구매 계기가 뚜렷한 실행형 경쟁사 대비 아직 탐색 단계로, 리모델링 관심을 구매 단계로 이어 받는 후속 접점이 중요함.</span>
+            </div>
+            <div class="summary-item">
+              <b>구매 탐색으로 연결</b>
+              <span>TVC의 수납 메시지가 구매 직전 검색으로 이어짐.</span>
+              <ul><li>수납 관련 구매 키워드 1.8배 vs 브랜드 키워드 약 1.2배</li><li>구매 직전 일반키워드 비중 12.1% → 19.5%</li><li>DA 확대 후 추석 전 스토어 구매자 +8% (증가분의 88% 신규)</li></ul>
+              <span class="arrow-copy">→ 카테고리 탐색 고객을 한샘 구매로 데려온 흐름 확인됨.</span>
+            </div>
+            <div class="summary-item">
+              <b>동종 제품군 탐색 고객 내 브랜드 존재감 확대</b>
+              <span>신규 도달 유저 +15.0%, 동종 제품군 탐색 고객과의 공통 접점은 노출 +11.5% · 클릭 +11.2% 증가함.</span>
+              <span class="arrow-copy">수납 카테고리 핵심 경쟁 브랜드와의 클릭 공통 접점은 약 3.8배로 늘어, 비교·검토 장면에서 한샘이 더 자주 등장함. 이 고객은 이후 리타겟팅·리인게이지먼트 자산으로 활용 가능함.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="search">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 1</span><h2>검색 관심도 확대</h2></div>
+          <div class="part-headline">TV는 브랜드명보다 <strong>키친·수납 같은 공간 단위 키워드</strong>와 <strong>모델(안성재·정은채) 연상 검색</strong>을 먼저 움직였으며, 모델 결합 검색은 TVC 이전에는 거의 없다가 TV 이후 새롭게 형성됨.</div>
+          <div class="topic-card">
+            <div class="topic-head">
+              <h3>통합검색 키워드 변화</h3>
+              <p class="definition-copy">네이버 통합검색창 기준 일별 쿼리 추이이며, TVC 전(7/11–8/20) 평균을 100으로 둔 검색지수의 완화 추세선만 표기함. 주황 음영은 추석 주간(9/21–9/27).</p>
+            </div>
+            <div class="search-row">
+              <div class="card chart-box query-main" style="box-shadow:none">
+                <div class="chart-head">
+                  <div><h3>키워드군별 일별 검색 추이</h3><p>TVC 전 평균=100 완화 추세선<br>왼쪽 축 = 키워드군 3종 · 오른쪽 축 = 모델 결합 키워드</p></div>
+                  <div class="legend toggle" data-chart="searchTrend"><span data-key="storage"><i class="dot" style="background:#715cff"></i>수납</span><span data-key="kitchen"><i class="dot" style="background:#1b84e7"></i>키친</span><span data-key="brand"><i class="dot" style="background:#03C75A"></i>브랜드</span><span data-key="model"><i class="dot" style="background:#e5486f"></i>모델 결합(오른쪽 축)</span></div>
+                </div>
+                <div id="searchTrend" class="svg-chart" role="img" aria-label="키워드군별 검색 추이 차트"></div>
+              </div>
+              <div class="insight-panel">
+                <h3>키워드군별 전·중 증감</h3>
+                <p class="small-note" style="margin:0 0 6px">TVC 전(7/11–8/20) vs TV 단독(8/21–9/2) 일평균 · 작은 글씨는 TVC 중 전체기간(추석 주 제외, 34일)</p>
+                <div class="kwg"><div class="kwg-h"><span><i style="background:#e5486f"></i>모델 결합</span><b style="color:#e5486f">+305%</b></div><div class="kwg-s">TVC 중 전체기간(추석 주 제외) <b>+402%</b></div><div class="kwg-k">정은채한샘 <b>+401%</b> · 한샘안성재 <b>+282%</b> · 한샘정은채 <b>+268%</b> · 안성재한샘 <b>+260%</b><span class="kwg-n">TV 시작 다음 날(8/22)부터 바로 늘기 시작해 네이버 DA 확대 직후(9월 첫 주)에 정점</span></div></div><div class="kwg"><div class="kwg-h"><span><i style="background:#715cff"></i>수납</span><b style="color:#715cff">+7%</b></div><div class="kwg-s">TVC 중 전체기간(추석 주 제외) <b>+4%</b></div><div class="kwg-k">검색량 1위 한샘붙박이장 <b>+10%</b><br>증가 상위 한샘드레스룸 <b>+35%</b> · 한샘수납장 <b>+13%</b></div></div><div class="kwg"><div class="kwg-h"><span><i style="background:#1b84e7"></i>키친</span><b style="color:#1b84e7">+6%</b></div><div class="kwg-s">TVC 중 전체기간(추석 주 제외) <b>+3%</b></div><div class="kwg-k">검색량 1위 한샘싱크대 <b>+12%</b><br>증가 상위 한샘주방인테리어 <b>+28%</b> · 한샘키친 <b>+17%</b></div></div><div class="kwg"><div class="kwg-h"><span><i style="background:#03C75A"></i>브랜드</span><b style="color:#7a8597">−1%</b></div><div class="kwg-s">TVC 중 전체기간(추석 주 제외) <b>+1%</b></div><div class="kwg-k">한샘 <b>−1%</b> · 한샘몰 <b>−1%</b> · 한샘매장 <b>+6%</b></div></div>
+              </div>
+            </div>
+            <div class="search-row" style="margin-top:18px">
+              <div class="card chart-box query-main" style="box-shadow:none">
+                <div class="chart-head">
+                  <div><h3>대표 키워드 3종 추이</h3></div>
+                  <div class="legend toggle" data-chart="keywordTrend"><span data-key="built"><i class="dot" style="background:#03C75A"></i>한샘붙박이장</span><span data-key="dress"><i class="dot" style="background:#715cff"></i>한샘드레스룸</span><span data-key="kitint"><i class="dot" style="background:#1b84e7"></i>한샘주방인테리어</span></div>
+                </div>
+                <div id="keywordTrend" class="svg-chart" role="img" aria-label="대표 키워드 검색 추이 차트"></div>
+              </div>
+              <div class="insight-panel">
+                <h3>대표 키워드 인사이트 요약</h3>
+                <p>'한샘'·'한샘몰' 키워드가 볼륨은 가장 크지만, 증가폭은 TVC 메시지와 직접 연결되는 공간 키워드에서 두드러짐.</p>
+                <div class="insight-highlight">증가폭의 핵심 축은 <b>"한샘드레스룸" +35%</b>, <b>"한샘주방인테리어" +28%</b>였으며, 수납 볼륨 대표 '한샘붙박이장'도 +10% 상승함.<br><span style="font-size:11.5px;color:#8a94a3;font-weight:600">TV 단독 기간, TVC 전 대비</span></div>
+                <p style="margin-top:12px;font-size:12px;color:#6b7686">반면 제품 라인명 '한샘키친바흐'는 반응이 크지 않아, 검색은 제품명보다 '키친·드레스룸' 같은 공간 단위로 들어온 것으로 해석됨.</p>
+              </div>
+            </div>
+          </div>
+          <div class="agegrid" style="margin-top:18px">
+            <div class="card age-main">
+              <div class="age-sec">
+              <h3>TVC 중 검색 성·연령</h3>
+              <div class="legend" style="margin-bottom:8px"><span><i class="dot" style="background:#d38b98"></i>여성</span><span><i class="dot" style="background:#6d8a9e"></i>남성</span></div>
+              <div class="agechart"><div class="agecol"><div class="agebars"><i class="w" data-tip="여성 13-18 0.2%" style="height:1px"></i><i class="m" data-tip="남성 13-18 0.1%" style="height:0px"></i></div></div><div class="agecol"><div class="agebars"><i class="w" data-tip="여성 19-29 4.4%" style="height:28px"></i><i class="m" data-tip="남성 19-29 1.7%" style="height:11px"></i></div></div><div class="agecol"><div class="agebars"><i class="w" data-tip="여성 30-39 22.2%" style="height:138px"></i><i class="m" data-tip="남성 30-39 9.4%" style="height:58px"></i></div></div><div class="agecol"><div class="agebars"><i class="w" data-tip="여성 40-49 24.0%" style="height:150px"></i><i class="m" data-tip="남성 40-49 9.0%" style="height:56px"></i></div></div><div class="agecol"><div class="agebars"><i class="w" data-tip="여성 50-59 15.7%" style="height:98px"></i><i class="m" data-tip="남성 50-59 5.1%" style="height:32px"></i></div></div><div class="agecol"><div class="agebars"><i class="w" data-tip="여성 60+ 5.7%" style="height:35px"></i><i class="m" data-tip="남성 60+ 2.6%" style="height:16px"></i></div></div></div>
+              <div class="agex"><span>13-18</span><span>19-29</span><span>30-39</span><span>40-49</span><span>50-59</span><span>60+</span></div>
+              <small class="small-note">TVC 중(8/21–9/30) 키워드군 검색 중 로그인 식별 검색의 성·연령 비중</small>
+              </div>
+              <div class="age-sec age-sec2">
+              <h3>TVC 전 대비 성·연령 비중 변화</h3>
+              <div class="legend" style="margin-bottom:4px"><span><i class="dot" style="background:#d38b98"></i>여성 (증가)</span><span><i class="dot" style="background:#6d8a9e"></i>남성 (증가)</span><span><i class="dot" style="background:#c8ced8"></i>변화 없음·감소</span></div>
+              <small class="small-note" style="display:block;margin:2px 0 4px">성·연령별 검색 비중 변화(%p, TVC 전 7/11–8/20 대비) · 0.15%p 이상 증가만 색 표시 · 로그인 식별 검색 기준</small>
+              <h4 class="age-sub">TVC 전 vs TV 단독 (8/21–9/2)</h4>
+              <svg viewBox="0 0 900 300" width="100%"><line x1="50" x2="880" y1="243.0" y2="243.0" stroke="#eef1f6"/><text x="42" y="247.0" font-size="11" fill="#728095" text-anchor="end">-1.5</text><line x1="50" x2="880" y1="207.0" y2="207.0" stroke="#eef1f6"/><text x="42" y="211.0" font-size="11" fill="#728095" text-anchor="end">-1.0</text><line x1="50" x2="880" y1="171.0" y2="171.0" stroke="#eef1f6"/><text x="42" y="175.0" font-size="11" fill="#728095" text-anchor="end">-0.5</text><line x1="50" x2="880" y1="135.0" y2="135.0" stroke="#9aa5b3"/><text x="42" y="139.0" font-size="11" fill="#728095" text-anchor="end">+0.0</text><line x1="50" x2="880" y1="99.0" y2="99.0" stroke="#eef1f6"/><text x="42" y="103.0" font-size="11" fill="#728095" text-anchor="end">+0.5</text><line x1="50" x2="880" y1="63.0" y2="63.0" stroke="#eef1f6"/><text x="42" y="67.0" font-size="11" fill="#728095" text-anchor="end">+1.0</text><line x1="50" x2="880" y1="27.0" y2="27.0" stroke="#eef1f6"/><text x="42" y="31.0" font-size="11" fill="#728095" text-anchor="end">+1.5</text><rect x="87.2" y="135.0" width="28" height="1.2" rx="3" fill="#c8ced8"/><rect x="119.2" y="135.0" width="28" height="1.8" rx="3" fill="#c8ced8"/><text x="117.2" y="286" font-size="12" font-weight="800" fill="#748094" text-anchor="middle">13-18</text><rect x="225.5" y="135.0" width="28" height="17.8" rx="3" fill="#c8ced8"/><text x="239.5" y="166.8" font-size="11.5" font-weight="800" fill="#4a5666" text-anchor="middle">-0.2</text><rect x="257.5" y="135.0" width="28" height="9.4" rx="3" fill="#c8ced8"/><text x="255.5" y="286" font-size="12" font-weight="800" fill="#748094" text-anchor="middle">19-29</text><rect x="363.8" y="135.0" width="28" height="18.0" rx="3" fill="#c8ced8"/><text x="377.8" y="167.0" font-size="11.5" font-weight="800" fill="#4a5666" text-anchor="middle">-0.2</text><rect x="395.8" y="135.0" width="28" height="39.3" rx="3" fill="#c8ced8"/><text x="409.8" y="188.3" font-size="11.5" font-weight="800" fill="#4a5666" text-anchor="middle">-0.5</text><text x="393.8" y="286" font-size="12" font-weight="800" fill="#748094" text-anchor="middle">30-39</text><rect x="502.2" y="33.7" width="28" height="101.3" rx="3" fill="#d38b98"/><text x="516.2" y="27.7" font-size="11.5" font-weight="800" fill="#a8455f" text-anchor="middle">+1.4</text><rect x="534.2" y="121.0" width="28" height="14.0" rx="3" fill="#6d8a9e"/><text x="548.2" y="115.0" font-size="11.5" font-weight="800" fill="#4a5666" text-anchor="middle">+0.2</text><text x="532.2" y="286" font-size="12" font-weight="800" fill="#748094" text-anchor="middle">40-49</text><rect x="640.5" y="135.0" width="28" height="16.1" rx="3" fill="#c8ced8"/><text x="654.5" y="165.1" font-size="11.5" font-weight="800" fill="#4a5666" text-anchor="middle">-0.2</text><rect x="672.5" y="135.0" width="28" height="3.0" rx="3" fill="#c8ced8"/><text x="670.5" y="286" font-size="12" font-weight="800" fill="#748094" text-anchor="middle">50-59</text><rect x="778.8" y="135.0" width="28" height="4.3" rx="3" fill="#c8ced8"/><rect x="810.8" y="135.0" width="28" height="4.4" rx="3" fill="#c8ced8"/><text x="808.8" y="286" font-size="12" font-weight="800" fill="#748094" text-anchor="middle">60+</text></svg>
+              </div>
+            </div>
+            <div class="insight-panel age-ins1">
+              <h3>성·연령 인사이트</h3>
+              <div class="insight-highlight" style="margin-top:0">여성 72.2% · 30~50대 여성 중심</div>
+              <p style="margin:12px 0 0;color:#4a5666;font-size:13px;line-height:1.65">TVC 중 한샘 관련 검색은 <b>30~50대 여성</b>이 62%를 차지하는 여성 중심 구조임(TVC 전 여성 71.7%).</p>
+              <p style="margin:10px 0 0;color:#4a5666;font-size:13px;line-height:1.65">반면 <b>모델(안성재·정은채) 결합 키워드</b>는 남성 비중이 <b>48%</b>로 한샘 검색 평균(28%)의 약 1.7배였음(TV 단독 기간). TV 모델(셰프 안성재·배우 정은채)이 기존 주 구매층 밖의 남성 탐색층까지 끌어온 것으로 추정됨.</p>
+            </div>
+            <div class="insight-panel age-ins2">
+              <h3>성·연령 비중 변화 인사이트</h3>
+              <div class="insight-highlight" style="margin-top:0">40대 여성이 가장 먼저, 가장 크게 반응</div>
+              <p style="margin:12px 0 0;color:#4a5666;font-size:13px;line-height:1.65">TV 단독 기간 성·연령 구성 중 <b>40대 여성만 뚜렷하게 늘어남(+1.4%p, 23.3% → 24.7%)</b>. 나머지 층은 모두 ±0.6%p 이내로 큰 변화가 없었음.</p>
+              <p style="margin:10px 0 0;color:#4a5666;font-size:13px;line-height:1.65">→ TVC는 새로운 연령층으로 검색을 넓히기보다 <b>핵심 고객층인 40대 여성의 검색 비중을 높이는</b> 방향으로 작동함.</p>
+            </div>
+          </div>
+          <div class="topic-card" style="margin-top:18px">
+            <div class="topic-head">
+              <h3>구매 영향 키워드의 변화</h3>
+              <p class="definition-copy">NPay 구매자 기준 구매 직전 검색 키워드이며, 구매 직전에 영향을 끼친 키워드의 TVC 전 대비 배수로 표기함.</p>
+            </div>
+            <div class="grid-2">
+              <div class="hbar-wrap"><div class="hbar-row"><span>한샘식기건조대</span><div class="hbar"><i style="width:100%"></i></div><b>2.5배</b></div><div class="hbar-row"><span>한샘아임빅수납침대</span><div class="hbar"><i style="width:96%"></i></div><b>2.4배</b></div><div class="hbar-row"><span>한샘화장대</span><div class="hbar"><i style="width:84%"></i></div><b>2.1배</b></div><div class="hbar-row"><span>한샘수납장</span><div class="hbar"><i style="width:76%"></i></div><b>1.9배</b></div><div class="hbar-row nb"><span>옷장</span><div class="hbar"><i style="width:72%"></i></div><b>1.8배</b></div><div class="hbar-row"><span>한샘거실장</span><div class="hbar"><i style="width:68%"></i></div><b>1.7배</b></div><div class="hbar-row"><span>한샘식탁의자</span><div class="hbar"><i style="width:64%"></i></div><b>1.6배</b></div><div class="hbar-row"><span>한샘샘키즈수납장</span><div class="hbar"><i style="width:60%"></i></div><b>1.5배</b></div><div class="hbar-row nb"><span>서랍장</span><div class="hbar"><i style="width:60%"></i></div><b>1.5배</b></div></div>
+              <div class="insight-panel">
+                <h3>수납 메시지가 구매 탐색으로 연결</h3>
+                <p>수납 관련 구매 키워드는 <b>1.8배</b>로 늘어 브랜드 키워드('한샘'·'한샘몰', 약 1.2배)보다 크게 움직임.</p>
+                <div class="insight-highlight"><mark class="kw-mark">'옷장'·'서랍장'</mark>처럼 브랜드명이 없는 카테고리 키워드에서도 한샘 구매 연결이 늘어, 구매 직전 일반키워드 비중이 <b>12.1% → 19.5%</b>로 확대됨. 카테고리 탐색 고객을 한샘 구매로 데려온 흐름임.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="position">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 2</span><h2>검색 포지셔닝 (경쟁사 비교)</h2></div>
+          <div class="part-headline">비교 브랜드 8개(한샘 + 경쟁사 7개)의 키친 검색 중 <strong>한샘이 64%로 압도적 1위</strong>이고, 한샘 브랜드 검색에서도 <strong>수납 수식어 검색이 19%로 함께 형성</strong>됨. 반면 수납 검색은 매장·소품형 경쟁사가 앞서, 수납이 <strong>경쟁사 대비</strong> 점유 확대 여지가 가장 큰 카테고리로 확인됨.</div>
+          <p class="definition-copy">각 브랜드명 포함 검색어의 검색 의도 구성 기준. 절대 쿼리량이 아닌 상대 비중으로 표기하며, 경쟁사는 A~G로 마스킹함.</p>
+          <div class="card">
+            <h3>검색 의도 구조 비교</h3>
+            <small class="small-note" style="margin:0 0 6px">유저가 직접 검색한 브랜드명 포함 검색어를 분석해, 브랜드별 검색 의도와 관심 맥락을 파악함.</small>
+            <p class="lead">한샘은 자사몰로 바로 찾아오는 검색과 함께 키친·수납 검색이 고르게 형성된 반면, 경쟁사는 가구 단품·매장 방문·자재로 뚜렷이 갈림.</p>
+            <div class="vs-grid">
+              <div class="vs-col me">
+                <div class="vh">한샘</div>
+                <div class="vsub">자사몰 직행 + 키친·수납형<em>"우리 집 공간을 바꾸려면?"</em></div>
+                <div class="vrow"><span class="vtag">키친</span><p>키친 검색 중 한샘 점유 <b>64%</b> · 8개 브랜드 중 1위</p></div>
+                <div class="vrow"><span class="vtag">수납</span><p>수식어 검색의 <b>19%</b> · 붙박이장·옷장·드레스룸·시스템행거</p></div>
+              </div>
+              <div class="vs-mid"><div class="vb">VS</div></div>
+              <div class="vs-col comp">
+                <div class="vh">경쟁사 (A~G)</div>
+                <div class="vsub">가구 단품 · 매장 방문 · 자재형<em>"어디서·어떤 가구를?"</em></div>
+                <div class="vrow"><span class="vtag">매장·소품</span><p>매장·지점 검색 <b>29%</b> + 수납 소품 검색 (A)</p></div>
+                <div class="vrow"><span class="vtag">가구 단품</span><p>소파·식탁·책상 등 <b>가구 단품</b> 검색 50~82% (C·D·E)</p></div>
+                <div class="vrow"><span class="vtag">자재·창호</span><p>도어·필름·창호 등 <b>자재</b> 검색 (F·G)</p></div>
+              </div>
+            </div>
+          </div>
+          <div class="grid-2" style="margin-top:18px">
+            <div class="kwl-col">
+              <div class="kwl-head me">키친 검색 점유 (SOV)<small>8개 브랜드의 주방·키친 검색 중 브랜드별 비중 · 전체</small></div>
+              <div class="kwl-row"><span>한샘</span><div class="kt"><i class="" style="width:100.0%"></i></div><b>64%</b></div><div class="kwl-row"><span>경쟁사 A</span><div class="kt"><i class="o" style="width:42.2%"></i></div><b>27%</b></div><div class="kwl-row"><span>경쟁사 D</span><div class="kt"><i class="o" style="width:8.8%"></i></div><b>6%</b></div><div class="kwl-row"><span>경쟁사 F</span><div class="kt"><i class="o" style="width:2.8%"></i></div><b>2%</b></div><div class="kwl-row"><span>경쟁사 B</span><div class="kt"><i class="o" style="width:1.4%"></i></div><b>0.9%</b></div><div class="kwl-row"><span>경쟁사 C</span><div class="kt"><i class="o" style="width:1.3%"></i></div><b>0.8%</b></div><div class="kwl-row"><span>경쟁사 E</span><div class="kt"><i class="o" style="width:0.9%"></i></div><b>0.6%</b></div><div class="kwl-row"><span>경쟁사 G</span><div class="kt"><i class="o" style="width:0.8%"></i></div><b>0.1%</b></div>
+            </div>
+            <div class="kwl-col">
+              <div class="kwl-head comp">수납 검색 점유 (SOV)<small>8개 브랜드의 수납 검색 중 브랜드별 비중 · 전체</small></div>
+              <div class="kwl-row"><span>경쟁사 A</span><div class="kt"><i class="o" style="width:100.0%"></i></div><b>58%</b></div><div class="kwl-row"><span>한샘</span><div class="kt"><i class="" style="width:40.3%"></i></div><b>23%</b></div><div class="kwl-row"><span>경쟁사 D</span><div class="kt"><i class="o" style="width:14.3%"></i></div><b>8%</b></div><div class="kwl-row"><span>경쟁사 C</span><div class="kt"><i class="o" style="width:13.4%"></i></div><b>8%</b></div><div class="kwl-row"><span>경쟁사 E</span><div class="kt"><i class="o" style="width:4.5%"></i></div><b>3%</b></div><div class="kwl-row"><span>경쟁사 B</span><div class="kt"><i class="o" style="width:1.0%"></i></div><b>0.6%</b></div><div class="kwl-row"><span>경쟁사 F</span><div class="kt"><i class="o" style="width:0.8%"></i></div><b>0.1%</b></div><div class="kwl-row"><span>경쟁사 G</span><div class="kt"><i class="o" style="width:0.8%"></i></div><b>0.1% 미만</b></div>
+            </div>
+          </div>
+          <details class="pen-note calc-fold" style="margin-top:14px"><summary><b>계산 방식 — 검색 점유(SOV)</b></summary>
+            <ul>
+              <li><b>대상 검색어</b> = 비교 브랜드 8개의 브랜드명이 들어간 검색어 (한샘주방 · 한샘옷장 · 경쟁사 브랜드 결합 검색 …)</li>
+              <li><b>키워드군 배정</b> = 브랜드명을 뺀 나머지 단어로 검색어마다 하나의 키워드군만 배정
+                <br>· 키친: 주방 · 키친 · 싱크 · 부엌 · 상부장 · 하부장 · 후드 · 인덕션 · 수전 등이 포함된 검색어
+                <br>· 수납: 붙박이 · 옷장 · 드레스룸 · 행거 · 서랍 · 수납 · 팬트리 · 선반 · 책장 · 신발장 등이 포함된 검색어
+                <br>· 가격 · 후기 · 고객센터처럼 다른 의도가 함께 있으면 그 의도로 먼저 배정</li>
+              <li><b>SOV</b> = 키워드군별 브랜드 검색량 ÷ 8개 브랜드 검색량 합계</li>
+              <li>예: 키친 검색 100건 중 한샘 결합 약 64건 → <b>64%</b></li>
+              <li>제외: '옷장'처럼 브랜드명이 없는 검색, 비교 브랜드 외 다른 브랜드 결합 검색. 따라서 전체 시장 점유율이 아니라 <b>비교 브랜드 안에서의 점유</b>임.</li>
+            </ul>
+          </details>
+          <div class="card" style="margin-top:18px">
+            <h3>브랜드별 검색어 특징</h3>
+            <small class="small-note" style="margin:2px 0 12px">브랜드명 단독 검색을 뺀 수식어 검색의 의도 구성 기준.</small>
+            <table class="intent-table">
+              <thead><tr><th rowspan="2">브랜드</th><th rowspan="2">검색 성격</th><th colspan="2" class="g1">1순위 의도</th><th colspan="2" class="g2">2순위 의도</th></tr>
+                <tr><th class="i1">의도</th><th class="i1">비중</th><th class="i2">의도</th><th class="i2">비중</th></tr></thead>
+              <tbody><tr class=me><td><strong>한샘</strong></td><td><strong>자사몰 직행 + 키친·수납형</strong></td><td class='i1 nm'>온라인몰·서비스</td><td class='i1 sh'><span class="ibar p1"><i style="width:35%"></i></span><b>35%</b></td><td class='i2 nm'>가구(침실·거실)</td><td class='i2 sh'><span class="ibar p2"><i style="width:22%"></i></span><b>22%</b></td></tr><tr><td>경쟁사 A</td><td>매장 방문 + 수납 소품형</td><td class='i1 nm'>온라인몰·서비스</td><td class='i1 sh'><span class="ibar p1"><i style="width:34%"></i></span><b>34%</b></td><td class='i2 nm'>매장·지점</td><td class='i2 sh'><span class="ibar p2"><i style="width:29%"></i></span><b>29%</b></td></tr><tr><td>경쟁사 B</td><td>앱 진입 + 쿠폰·시공형</td><td class='i1 nm'>온라인몰·서비스</td><td class='i1 sh'><span class="ibar p1"><i style="width:32%"></i></span><b>32%</b></td><td class='i2 nm'>매장·지점</td><td class='i2 sh'><span class="ibar p2"><i style="width:27%"></i></span><b>27%</b></td></tr><tr><td>경쟁사 C</td><td>키즈·학생 가구형</td><td class='i1 nm'>가구(침실·거실)</td><td class='i1 sh'><span class="ibar p1"><i style="width:59%"></i></span><b>59%</b></td><td class='i2 nm'>키즈·학생</td><td class='i2 sh'><span class="ibar p2"><i style="width:25%"></i></span><b>25%</b></td></tr><tr><td>경쟁사 D</td><td>종합 가구형</td><td class='i1 nm'>가구(침실·거실)</td><td class='i1 sh'><span class="ibar p1"><i style="width:50%"></i></span><b>50%</b></td><td class='i2 nm'>온라인몰·서비스</td><td class='i2 sh'><span class="ibar p2"><i style="width:29%"></i></span><b>29%</b></td></tr><tr><td>경쟁사 E</td><td>소파·식탁 단품형</td><td class='i1 nm'>가구(침실·거실)</td><td class='i1 sh'><span class="ibar p1"><i style="width:82%"></i></span><b>82%</b></td><td class='i2 nm'>수납</td><td class='i2 sh'><span class="ibar p2"><i style="width:4%"></i></span><b>4%</b></td></tr><tr><td>경쟁사 F</td><td>쇼룸·창호 + 기업 관심형</td><td class='i1 nm'>매장·지점</td><td class='i1 sh'><span class="ibar p1"><i style="width:28%"></i></span><b>28%</b></td><td class='i2 nm'>창호·도어·자재</td><td class='i2 sh'><span class="ibar p2"><i style="width:28%"></i></span><b>28%</b></td></tr><tr><td>경쟁사 G</td><td>후기 검증·견적형</td><td class='i1 nm'>후기·비교</td><td class='i1 sh'><span class="ibar p1"><i style="width:35%"></i></span><b>35%</b></td><td class='i2 nm'>가격·프로모션</td><td class='i2 sh'><span class="ibar p2"><i style="width:16%"></i></span><b>16%</b></td></tr></tbody>
+            </table>
+          </div>
+          <div class="card" style="margin-top:18px">
+            <h3>카테고리 검색 중 한샘 점유 (침투율)</h3>
+            <p class="lead">TV 단독 기간에 카테고리 수요가 늘었고, 그중 <strong class="plain-strong">드레스룸·키친·주방인테리어·붙박이장</strong>에서 한샘 점유가 함께 올라 '수요도 키우고 그 수요를 가져온' 흐름이 확인됨.</p>
+            <table>
+              <thead><tr><th>카테고리</th><th>수요 (전 vs TV 단독)</th><th>한샘 점유 TVC 전</th><th>한샘 점유 TV 단독</th><th>변화</th></tr></thead>
+              <tbody><tr><td>드레스룸</td><td>+21%</td><td>24.1%</td><td><strong>28.1%</strong></td><td><b class=plain-strong>+4.04%p</b></td></tr><tr><td>키친</td><td>-4%</td><td>37.7%</td><td><strong>42.1%</strong></td><td><b class=plain-strong>+4.36%p</b></td></tr><tr><td>주방인테리어</td><td>+4%</td><td>8.6%</td><td><strong>10.8%</strong></td><td><b class=plain-strong>+2.14%p</b></td></tr><tr><td>붙박이장</td><td>+5%</td><td>38.7%</td><td><strong>40.1%</strong></td><td><b class=plain-strong>+1.40%p</b></td></tr><tr><td>옷장</td><td>+5%</td><td>18.7%</td><td>19.5%</td><td>+0.82%p</td></tr><tr><td>서랍장</td><td>+5%</td><td>10.5%</td><td>10.5%</td><td>+0.07%p</td></tr><tr><td>주방리모델링</td><td>+3%</td><td>33.4%</td><td>34.0%</td><td>+0.61%p</td></tr><tr><td>시스템행거</td><td>+7%</td><td>9.8%</td><td>10.1%</td><td>+0.22%p</td></tr></tbody>
+            </table>
+            <small class="small-note">한샘 점유(침투율) = 카테고리 검색(카테고리어 단독 + 8개 브랜드 결합 검색) 중 한샘 결합 검색 비중.</small>
+            <details class="pen-note calc-fold"><summary><b>계산 방식 — 예시 드레스룸</b></summary>
+              <ul>
+                <li><b>분모(카테고리 검색)</b> = '드레스룸' 단독 검색 + 8개 브랜드명이 붙은 드레스룸 검색 (한샘드레스룸 · 경쟁사 A·D 등의 드레스룸 검색 …)</li>
+                <li><b>분자(한샘 점유)</b> = 그중 한샘이 붙은 검색 (한샘드레스룸 · 한샘시그니처드레스룸 · 한샘드레스룸행거 …)</li>
+                <li>TVC 전(41일): 드레스룸 카테고리 검색 100건 중 한샘 결합 약 24건 → <b>24.1%</b></li>
+                <li>TV 단독(13일): 카테고리 검색 100건 중 한샘 결합 약 28건 → <b>28.1%</b> (+4.0%p) · 같은 기간 카테고리 수요(일평균 검색량) +21%</li>
+                <li>→ 카테고리 검색 자체가 늘었고(수요), 그 안에서 한샘이 붙은 검색의 몫도 커짐(점유). 둘이 함께 오르면 '수요도 키우고 그 수요를 가져온' 것으로 읽음.</li>
+                <li>제외: '드레스룸가격'처럼 브랜드 없이 수식어가 붙은 검색, 비교 브랜드 외 다른 브랜드 결합 검색. 따라서 전체 시장 점유율이 아니라 <b>카테고리어 + 비교 브랜드 범위 안의 점유</b>임.</li>
+              </ul>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section id="profile">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 3</span><h2>광고 반응자 프로파일</h2></div>
+          <div class="part-headline">한샘 TVC 반응자는 <strong>아침 출근 전 모바일로 인테리어·생활 정보를 탐색하는 30대 중반~40대 여성</strong>으로, 경쟁사 반응자와 같은 고객층을 잡으면서 리모델링 관심이 함께 나타남. 다만 이사·리폼 같은 구매 계기가 뚜렷한 경쟁사에 비하면 아직 탐색 단계에 가까움.</div>
+          <p class="definition-copy">네이버 광고를 <b>클릭한 반응자 집단</b>의 관심사·검색·이용 시간대·콘텐츠 접점을 종합한 프로파일임. 각 특성의 <b>강함/약함/없음</b>을 함께 읽어 성향을 해석하며, 집단 간 상대 비교로 규모(유저 수)는 다루지 않음.</p>
+          <div class="persona">
+            <div class="pa"><svg viewBox="0 0 64 64" width="46" height="46" aria-hidden="true"><path d="M11 63c0-12 9-19 21-19s21 7 21 19z" fill="#4a6a86"/><path d="M17 33c-2 0-3-2-3-5s2-4 3-4c1-8 8-13 15-13s14 5 15 13c1 0 3 1 3 4s-1 5-3 5c0 6-1 10-3 13l-3-2c2-3 2-7 2-12 0-8-5-12-11-12s-11 4-11 12c0 5 0 9 2 12l-3 2c-2-3-3-7-3-13z" fill="#70616d"/><circle cx="32" cy="28" r="11.5" fill="#eccaa6"/></svg></div>
+            <div class="pb"><span class="pname">"아침 출근 전, 모바일로 인테리어·생활 정보를 탐색하는 30대 후반~40대 여성"</span><p>평일 이른 아침 6~7시, 모바일로 네이버 리빙 콘텐츠를 보며 집 꾸밀 정보를 찾는 <b>30대 중반~40대 여성(72%)</b>이 TVC 기간 반응자의 주를 이룸. 여성 비중은 네이버 검색 사용자 성별 구성(약 72%)과 같은 수준임. 광고를 적극적으로 클릭하고 인테리어 시공·리모델링 검색도 나타나지만, 아직 구매를 결정하기 전 <b>비교·탐색 단계의 고객층</b>임.</p></div>
+          </div>
+          <h3 style="margin-top:24px">① 한샘 페르소나 변화 — TVC 집행 전 vs 중</h3>
+          <p class="lead">TVC는 반응 연령대를 34~47세로 넓히고 관심의 결을 육아에서 '집 리모델링'으로 옮김 → 클릭이 구매 결정으로 넘어가는 구조는 그대로여서, 리모델링 관심을 시공 사례·상담으로 이어 받는 후속 퍼널이 관건임.</p>
+          <div class="pp-grid">
+            <div class="pcard"><span class="ptag pre">TVC 전</span><p class="lead" style="margin:6px 0 0">37~44세 집중 · 여성 74% · 광고를 클릭하지만 구매 결정은 신중한 탐색형</p><ul><li>반응 연령이 37~44세에 좁게 집중</li><li>광고 클릭은 활발하나 구매로는 일부만 이어짐</li><li>출산·육아 관련 검색 경향이 있음</li><li>아침 6시 모바일 접점이 뚜렷함</li></ul></div>
+            <div class="pp-arrow" aria-hidden="true">→</div>
+            <div class="pcard"><span class="ptag dur">TVC 중</span><p class="lead" style="margin:6px 0 0">34~47세로 넓어짐 · 여성 72% · 관심이 '집 리모델링'으로 이동</p><ul><li>반응 연령이 <b>34~47세로 위아래 넓어짐</b> (신규 도달 +15%와 같은 방향)</li><li>클릭은 활발하고 구매 결정은 신중한 성향 유지</li><li><b>인테리어 시공·리모델링, 세탁·청소 검색</b>이 새로 나타남</li><li>아침 6~7시 모바일 + 네이버 리빙 콘텐츠 접점 유지</li></ul></div>
+          </div>
+          <h3 style="margin-top:26px">② 같은 고객층, 다른 단계 — 한샘 vs 경쟁사</h3>
+          <div class="vsname">
+            <div class="nc me"><div class="tt">한샘 반응자</div><div class="em">"인테리어 시공·리모델링 검색이 나타난 사람"</div><p>34~47세 여성 72%. 광고를 적극 클릭하고 <b>인테리어 시공·리모델링 검색</b>이 나타나지만 아직 구매 결정 전 탐색 단계. 아침 6~7시 모바일·리빙 콘텐츠가 주 접점.</p></div>
+            <div class="nc comp"><div class="tt">경쟁사 반응자 (합집합)</div><div class="em">"가구·인테리어 광고에 반응하는 같은 고객층"</div><p>33~47세 여성 72.8%로 성·연령과 클릭 성향은 한샘과 거의 같으나, <b>검색·콘텐츠 이용 같은 행동 신호는 뚜렷하지 않은</b> 카테고리 관심층.</p></div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <p class="lead" style="margin:0 0 14px;font-size:14px;line-height:1.7">성·연령과 클릭 성향은 경쟁사 합집합과 거의 같지만, <b>한샘 반응자에게는 리모델링·집 관리 검색과 아침 리빙 콘텐츠 접점이 함께 나타남</b>. 다만 이사·입주·리폼 같은 구매 계기 신호가 뚜렷한 실행형 경쟁사(C·D·E·G)에 비하면 아직 탐색 단계에 가까움.</p>
+            <table><thead><tr><th>축</th><th>한샘</th><th>경쟁사 합집합</th></tr></thead><tbody><tr><td>연령·성별</td><td>34~47세 / 여성 72%</td><td>33~47세(35~39 집중) / 여성 72.8% — <strong>유사</strong></td></tr><tr><td>광고 반응</td><td>적극 클릭, 구매 결정은 신중(탐색형)</td><td>적극 클릭 — <strong>유사</strong></td></tr><tr><td>집에 대한 의도</td><td><strong>인테리어 시공·리모델링, 세탁·청소 검색</strong> 경향이 있음</td><td>뚜렷한 검색 의도 없음</td></tr><tr><td>콘텐츠 접점</td><td><strong>네이버 모바일 리빙 콘텐츠</strong></td><td>뚜렷한 접점 없음</td></tr><tr><td>시간대</td><td><strong>아침 6~7시</strong></td><td>뚜렷한 집중 시간대 없음</td></tr></tbody></table>
+          </div>
+          <div class="typo-grid">
+            <div class="typo explore"><b>탐색형</b><span class="mem">한샘 · A · B · F</span><p>광고를 적극 클릭하지만 구매 결정은 신중함. 구매 계기 검색이 약하거나 없음.</p></div>
+            <div class="typo execute"><b>실행형</b><span class="mem">C · D · E · G</span><p>클릭 후 구매·상담까지 이어짐. 출산 준비·이사·입주·가구 리폼 같은 <b>생활 변화 검색이 뚜렷함</b>.</p></div>
+          </div>
+          <div class="card" style="margin-top:18px">
+            <h3>[참고] 경쟁사별 한 줄 페르소나</h3>
+            <table class="persona-tbl"><thead><tr><th>경쟁사</th><th>연령·성별</th><th>한 줄 페르소나</th><th>반응 성향</th><th>주 이용 시간</th><th>특징</th></tr></thead><tbody><tr><td><span class="badge">A</span></td><td>33~46세 / 여성 72%</td><td>쇼핑 카탈로그로 상품을 비교하는 탐색형 쇼퍼</td><td>탐색형</td><td>뚜렷하지 않음</td><td>쇼핑 카탈로그 추천 이용 외 행동 신호가 적음. 클릭 활발·구매 결정 신중</td></tr><tr><td><span class="badge">B</span></td><td>31~36세 / 여성 73%</td><td>가격·상품 정보를 비교하는 30대 초중반 홈리빙 쇼퍼</td><td>탐색형</td><td>뚜렷하지 않음</td><td>가장 젊은 층. 가격비교·상품정보 검색, 부동산·쇼핑 카탈로그 이용</td></tr><tr><td><span class="badge">C</span></td><td>34~46세 / 여성 74.7%</td><td><strong>아이방 첫 가구를 준비하는 출산·육아기 엄마</strong></td><td>실행형</td><td>아침 6~7시</td><td>출산 준비·산후조리 검색이 뚜렷함, 분양 관심. 클릭 후 구매까지 이어짐</td></tr><tr><td><span class="badge">D</span></td><td>39~43세 정점 / 여성</td><td><strong>이사·입주를 앞둔 주거 전환기 주부·워킹맘</strong></td><td>실행형</td><td>아침 6~7시</td><td>이사·분양·가구 검색, 세탁·청소. 한샘과 연령·시간대가 가장 많이 겹침</td></tr><tr><td><span class="badge">E</span></td><td>35~54세 / 여성 77.6%</td><td><strong>리폼·이사로 새 공간을 꾸리는 주거 전환기 여성</strong></td><td>실행형</td><td>아침 6~7시</td><td>가구 수리·리폼 검색이 뚜렷함, 이사·웨딩. 구매 실행 성향이 가장 강함</td></tr><tr><td><span class="badge">F</span></td><td>50~62세 / 남성 52%</td><td>노후 이사·자산 정리를 고민하는 50~60대</td><td>탐색형</td><td>새벽 5시</td><td>부동산 서비스 이용이 뚜렷함, 대출·금융 검색 병행. 연령·성별 구성이 다른 고객층</td></tr><tr><td><span class="badge">G</span></td><td>35~38세 / 여성</td><td><strong>리모델링 실행 직전의 신혼·영유아 가정</strong></td><td>실행형</td><td>뚜렷하지 않음</td><td>가구 수리·리폼·이사 검색이 뚜렷함, 대출 검색 병행. 상담·견적 실행 단계</td></tr></tbody></table>
+          </div>
+          <div class="action-hl"><span class="action-tag">운영 시사점</span><div>→ TVC로 생긴 리모델링 관심은 <b>이사·입주·리폼 같은 구매 계기 검색어(검색광고)와 리빙·부동산 지면</b>에서 이어 받는 방안을 검토해 볼 만함. 클릭 후에는 시공 사례·견적 상담·쇼룸 예약처럼 허들이 낮은 다음 단계를 함께 제시하면, 탐색형 반응층이 구매 단계로 넘어가는 데 도움이 될 것으로 기대됨. 아침 6~7시는 실행형 경쟁사(C·D·E)도 함께 반응하는 시간대여서, 단독 우위를 노리기보다는 기본 접점으로 꾸준히 운영하는 것을 추천함.</div></div>
+        </div>
+      </section>
+
+      <section id="purchase">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 4</span><h2>네이버쇼핑스토어 구매 성과</h2></div>
+          <div class="part-headline"><strong>네이버 DA 확대 후 추석 전까지(9/3–9/20) 스토어 구매자 +8%·매출 +8%</strong>로 쌤위크 프로모션이 포함된 TVC 전 기준을 넘어섰고, 늘어난 구매자의 <strong>88%는 신규 구매자</strong>임.</div>
+          <p class="definition-copy">한샘 네이버쇼핑 공식 브랜드스토어 구매 기준이며, 자사몰(한샘몰·한샘리하우스) 구매는 본 분석 범위에서 제외함.<br>일평균은 하루 단위 구매자·매출을 기간 일수로 나눈 값이며, 비교 기준은 TVC 전(7/11–8/20) 41일 전체, TVC 중은 네이버 DA 확대 후 추석 전(9/3–9/20) 18일임.</p>
+          <div class="card store-card" style="margin-top:18px">
+            <h3>스토어 성과</h3>
+            <div class="st-flow"><div class="st-step"><span>TV 단독 · 8/21–9/2</span><b class="dn">−7%</b><small>TVC 전 대비 구매자</small></div><i>→</i><div class="st-step hi"><span>네이버 DA 확대 후 추석 전 · 9/3–9/20</span><b>+8.1%</b><small>구매자·매출 각각</small></div><i>→</i><div class="st-step mute"><span>추석 주간 · 9/21–9/27</span><b class="dn">−40%</b><small>명절 시즌 영향 · 비교 제외</small></div></div><ul class="st-points"><li><b>네이버 DA가 확대된 9월 초부터</b> 구매자·신규 구매자·매출이 함께 TVC 전을 넘어섬</li><li>하루 평균 구매자·매출 <b>각 +8.1%</b>, 늘어난 구매자의 <b>88%가 신규 구매자</b></li><li>스토어 구매 반응은 TV 단독 기간보다 <b>네이버 DA가 확대된 시점</b>에 나타남</li></ul>
+            <table class="store-table">
+              <thead><tr><th rowspan="2">지표 (일평균)</th><th rowspan="2" class="num">TVC 전<br><small>7/11–8/20 · 41일</small></th><th colspan="2" class="g2">TVC 중 (DA 확대 후 추석 전)<br><small>9/3–9/20 · 18일</small></th></tr>
+                <tr><th class="num s2">값</th><th class="num s2">변화</th></tr></thead>
+              <tbody><tr><td>구매자</td><td class=num>약 337명</td><td class='num g2'><strong>약 365명</strong></td><td class='num dl up'>+8.1%</td></tr><tr><td>신규 구매자</td><td class=num>약 278명</td><td class='num g2'><strong>약 302명</strong></td><td class='num dl up'>+8.6%</td></tr><tr><td>재구매자</td><td class=num>약 59명</td><td class='num g2'><strong>약 62명</strong></td><td class='num dl up'>+5.5%</td></tr><tr><td>스토어 매출</td><td class=num>약 1.53억원</td><td class='num g2'><strong>약 1.65억원</strong></td><td class='num dl up'>+8.1%</td></tr><tr><td>신규구매 매출</td><td class=num>약 1.26억원</td><td class='num g2'><strong>약 1.39억원</strong></td><td class='num dl up'>+9.9%</td></tr><tr><td>평균 구매액 (주문당)</td><td class=num>약 41.3만원</td><td class='num g2'><strong>약 41.4만원</strong></td><td class='num dl up'>+0.2%</td></tr></tbody>
+            </table>
+            <small class="small-note">변화 = TVC 전 일평균 대비 변화율. 평균 구매액은 매출 ÷ 주문 수.</small>
+          </div>
+
+          <div class="card purchase-visual" style="margin-top:18px">
+            <div class="buyer-chart">
+              <h3>구매자 규모 변화</h3>
+              <div class="buyer-bars">
+                <div class="buyer-bar" style="height:120px"></div>
+                <div class="buyer-bar after" style="height:130px"><em>+8.1%</em></div>
+              </div>
+              <div class="bar-caption"><span>TVC 전</span><span>DA 확대 후 추석 전</span></div>
+            </div>
+            <div class="purchase-pool">
+              <svg class="people-mark" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+                <circle class="pool-bg" cx="120" cy="120" r="112"></circle>
+                <g class="pool-people">
+                  <use href="#user-pool-person" x="75" y="54" width="30" height="32"></use>
+                  <use href="#user-pool-person" x="105" y="54" width="30" height="32"></use>
+                  <use href="#user-pool-person" x="135" y="54" width="30" height="32"></use>
+                  <use href="#user-pool-person" x="56" y="82" width="32" height="34"></use>
+                  <use href="#user-pool-person" x="88" y="82" width="32" height="34"></use>
+                  <use href="#user-pool-person" x="120" y="82" width="32" height="34"></use>
+                  <use href="#user-pool-person" x="152" y="82" width="32" height="34"></use>
+                  <use href="#user-pool-person" x="39" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="71" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="103" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="135" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="167" y="112" width="34" height="36"></use>
+                  <use href="#user-pool-person" x="47" y="146" width="38" height="40"></use>
+                  <use href="#user-pool-person" x="83" y="146" width="38" height="40"></use>
+                  <use href="#user-pool-person" x="119" y="146" width="38" height="40"></use>
+                  <use href="#user-pool-person" x="155" y="146" width="38" height="40"></use>
+                </g>
+              </svg>
+              <span>구매자 증가분이<br>신규 구매자 풀 확대로 연결됨</span>
+            </div>
+            <div class="buyer-share">
+              <div class="increment-visual" style="margin-top:0">
+                <h4>증가분 중 신규 구매자</h4>
+                <div class="increment-bar">
+                  <span class="new" style="width:88%">88%</span>
+                  <span class="repeat" style="width:12%"></span>
+                </div>
+                <p class="small-note">DA 확대 후 추석 전(9/3–9/20) 늘어난 일평균 구매자 중 88%가 최근 1년 내 구매 이력이 없는 신규 구매자임.</p>
+              </div>
+              <p class="lead" style="margin:0">같은 기간 신규 구매자 +8.6%, 신규구매 매출 +9.9%로 신규 쪽 성장이 가장 큼. 네이버 내 검색 관심 증가와 광고 접점 확대가 <b>새 구매 고객 유입</b>으로 이어진 흐름으로 해석됨.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="overlap">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">PART 5</span><h2>동종 제품군 탐색 고객 내 브랜드 접점 확대</h2></div>
+          <div class="part-headline">광고 노출 유저 중 신규 유저 비중이 확대되며, TVC 기간 중 네이버 내 기존 관심층 외 <strong>신규 잠재 고객 도달</strong>도 함께 증가함. 동시에 한샘은 동종 제품군 탐색 고객군과의 <strong>공통 접점</strong>이 노출과 클릭 양쪽에서 늘어나, 동종 제품군 탐색 고객 안에서 함께 검토되는 기회가 확대됨.</div>
+          <div class="card new-user-visual" style="margin-top:18px">
+            <div>
+              <h3>TVC 중 신규 노출 유저 비중</h3>
+              <p class="lead">광고주 노출 유저 중 신규 유저 비중은 TVC 전 39.35%에서 TVC 중 42.83%로 확대됨. 신규 도달 유저는 +15.0%, 클릭 신규 유저는 +13.1% 증가함.<br>늘어난 신규의 약 91%는 <b>보장형DA가 처음 데려온 고객</b>이며, 성과형DA가 데려온 신규도 TVC 전 대비 <b>+71%</b> 늘어 DA 상품이 신규 도달 확대를 이끎.</p>
+              <small class="small-note" style="margin-top:-6px">상품별 신규 = 그 상품이 처음 데려온 신규 유저(직전 30일 한샘 광고 접점 없음). 보장형DA는 TVC 전 집행이 없어 전·중 비교 대신 증가분 기여로 표기하며, 보장형DA 신규는 거의 전부(99.8%) 온라인 보장형 지면이 집중 운영된 쌤페스타 기간(9/28~)에 발생함.</small>
+              <div class="reach-expansion">
+                <div class="reach-circle c3"></div>
+                <div class="reach-circle c2"></div>
+                <div class="reach-circle c1"></div>
+                <div class="reach-core">신규<br>도달</div>
+              </div>
+            </div>
+            <div class="card kpi green" style="box-shadow:none">
+              <div class="lab">광고주 신규 노출 유저 비중</div>
+              <div class="val compact"><span class="prev">39.35%</span><span class="arrow">→</span><span class="current">42.83%</span></div>
+              <div class="delta">+3.48%p / +8.8%</div>
+              <div class="desc">TVC 전 대비 TVC 중 신규 노출 유저 비중 변화</div>
+              <p class="lead" style="margin-top:14px">TVC 기간에는 기존 관심층 외 신규 잠재 고객 도달이 확대되었고, 이 모수는 이후 리타겟팅·리인게이지먼트 기반으로 활용 가능함. TV 단독 기간에 새로 도달한 유저의 절반 이상(51%)은 네이버 DA 확대 기간에 다시 접점이 이어짐.</p>
+            </div>
+          </div>
+          <div class="overlap-summary" style="margin-top:18px">
+            <div class="overlap-card">
+              <h3>노출 기준 동종 제품군 탐색 고객 접점</h3>
+              <div class="overlap-metrics">
+                <div><span>노출 교집합</span><b>+11.5%</b><small>TVC 전 대비 증가</small></div>
+                <div><span>동종 제품군 탐색 고객군과의 접점 유사도</span><b>+9.0%</b><small>0.555 → 0.605</small></div>
+              </div>
+              <div class="insight-highlight" style="margin-top:12px">노출 기준으로 동종 제품군 탐색 고객과의 공통 접점과 접점 유사도가 함께 늘어, 제품군 탐색 고객의 고려 단계에서 한샘이 더 자주 노출됨.</div>
+            </div>
+            <div class="overlap-card">
+              <h3>클릭 기준 동종 제품군 탐색 고객 접점</h3>
+              <div class="overlap-metrics">
+                <div><span>클릭 교집합</span><b>+11.2%</b><small>TVC 전 대비 증가</small></div>
+                <div><span>동종 제품군 탐색 고객군과의 접점 유사도</span><b>−0.8%</b><small>0.118 → 0.117 · 공유 비중 유지</small></div>
+              </div>
+              <div class="insight-highlight" style="margin-top:12px"><b>수납 카테고리 핵심 경쟁 브랜드와의 클릭 공통 접점이 TVC 전 대비 약 3.8배</b>로 가장 크게 늘어, 수납 카테고리에서 한샘이 함께 비교·검토되는 장면이 확대됨.</div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:18px">
+            <h3>동종 제품군 탐색 고객 접점 및 통계적 유사도 변화</h3>
+            <table>
+              <thead><tr><th>기준</th><th>지표</th><th>TVC 전</th><th>TVC 중</th><th>변화</th><th>광고주 관점 해석</th></tr></thead>
+              <tbody>
+                <tr><td>노출</td><td>교집합</td><td>Base</td><td><strong>+11.5%</strong></td><td>증가</td><td>동종 제품군을 함께 탐색하는 고객의 고려 단계에서 한샘이 더 자주 등장할 수 있는 기반이 커짐.</td></tr>
+                <tr><td>노출</td><td>경쟁사와의 통계적 유사도</td><td>0.555</td><td><strong>0.605</strong></td><td><strong class="plain-strong">+9.0%</strong></td><td>노출 규모만이 아니라 동종 제품군 탐색 고객군과 공유하는 접점 비중도 높아져, 제품군 탐색 고객 안에서 한샘이 더 선명하게 포착됨.</td></tr>
+                <tr><td>클릭</td><td>교집합</td><td>Base</td><td><strong>+11.2%</strong></td><td>증가</td><td>능동(클릭)반응 고객 기준에서도 동종 제품군 탐색 고객과의 연결 지점이 확대됨.</td></tr>
+                <tr><td>클릭</td><td>경쟁사와의 통계적 유사도</td><td>0.118</td><td><strong>0.117</strong></td><td><strong class="plain-strong">−0.8%</strong></td><td>공유 비중은 유지되어, 늘어난 클릭 반응 고객이 경쟁 탐색 고객과 같은 비율로 함께 확대됨.</td></tr>
+              </tbody>
+            </table>
+            <small class="small-note">Jaccard 유사도: 두 집합 간 공통 요소 비율을 전체 요소 대비 얼마나 공유하는지 측정하는 유사도 지표임.</small>
+          </div>
+        </div>
+      </section>
+
+      <section id="carryover">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">APPENDIX</span><h2>TVC 접점의 이월 효과</h2></div>
+          <div class="part-headline">TV 단독 기간에 새로 만난 고객의 <strong>51%가 네이버 DA 확대 기간에 다시 광고로 만났고</strong>, 이때 <strong>클릭으로 반응했던 고객은 이후 검색광고 클릭률이 크게 높아</strong> TVC 기간 접점이 리타겟팅·검색 회수 자산으로 이어지는 흐름이 확인됨.</div>
+          <p class="definition-copy">광고 접점(노출·클릭) 로그를 유저 단위로 이어 본 결과이며, 접점 유저가 원래 관심이 높은 고객일 수 있어 인과가 아닌 흐름(상관관계)으로 해석함.<br>신규 = 직전 30일간 한샘 광고 접점이 없던 유저. 재접점 = 이후 구간에 한샘 광고 접점이 다시 생긴 비율.</p>
+          <div class="co-grid">
+            <div class="card">
+              <h3>신규 고객의 재접점</h3>
+              <div class="co-rate"><div class="co-rh"><span>TV 단독 신규 → 네이버 DA 확대 기간</span><b>51%</b></div><div class="co-track"><i style="width:50.8%"></i></div></div>
+              <div class="co-rate"><div class="co-rh"><span>TVC 전 신규 → TVC 기간</span><b>61%</b></div><div class="co-track sub"><i style="width:60.9%"></i></div></div>
+              <p class="co-note">TVC 기간에 만난 신규 고객의 절반 이상이 다음 구간에도 이어져, TVC 중 확보한 모수를 리타겟팅 자산으로 활용할 수 있음.</p>
+            </div>
+            <div class="card">
+              <h3>접점 깊이별 이후 검색광고 클릭률</h3>
+              <div class="co-bars"><div class="co-col"><small>기준</small><i class="" style="height:7px"></i><span>미접점</span></div><div class="co-col"><small>×1.6</small><i class="mid" style="height:12px"></i><span>노출만</span></div><div class="co-col"><small>×20.2</small><i class="hi" style="height:150px"></i><span>클릭</span></div></div>
+              <p class="co-note">TV 단독 기간 접점 깊이별로 DA 확대 기간에 검색광고를 클릭한 비율. 클릭까지 반응한 고객은 미접점 대비 약 20배로, 클릭 반응자를 우선 리타겟팅할 근거가 됨.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="recommendation">
+        <div class="wrap">
+          <div class="sec-head"><span class="sec-no">RECOMMENDATION</span><h2>TVC 기간 네이버 운영 전략</h2></div>
+          <div class="card">
+            <p class="lead">TVC로 형성된 키친·수납 관심을 네이버 안에서 구매로 이어가려면, <strong>TV 온에어 시점부터 네이버 DA·검색광고를 함께 운영</strong>할 필요가 있음. 이번 캠페인에서 스토어 구매 반응은 TV 단독 기간보다 <strong>네이버 DA가 확대된 시점</strong>에 나타났고, 검색에서는 '옷장'·'서랍장' 같은 <strong>수납 일반키워드를 거친 구매</strong>가 늘었음.<br>또한 TVC 초기에 새로 만난 고객의 절반가량이 이후에도 다시 이어졌으므로(접점 이월 효과 참고), 이 고객을 <strong>리타겟팅 자산으로 축적</strong>해 후속 캠페인에 활용하는 운영을 권장함.</p>
+            <div class="recommendation-grid" style="grid-template-columns:repeat(3,1fr)">
+              <div class="recommendation-card">
+                <span class="num">1</span>
+                <b>TV와 네이버 DA 동시 운영</b>
+                <p>TV만 집행된 13일은 스토어 구매자가 TVC 전 대비 −7%였으나, 네이버 DA가 확대된 뒤 추석 전까지 구매자·매출이 각 +8.1% 늘었음. 다음 캠페인은 TV 온에어 시점에 네이버 DA를 함께 확대해, 관심이 생기는 초기부터 구매 고객과의 접점을 만드는 것을 추천함.</p>
+              </div>
+              <div class="recommendation-card">
+                <span class="num">2</span>
+                <b>수납 일반키워드 검색 확장</b>
+                <p>수납 관련 구매 키워드는 1.8배로 늘었고, 구매 직전 일반키워드('옷장'·'서랍장' 등) 비중도 12.1% → 19.5%로 확대됨. 반면 수납 검색 점유는 한샘 23%로 경쟁사 A(58%)보다 낮아, 수납 일반키워드 검색광고·쇼핑검색을 넓혀 점유를 키우는 것을 추천함.</p>
+              </div>
+              <div class="recommendation-card">
+                <span class="num">3</span>
+                <b>TVC 초기 접점 고객 리타겟팅</b>
+                <p>TV 단독 기간에 새로 만난 고객의 51%가 네이버 DA 확대 기간에 다시 접점이 이어졌고, 클릭으로 반응한 고객은 이후 검색광고 클릭률이 미접점 고객의 약 20배였음. TVC 초기 신규 고객, 특히 클릭 반응 고객을 우선 리타겟팅 대상으로 운영하는 것을 추천함.</p>
+              </div>
+            </div>
+          </div>
+          <p class="small-note" style="margin-top:18px">본 리포트는 네이버 내 검색·광고 반응·스토어 구매 관측 데이터를 비교한 분석으로, TV 자체 도달과 네이버 외 매체·자사몰 성과는 포함하지 않음. 분석 결과는 순수 인과 효과가 아닌 집행 기간 내 방향성으로 해석해야 함.</p>
+          <div class="report-endcap" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        TVC x NAVER Cross Campaign Report
+      </footer>
+    </main>
+  </div>
+
+  <script>
+
+    const REPORT_YEAR = '2026';
+    const REPORT_ACCOUNT_KEY = 'hanssem';
+    const REPORT_PASSWORD_CHECKSUM = 2614885374;
+    const REPORT_ACCESS_STORAGE_KEY = `tvc-report-access-${REPORT_YEAR}-${REPORT_ACCOUNT_KEY}`;
+    function passwordChecksum(value) {
+      let hash = 2166136261;
+      const bytes = new TextEncoder().encode(value);
+      bytes.forEach(byte => {
+        hash ^= byte;
+        hash = Math.imul(hash, 16777619) >>> 0;
+      });
+      return hash >>> 0;
+    }
+    function unlockReport() {
+      document.body.classList.remove('locked');
+      document.body.classList.add('unlocked');
+      document.getElementById('passwordGate')?.setAttribute('hidden', '');
+      window.setTimeout(() => {
+        if (typeof updateActiveNav === 'function') updateActiveNav();
+      }, 0);
+    }
+    function setupPasswordGate() {
+      const form = document.getElementById('passwordForm');
+      const input = document.getElementById('reportPassword');
+      const error = document.getElementById('passwordError');
+      if (sessionStorage.getItem(REPORT_ACCESS_STORAGE_KEY) === 'unlocked') {
+        unlockReport();
+        return;
+      }
+      input?.focus();
+      form?.addEventListener('submit', event => {
+        event.preventDefault();
+        const value = input.value.trim();
+        if (passwordChecksum(value) === REPORT_PASSWORD_CHECKSUM) {
+          sessionStorage.setItem(REPORT_ACCESS_STORAGE_KEY, 'unlocked');
+          input.value = '';
+          if (error) error.textContent = '';
+          unlockReport();
+        } else {
+          if (error) error.textContent = '비밀번호가 일치하지 않음.';
+          input.select();
+        }
+      });
+    }
+    setupPasswordGate();
+    const trendData = {"dates": ["2026-07-11", "2026-07-12", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-18", "2026-07-19", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-25", "2026-07-26", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-07", "2026-08-08", "2026-08-09", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-15", "2026-08-16", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-22", "2026-08-23", "2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28", "2026-08-29", "2026-08-30", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-05", "2026-09-06", "2026-09-07", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11", "2026-09-12", "2026-09-13", "2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18", "2026-09-19", "2026-09-20", "2026-09-21", "2026-09-22", "2026-09-23", "2026-09-24", "2026-09-25", "2026-09-26", "2026-09-27", "2026-09-28", "2026-09-29", "2026-09-30", "2026-10-01", "2026-10-02", "2026-10-03"], "brand": [92.4, 110.3, 115.1, 101.6, 92.6, 90.2, 87.5, 99.2, 105.5, 112.3, 101.7, 95.1, 91.9, 87.8, 89.8, 100.2, 110.1, 99.4, 91.5, 90.4, 85.2, 88.7, 98.9, 108.1, 99.7, 96.3, 96.6, 98.2, 89.1, 107.4, 117.5, 110.2, 105.8, 100.6, 94.4, 89.7, 110.2, 118.5, 115.3, 105.2, 99.6, 92.3, 90.7, 107.5, 112.6, 100.1, 96.0, 91.8, 87.5, 93.6, 105.6, 115.9, 96.7, 98.2, 97.6, 92.2, 92.0, 109.3, 119.4, 107.5, 97.6, 97.8, 91.7, 89.4, 108.4, 119.6, 99.3, 91.3, 89.8, 83.4, 78.9, 94.4, 98.9, 85.3, 71.5, 61.2, 63.9, 91.4, 111.1, 146.7, 125.1, 114.1, 105.8, 107.4, 103.0], "kitchen": [101.9, 98.6, 108.1, 97.8, 95.8, 95.3, 100.0, 102.2, 97.4, 111.2, 105.4, 97.5, 106.6, 95.3, 95.7, 101.5, 117.0, 96.5, 89.3, 91.6, 92.7, 82.0, 91.1, 104.2, 91.1, 90.3, 100.4, 97.4, 103.3, 98.6, 113.6, 108.7, 101.1, 101.9, 93.3, 102.9, 93.7, 107.9, 113.7, 112.0, 95.4, 103.3, 90.5, 95.4, 110.5, 102.3, 110.2, 99.0, 103.6, 105.7, 104.8, 126.5, 110.9, 114.4, 105.6, 106.3, 108.0, 105.0, 112.2, 112.8, 111.5, 99.7, 97.3, 86.3, 93.8, 105.6, 97.3, 96.6, 92.3, 81.5, 77.1, 89.6, 85.8, 89.1, 73.0, 71.4, 79.3, 100.6, 99.2, 128.6, 118.5, 105.6, 97.7, 96.0, 87.0], "storage": [99.5, 117.4, 105.6, 100.6, 92.2, 79.1, 96.2, 105.9, 110.6, 102.0, 98.5, 94.5, 94.4, 85.7, 89.2, 112.5, 104.0, 91.8, 88.0, 87.2, 87.6, 92.9, 111.0, 107.3, 98.4, 89.1, 93.4, 92.1, 104.9, 118.4, 113.0, 100.2, 97.2, 96.7, 87.6, 97.4, 115.0, 128.8, 111.9, 105.6, 96.6, 97.1, 110.7, 123.9, 115.7, 105.0, 100.6, 92.9, 89.6, 110.9, 128.1, 115.6, 101.0, 102.9, 93.6, 94.4, 102.9, 113.2, 115.4, 104.8, 100.8, 92.1, 96.7, 98.4, 123.0, 117.4, 103.6, 96.5, 92.3, 82.9, 86.6, 106.4, 101.8, 80.4, 65.4, 65.2, 67.2, 95.8, 112.1, 120.8, 105.2, 94.6, 91.6, 91.6, 105.0], "model": [122.4, 122.4, 244.8, 244.8, 61.2, 0.0, 122.4, 244.8, 122.4, 0.0, 183.6, 0.0, 367.2, 0.0, 0.0, 61.2, 0.0, 0.0, 306.0, 0.0, 61.2, 122.4, 306.0, 367.2, 61.2, 0.0, 61.2, 122.4, 122.4, 61.2, 0.0, 0.0, 0.0, 61.2, 122.4, 61.2, 183.6, 0.0, 61.2, 61.2, 61.2, 0.0, 917.9, 367.2, 367.2, 122.4, 795.5, 244.8, 367.2, 244.8, 122.4, 122.4, 428.4, 1162.7, 673.1, 795.5, 917.9, 611.9, 1223.9, 244.8, 550.7, 428.4, 550.7, 550.7, 550.7, 367.2, 122.4, 244.8, 795.5, 367.2, 428.4, 550.7, 979.1, 734.3, 244.8, 367.2, 122.4, 367.2, 61.2, 673.1, 856.7, 306.0, 244.8, 367.2, 122.4]};
+    const keywordTrendData = {"dates": ["2026-07-11", "2026-07-12", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-18", "2026-07-19", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-25", "2026-07-26", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-07", "2026-08-08", "2026-08-09", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-15", "2026-08-16", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-22", "2026-08-23", "2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28", "2026-08-29", "2026-08-30", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-05", "2026-09-06", "2026-09-07", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11", "2026-09-12", "2026-09-13", "2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18", "2026-09-19", "2026-09-20", "2026-09-21", "2026-09-22", "2026-09-23", "2026-09-24", "2026-09-25", "2026-09-26", "2026-09-27", "2026-09-28", "2026-09-29", "2026-09-30", "2026-10-01", "2026-10-02", "2026-10-03"], "built": [113.0, 125.8, 119.3, 102.2, 104.4, 86.0, 105.3, 100.9, 102.6, 99.5, 104.4, 99.0, 97.2, 85.7, 82.6, 110.6, 107.7, 89.6, 88.5, 80.5, 81.6, 89.3, 86.2, 96.2, 103.7, 92.8, 87.6, 99.2, 104.1, 102.2, 115.0, 105.2, 102.2, 98.9, 93.6, 95.4, 101.2, 118.2, 105.5, 111.7, 105.3, 98.1, 113.6, 118.8, 119.6, 108.4, 105.5, 101.9, 92.6, 114.4, 122.1, 116.6, 108.4, 107.0, 94.0, 90.7, 96.7, 102.3, 109.5, 106.6, 96.8, 93.2, 97.3, 102.2, 116.1, 119.7, 106.6, 91.5, 93.4, 81.6, 88.7, 100.6, 96.1, 80.7, 69.9, 57.0, 59.1, 95.0, 95.9, 119.3, 105.0, 90.4, 93.1, 94.2, 95.7], "dress": [126.4, 153.8, 126.4, 131.8, 117.2, 95.2, 86.1, 126.4, 97.1, 131.8, 91.6, 80.6, 89.7, 69.6, 75.1, 115.4, 82.4, 84.2, 82.4, 58.6, 86.1, 80.6, 95.2, 76.9, 100.7, 84.2, 108.0, 89.7, 131.8, 102.5, 124.5, 98.9, 106.2, 80.6, 82.4, 126.4, 111.7, 100.7, 111.7, 93.4, 86.1, 128.2, 164.8, 161.1, 155.6, 113.5, 133.7, 73.2, 97.1, 124.5, 212.4, 117.2, 131.8, 137.3, 106.2, 117.2, 146.5, 111.7, 159.3, 117.2, 152.0, 89.7, 104.4, 102.5, 152.0, 113.5, 104.4, 75.1, 76.9, 120.9, 117.2, 141.0, 146.5, 115.4, 64.1, 65.9, 93.4, 73.2, 97.1, 120.9, 113.5, 84.2, 111.7, 78.7, 139.2], "kitint": [94.1, 108.6, 86.9, 74.2, 77.8, 86.9, 83.3, 124.9, 97.7, 103.2, 81.5, 61.5, 59.7, 97.7, 139.4, 97.7, 121.3, 90.5, 86.9, 86.9, 94.1, 112.2, 85.1, 108.6, 112.2, 63.4, 77.8, 114.0, 110.4, 90.5, 121.3, 106.8, 112.2, 117.7, 106.8, 97.7, 112.2, 108.6, 148.4, 126.7, 112.2, 108.6, 114.0, 148.4, 132.1, 132.1, 144.8, 110.4, 121.3, 115.8, 130.3, 197.3, 94.1, 112.2, 119.5, 105.0, 126.7, 139.4, 128.5, 105.0, 128.5, 114.0, 90.5, 92.3, 94.1, 88.7, 106.8, 95.9, 85.1, 52.5, 72.4, 119.5, 94.1, 70.6, 63.4, 72.4, 59.7, 110.4, 79.6, 95.9, 99.6, 76.0, 79.6, 81.5, 85.1]};
+const chartFontFamily = '"NanumSquareNEO","NanumSquareNeo","NanumSquare Neo",sans-serif';
+    function chartFont(size, weight = 500) {
+      return `${weight} ${size}px ${chartFontFamily}`;
+    }
+    function smoothSeries(values, radius = 1) {
+      return values.map((value, index) => {
+        const slice = values.slice(Math.max(0, index - radius), Math.min(values.length, index + radius + 1)).filter(v => v !== null && v !== undefined);
+        if (!slice.length) return value;
+        return slice.reduce((sum, v) => sum + v, 0) / slice.length;
+      });
+    }
+    function medianSeries(values, radius = 1) {
+      return values.map((value, index) => {
+        const slice = values
+          .slice(Math.max(0, index - radius), Math.min(values.length, index + radius + 1))
+          .filter(v => v !== null && v !== undefined)
+          .sort((a, b) => a - b);
+        if (!slice.length) return value;
+        return slice[Math.floor(slice.length / 2)];
+      });
+    }
+    function trendSmoothSeries(values) {
+      const median = medianSeries(values, 1);
+      const weights = [1, 2, 3, 2, 1];
+      const center = Math.floor(weights.length / 2);
+      return median.map((value, index) => {
+        let total = 0;
+        let weightTotal = 0;
+        weights.forEach((weight, offset) => {
+          const sourceIndex = index + offset - center;
+          const sourceValue = median[sourceIndex];
+          if (sourceIndex >= 0 && sourceIndex < median.length && sourceValue !== null && sourceValue !== undefined) {
+            total += sourceValue * weight;
+            weightTotal += weight;
+          }
+        });
+        return weightTotal ? total / weightTotal : value;
+      });
+    }
+    function drawSmoothPath(ctx, values, x, y) {
+      const pts = values.map((v, i) => ({x: x(i), y: y(v)}));
+      if (!pts.length) return;
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = pts[Math.max(0, i - 1)];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = pts[Math.min(pts.length - 1, i + 2)];
+        const cp1x = p1.x + (p2.x - p0.x) / 6;
+        const cp1y = p1.y + (p2.y - p0.y) / 6;
+        const cp2x = p2.x - (p3.x - p1.x) / 6;
+        const cp2y = p2.y - (p3.y - p1.y) / 6;
+        ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
+      }
+    }
+    const SEARCH_TREND_SMOOTHING = true;
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    function svgEl(name, attrs = {}, text = null) {
+      const el = document.createElementNS(SVG_NS, name);
+      Object.entries(attrs).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) el.setAttribute(key, value);
+      });
+      if (text !== null) el.textContent = text;
+      return el;
+    }
+    function smoothPathD(values, x, y) {
+      const pts = values
+        .map((v, i) => (v === null || v === undefined ? null : {x: x(i), y: y(v)}))
+        .filter(Boolean);
+      if (!pts.length) return '';
+      let d = `M ${pts[0].x.toFixed(2)} ${pts[0].y.toFixed(2)}`;
+      for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = pts[Math.max(0, i - 1)];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = pts[Math.min(pts.length - 1, i + 2)];
+        const cp1x = p1.x + (p2.x - p0.x) / 6;
+        const cp1y = p1.y + (p2.y - p0.y) / 6;
+        const cp2x = p2.x - (p3.x - p1.x) / 6;
+        const cp2y = p2.y - (p3.y - p1.y) / 6;
+        d += ` C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}`;
+      }
+      return d;
+    }
+    function niceAxisMax(maxValue) {
+      const padded = Math.max(100, maxValue * 1.08);
+      const candidates = [200, 300, 400, 500, 600, 700, 800, 900, 1000, 1200];
+      return candidates.find(value => value >= padded) || Math.ceil(padded / 200) * 200;
+    }
+    function axisStep(axisMax) {
+      if (axisMax <= 500) return 100;
+      if (axisMax <= 900) return 100;
+      return 200;
+    }
+    function renderSearchSvgChart({targetId, dates, valuesByKey, series, maxY = null, minY = 0, bands = [], stepY = null, rightMax = null, rightStep = null, rightLabel = '', rightColor = '#728095'}) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      const w = 980;
+      const h = 430;
+      const pad = {l:58, r: rightMax ? 64 : 24, t:28, b:44};
+      const plotW = w - pad.l - pad.r;
+      const plotH = h - pad.t - pad.b;
+      const chartSeries = series.map(item => ({
+        ...item,
+        values: SEARCH_TREND_SMOOTHING ? trendSmoothSeries(valuesByKey[item.key]) : valuesByKey[item.key]
+      }));
+      const observedMax = Math.max(...chartSeries.flatMap(item => item.values.filter(value => Number.isFinite(value))));
+      const axisMax = maxY || niceAxisMax(observedMax);
+      const tickStep = (axisMax - minY) <= 100 ? 20 : ((axisMax - minY) <= 200 ? 40 : axisStep(axisMax));
+      const x = i => pad.l + (i / (dates.length - 1)) * plotW;
+      const y = v => pad.t + plotH - ((Math.max(minY, Math.min(axisMax, v)) - minY) / (axisMax - minY)) * plotH;
+      const yR = v => pad.t + plotH - (Math.max(0, Math.min(rightMax || 1, v)) / (rightMax || 1)) * plotH;
+      const svg = svgEl('svg', {
+        viewBox: `0 0 ${w} ${h}`,
+        role: 'img',
+        'aria-label': target.getAttribute('aria-label') || ''
+      });
+
+      svg.appendChild(svgEl('rect', {x: 0, y: 0, width: w, height: h, fill: '#fff'}));
+
+      const tvcStart = dates.indexOf('2026-08-21');
+      const tvcEnd = dates.indexOf('2026-09-30');
+      if (tvcStart >= 0 && tvcEnd >= 0) {
+        svg.appendChild(svgEl('rect', {
+          x: x(tvcStart),
+          y: pad.t,
+          width: Math.max(1, x(tvcEnd) - x(tvcStart)),
+          height: plotH,
+          fill: '#03C75A',
+          opacity: .10
+        }));
+        svg.appendChild(svgEl('text', {
+          x: x(tvcStart) + 10,
+          y: pad.t + 17,
+          fill: '#078f45',
+          'font-size': 12,
+          'font-weight': 800
+        }, 'TVC 집행 구간'));
+      }
+
+      const chuStart = dates.indexOf('2026-09-21');
+      const chuEnd = dates.indexOf('2026-09-27');
+      if (chuStart >= 0 && chuEnd >= 0) {
+        svg.appendChild(svgEl('rect', {x: x(chuStart), y: pad.t, width: Math.max(1, x(chuEnd) - x(chuStart)), height: plotH, fill: '#e0802b', opacity: .14}));
+        svg.appendChild(svgEl('text', {x: x(chuStart) + 4, y: pad.t + 14, fill: '#b4693f', 'font-size': 11, 'font-weight': 800}, '추석'));   // 선과 겹치지 않게 위쪽
+      }
+      bands.forEach(b => {
+        const bs = dates.indexOf(b.start), be = dates.indexOf(b.end);
+        if (bs < 0 || be < 0) return;
+        svg.appendChild(svgEl('rect', {x: x(bs), y: pad.t, width: Math.max(1, x(be) - x(bs)), height: plotH, fill: '#6554ff', opacity: .08}));
+        svg.appendChild(svgEl('text', {x: x(bs) + 4, y: pad.t + plotH - 8, fill: '#6554ff', 'font-size': 11, 'font-weight': 800}, b.label));
+      });
+      const base100 = y(100);
+      svg.appendChild(svgEl('line', {x1: pad.l, y1: base100, x2: w - pad.r, y2: base100, stroke: '#9aa5b3', 'stroke-width': 1, 'stroke-dasharray': '2 4'}));
+      for (let rt = 0; rightMax && rt <= rightMax; rt += (rightStep || rightMax / 3)) svg.appendChild(svgEl('text', {x: w - pad.r + 10, y: yR(rt) + 4, fill: rightColor, 'font-size': 11, 'font-weight': 700}, String(Math.round(rt))));
+      for (let tick = minY; tick <= axisMax; tick += (stepY || tickStep)) {
+        const yy = y(tick);
+        svg.appendChild(svgEl('line', {
+          x1: pad.l,
+          y1: yy,
+          x2: w - pad.r,
+          y2: yy,
+          stroke: '#dfe5ee',
+          'stroke-width': 1
+        }));
+        svg.appendChild(svgEl('text', {
+          x: pad.l - 12,
+          y: yy + 4,
+          fill: '#728095',
+          'font-size': 11,
+          'font-weight': 500,
+          'text-anchor': 'end'
+        }, String(tick)));
+      }
+
+      svg.appendChild(svgEl('line', {
+        x1: pad.l,
+        y1: h - pad.b,
+        x2: w - pad.r,
+        y2: h - pad.b,
+        stroke: '#9aa5b3',
+        'stroke-width': 1
+      }));
+
+      ['2026-07-11','2026-08-21','2026-09-03','2026-09-30'].forEach(date => {
+        const i = dates.indexOf(date);
+        if (i >= 0) {
+          svg.appendChild(svgEl('text', {
+            x: x(i),
+            y: h - 16,
+            fill: '#687386',
+            'font-size': 11,
+            'font-weight': 500,
+            'text-anchor': 'middle'
+          }, date.slice(5)));
+        }
+      });
+
+      chartSeries.forEach(({key, color, width = 2.4, values, axis}) => {
+        svg.appendChild(svgEl('path', {
+          'data-key': key,
+          d: smoothPathD(values, x, axis === 'right' ? yR : y),
+          fill: 'none',
+          stroke: color,
+          'stroke-width': width,
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round'
+        }));
+      });
+
+      svg.appendChild(svgEl('text', {
+        x: pad.l,
+        y: 16,
+        fill: '#596578',
+        'font-size': 12,
+        'font-weight': 800
+      }, '검색지수'));
+      if (rightMax) svg.appendChild(svgEl('text', {x: w - 6, y: 16, fill: rightColor, 'font-size': 12, 'font-weight': 800, 'text-anchor': 'end'}, rightLabel));
+
+      target.innerHTML = '';
+      target.appendChild(svg);
+      applyHighlight(targetId);
+    }
+    
+    function drawSearchTrend() {
+      renderSearchSvgChart({targetId: 'searchTrend', dates: trendData.dates, valuesByKey: trendData, minY: 70, maxY: 125, stepY: 10,
+        rightMax: 900, rightStep: 150, rightLabel: '모델 결합',   // 완화선 최대 약 802 (안성재·정은채 결합 4개만) rightColor: '#e5486f',
+        series: [{key: 'storage', color: '#715cff', width: 3}, {key: 'kitchen', color: '#1b84e7', width: 2.6},
+                 {key: 'brand', color: '#03C75A', width: 2.4},
+                 {key: 'model', color: '#e5486f', width: 2.6, axis: 'right'}]});
+    }
+    const storeData = {"dates": ["2026-07-11", "2026-07-12", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-18", "2026-07-19", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-25", "2026-07-26", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-07", "2026-08-08", "2026-08-09", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-15", "2026-08-16", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-22", "2026-08-23", "2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28", "2026-08-29", "2026-08-30", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-05", "2026-09-06", "2026-09-07", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11", "2026-09-12", "2026-09-13", "2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18", "2026-09-19", "2026-09-20", "2026-09-21", "2026-09-22", "2026-09-23", "2026-09-24", "2026-09-25", "2026-09-26", "2026-09-27", "2026-09-28", "2026-09-29", "2026-09-30", "2026-10-01", "2026-10-02", "2026-10-03"], "buyers": [178, 492, 321, 273, 254, 113, 121, 118, 152, 553, 486, 478, 323, 338, 309, 497, 925, 171, 161, 353, 121, 190, 564, 339, 333, 298, 295, 272, 268, 351, 690, 463, 374, 383, 324, 361, 739, 287, 206, 191, 167, 158, 161, 194, 693, 411, 267, 269, 229, 386, 279, 265, 411, 343, 286, 263, 244, 345, 683, 388, 358, 358, 325, 315, 544, 518, 371, 339, 332, 290, 243, 362, 302, 544, 98, 72, 101, 123, 177, 283, 200, 226, 286, 168, 178], "gmv": [null, null, null, 98.6, 92.7, 66.1, 87.1, 105.8, 123.6, 138.3, 153.0, 168.3, 194.7, 242.2, 215.3, 192.4, 197.8, 181.5, 171.0, 178.4, 112.2, 125.5, 135.8, 127.8, 139.9, 146.9, 125.4, 155.4, 164.8, 172.9, 179.9, 186.2, 197.6, 244.7, 210.7, 192.0, 176.9, 160.4, 143.7, 125.8, 69.0, 112.0, 129.0, 134.1, 142.4, 150.2, 167.2, 175.7, 132.9, 126.6, 129.2, 129.6, 130.8, 118.0, 120.2, 156.7, 157.6, 162.4, 168.0, 172.3, 176.8, 199.6, 186.5, 185.1, 181.7, 182.7, 181.9, 179.9, 161.3, 140.6, 167.4, 153.3, 135.3, 121.9, 113.4, 100.1, 98.2, 60.0, 66.8, 78.8, 81.6, 84.4, null, null, null]};
+    // 스토어: 막대(구매자, 왼쪽 축) + 선(매출 7일 평균, 오른쪽 축) — 실제 값
+    function drawStoreTrend() {
+      const t = document.getElementById('storeTrend'); if (!t) return;
+      const D = storeData, n = D.dates.length, w = 980, h = 430, pad = {l: 58, r: 66, t: 56, b: 44};   // 구간 라벨은 막대와 겹치지 않게 플롯 위 띠에
+      const pw = w - pad.l - pad.r, ph = h - pad.t - pad.b, bw = pw / n;
+      const nice = (v, steps) => steps.find(s => s >= v) || Math.ceil(v / 500) * 500;
+      const bMax = nice(Math.max(...D.buyers) * 1.05, [400, 500, 600, 800, 1000, 1200]);
+      const gMax = nice(Math.max(...D.gmv.filter(v => v !== null)) * 1.15, [200, 250, 300, 400, 500, 600]);
+      const xl = i => pad.l + bw * i, xc = i => pad.l + bw * (i + .5);
+      const yb = v => pad.t + ph - v / bMax * ph, yg = v => pad.t + ph - v / gMax * ph;
+      const idx = d => D.dates.indexOf(d);
+      const svg = svgEl('svg', {viewBox: `0 0 ${w} ${h}`, role: 'img', 'aria-label': t.getAttribute('aria-label') || ''});
+      svg.appendChild(svgEl('rect', {x: 0, y: 0, width: w, height: h, fill: '#fff'}));
+      const band = (s, e, fill, op) => { const i = idx(s), j = idx(e); if (i < 0 || j < 0) return null;
+        svg.appendChild(svgEl('rect', {x: xl(i), y: pad.t, width: xl(j + 1) - xl(i), height: ph, fill, opacity: op})); return i; };
+      const tv = band('2026-08-21', '2026-09-30', '#03C75A', .07);
+      if (tv !== null) svg.appendChild(svgEl('text', {x: xl(tv) + 4, y: pad.t - 26, fill: '#078f45', 'font-size': 12, 'font-weight': 800}, 'TVC 집행 구간 (8/21–9/30)'));
+      [['2026-07-11', '2026-07-20', '쌤위크'], ['2026-08-03', '2026-08-17', '쌤위크'], ['2026-09-28', '2026-10-03', '쌤페스타']].forEach(([s, e, lb]) => {
+        const i = band(s, e, '#6554ff', .07); if (i !== null) svg.appendChild(svgEl('text', {x: xl(i) + 2, y: pad.t - 8, fill: '#6554ff', 'font-size': 11, 'font-weight': 800}, lb)); });
+      const c = band('2026-09-21', '2026-09-27', '#e0802b', .13);
+      if (c !== null) svg.appendChild(svgEl('text', {x: xl(c) + 2, y: pad.t - 8, fill: '#b4693f', 'font-size': 11, 'font-weight': 800}, '추석'));
+      for (let k = 0; k <= 4; k++) {
+        const yy = pad.t + ph - ph * k / 4;
+        svg.appendChild(svgEl('line', {x1: pad.l, y1: yy, x2: w - pad.r, y2: yy, stroke: '#eef1f6', 'stroke-width': 1}));
+        svg.appendChild(svgEl('text', {x: pad.l - 10, y: yy + 4, fill: '#5a6bd8', 'font-size': 11, 'text-anchor': 'end'}, String(bMax * k / 4)));
+        svg.appendChild(svgEl('text', {x: w - pad.r + 10, y: yy + 4, fill: '#078f45', 'font-size': 11}, String(gMax * k / 4)));
+      }
+      const da = idx('2026-09-03');
+      if (da >= 0) {
+        svg.appendChild(svgEl('line', {x1: xl(da), y1: pad.t - 4, x2: xl(da), y2: pad.t + ph, stroke: '#078f45', 'stroke-width': 1.2, 'stroke-dasharray': '4 4'}));
+        svg.appendChild(svgEl('text', {x: xl(da) + 2, y: pad.t - 8, fill: '#078f45', 'font-size': 11, 'font-weight': 700}, '▼ 네이버 DA 확대'));
+      }
+      const g = svgEl('g', {'data-key': 'buyers'});
+      const tvS = idx('2026-08-21');
+      D.buyers.forEach((v, i) => g.appendChild(svgEl('rect', {x: xl(i) + bw * .18, y: yb(v), width: bw * .64, height: pad.t + ph - yb(v), rx: 1.5,
+        fill: i < tvS ? '#c3ccd8' : '#7d8ff0'})));
+      svg.appendChild(g);
+      svg.appendChild(svgEl('path', {'data-key': 'gmv', d: smoothPathD(D.gmv, xc, yg), fill: 'none', stroke: '#03C75A', 'stroke-width': 2.6,
+        'stroke-linecap': 'round', 'stroke-linejoin': 'round'}));
+      svg.appendChild(svgEl('line', {x1: pad.l, y1: pad.t + ph, x2: w - pad.r, y2: pad.t + ph, stroke: '#9aa5b3', 'stroke-width': 1}));
+      ['2026-07-11', '2026-08-21', '2026-09-03', '2026-09-30'].forEach(d => { const i = idx(d); if (i >= 0)
+        svg.appendChild(svgEl('text', {x: xc(i), y: h - 16, fill: '#687386', 'font-size': 11, 'text-anchor': 'middle'}, d.slice(5))); });
+      svg.appendChild(svgEl('text', {x: pad.l - 10, y: pad.t - 8, fill: '#5a6bd8', 'font-size': 11, 'font-weight': 800, 'text-anchor': 'end'}, '(명)'));
+      svg.appendChild(svgEl('text', {x: w - pad.r + 10, y: pad.t - 8, fill: '#078f45', 'font-size': 11, 'font-weight': 800}, '(백만원)'));
+      t.innerHTML = ''; t.appendChild(svg);
+      applyHighlight('storeTrend');
+    }
+    function drawKeywordTrend() {
+      renderSearchSvgChart({targetId: 'keywordTrend', dates: keywordTrendData.dates, valuesByKey: keywordTrendData, minY: 65, maxY: 165, stepY: 20,   // 완화선 67.9~153.2
+        series: [{key: 'built', color: '#03C75A', width: 2.5}, {key: 'dress', color: '#715cff', width: 3},
+                 {key: 'kitint', color: '#1b84e7', width: 2.5}]});
+    }
+function updateActiveNav() {
+      const links = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+      const sections = links
+        .map(link => document.querySelector(link.getAttribute('href')))
+        .filter(Boolean);
+      const marker = window.scrollY + Math.max(140, window.innerHeight * 0.24);
+      let current = sections[0];
+      sections.forEach(section => {
+        if (section.offsetTop <= marker) current = section;
+      });
+      const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 12;
+      if (nearBottom) current = sections[sections.length - 1];
+      links.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${current.id}`);
+      });
+    }
+
+    
+    // 범례 클릭 → 해당 선만 강조 (다시 누르면 해제)
+    const chartFocus = {};
+    function applyHighlight(id) {
+      const k = chartFocus[id];
+      document.querySelectorAll('#' + id + ' [data-key]').forEach(p => {
+        p.style.opacity = (!k || p.getAttribute('data-key') === k) ? 1 : .12;
+        p.style.transition = 'opacity .2s';
+      });
+      document.querySelectorAll('.legend[data-chart="' + id + '"] span[data-key]').forEach(sp => {
+        sp.classList.toggle('dim', !!k && sp.getAttribute('data-key') !== k);
+      });
+    }
+    document.querySelectorAll('.legend[data-chart] span[data-key]').forEach(sp => {
+      sp.addEventListener('click', () => {
+        const id = sp.closest('.legend').getAttribute('data-chart'), k = sp.getAttribute('data-key');
+        chartFocus[id] = chartFocus[id] === k ? null : k;
+        applyHighlight(id);
+      });
+    });
+    function drawAllCharts() { drawSearchTrend(); drawKeywordTrend(); drawStoreTrend(); }
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(drawAllCharts); } else { drawAllCharts(); }
+    updateActiveNav();
+    window.addEventListener('scroll', updateActiveNav, {passive:true});
+    window.addEventListener('resize', updateActiveNav);
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+      link.addEventListener('click', () => window.setTimeout(updateActiveNav, 120));
+    });
+
+  </script>
+</body>
+</html>
